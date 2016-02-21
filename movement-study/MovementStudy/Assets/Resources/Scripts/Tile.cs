@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Tile : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public int type;
+    public bool passable;
+
+    public void init(int type) {
+        this.type = type;
+        if (type == 0) passable = true;
+        else passable = false;
+        // TODO: make the model! (no script, just quad)
+    }
 }
