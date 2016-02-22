@@ -10,6 +10,7 @@ public static class Param {
     public const float CAMERA_DYNAMIC_FACTOR = 1.0f;
     public const float CAMERA_SPLIT_SCALE = 1.0f;
     public const float BASE_SPEED = 1.0f; // tiles/sec
+    public const float ATTK_TIME = 1.5f;
 
     // ENUMS
     //  CAMERA_MODE

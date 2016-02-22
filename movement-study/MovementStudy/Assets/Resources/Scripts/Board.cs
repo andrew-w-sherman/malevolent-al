@@ -28,9 +28,11 @@ public class Board : MonoBehaviour {
         // TODO: pipes r 4 scrubs
         if (i >= board.Length) {
             // TODO: we hecked
+            print("Whoa there friendo");
         }
         if (j >= board[0].Length) {
             // TODO: we hecked
+            print("Hold it there, pal");
         }
         return board[i,j].passable;
     }
