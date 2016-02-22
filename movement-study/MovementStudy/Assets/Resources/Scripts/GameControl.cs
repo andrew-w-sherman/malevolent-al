@@ -9,14 +9,26 @@ public class GameControl : MonoBehaviour {
     Character currentChar;
     GameObject boardGO;
     Board board;
+    GameObject cameraGO;
+    MainCamera mc;
 
     void Start () {
         // set the origin point
-        this.transform.position = new Vector3(br.Length/2f,br[0].Length/2f,0);
+        this.transform.position = new Vector3(-br.Length/2f,-br[0].Length/2f,0);
+        
+        // grab camera and give it a script
+        cameraGO = GameObject.Find("Main Camera");
+        mc = cameraGO.AddComponent<MainCamera>();
+        camera.transform.parent = this.transform;
+        camera.transform.localPosition = new Vector3(br.Length/2f,br[0].Length/2f,0);
+        camera.init();
+
         // make board
         boardGO = new GameObject();
         boardGO.transform.parent = this.transform;
         board = boardGO.AddComponent<Board>();
+
+        // do character things
         GameObject fireGO = new GameObject();
         GameObject oilGO = new GameObject();
         fire = fireGO.AddComponent<Character>();
