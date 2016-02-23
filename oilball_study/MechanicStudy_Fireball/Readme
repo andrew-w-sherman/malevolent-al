@@ -1,0 +1,4 @@
+This mechanic study uses two objects the square which represents the fire character, and a cirlce object which represents the oil.
+Clicking the fire character will launch it in a predetermined direction towards the oil. When the oil is hit it will continue
+slowing down over time or hit a wall and bounce off in one of 8 predetermined directions depending on the incoming angle and the
+angle of the wall. Hitting reset starts the simulation over again
