@@ -6,7 +6,7 @@ public class MainCamera : MonoBehaviour {
     GameObject one;
     GameObject two;
 
-    void init(GameObject one, GameObject two) {
+    public void init(GameObject one, GameObject two) {
         this.one = one;
         this.two = two;
         reposition();

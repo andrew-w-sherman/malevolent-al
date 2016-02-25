@@ -20,8 +20,8 @@ public class Character : MonoBehaviour {
     }
 
     public void move(Vector3 moveBase) {
-        dirx = moveBase.x;
-        diry = moveBase.y;
+        dirx = (int)moveBase.x;
+        diry = (int)moveBase.y;
         Vector3 move = moveBase * Param.BASE_SPEED * Time.deltaTime;
         transform.localPosition += move;
     }
