@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour {
     // Use this for initialization
     void init(Vector3 startPos, Vector3 velocity, int type)
     {
+        // TODO: add projectile direction
         this.type = type;
         this.transform.position = startPos;
         this.v = velocity;
