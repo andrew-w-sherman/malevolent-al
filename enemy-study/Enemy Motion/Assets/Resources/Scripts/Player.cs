@@ -37,48 +37,50 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
+        Vector3 direction = Vector3.zero;
+
         if (num == 1)
         {
-            if (Camera.current != null)
+            if (Input.GetKey("w") && relativePosition.y < 4)
             {
-                Vector3 relativePosition = Camera.current.transform.InverseTransformDirection(transform.position - Camera.current.transform.position);
-                Debug.Log(relativePosition);
+                direction += new Vector3(0, 1, 0);
             }
-            if (Input.GetKey("w"))
+            if (Input.GetKey("a") && relativePosition.x > -9.5)
             {
-                transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+                direction += new Vector3(-1, 0, 0);
             }
-            if (Input.GetKey("a"))
+            if (Input.GetKey("s") && relativePosition.y > -4)
             {
-                transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+                direction += new Vector3(0, -1, 0);
             }
-            if (Input.GetKey("s"))
+            if (Input.GetKey("d") && relativePosition.x < 9.5)
             {
-                transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+                direction += new Vector3(1, 0, 0);
             }
-            if (Input.GetKey("d"))
-            {
-                transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
-            }
+
+            transform.position += direction.normalized * Time.deltaTime;
         }
-        if(num == 2)
+        if (num == 2)
         {
-            if (Input.GetKey("["))
+            if (Input.GetKey("[") && relativePosition.y < 4)
             {
-                transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+                direction += new Vector3(0, 1, 0);
             }
-            if (Input.GetKey(";"))
+            if (Input.GetKey(";") && relativePosition.x > -9.5)
             {
-                transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+                direction += new Vector3(-1, 0, 0);
             }
-            if (Input.GetKey("'"))
+            if (Input.GetKey("'") && relativePosition.y > -4)
             {
-                transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+                direction += new Vector3(0, -1, 0);
             }
-            if (Input.GetKey("return"))
+            if (Input.GetKey("return") && relativePosition.x < 9.5)
             {
-                transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+                direction += new Vector3(1, 0, 0);
             }
+
+            transform.position += direction.normalized * Time.deltaTime;
         }
     }
 }

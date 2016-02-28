@@ -88,11 +88,11 @@ public class EnemyModel : MonoBehaviour {
             
             int wallHit = 0;
 
-            Debug.Log("new set");
+            //Debug.Log("new set");
 
             foreach(RaycastHit2D hit in hitList.ToArray())
             {
-                Debug.Log(hit.collider);
+                //Debug.Log(hit.collider);
                 if(hit.collider.gameObject.tag == "wall")
                 {
                     wallHit = 1;
