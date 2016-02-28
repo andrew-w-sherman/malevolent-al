@@ -3,13 +3,19 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public EnemyModel model;
+
+    // Use this for initialization
+    public void init(MotionDemo demo)
+    {
+        var modelObject = new GameObject();
+        model = modelObject.AddComponent<EnemyModel>();
+        model.init(this, demo);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }
