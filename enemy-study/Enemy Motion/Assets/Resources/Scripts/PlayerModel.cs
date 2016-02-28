@@ -12,7 +12,7 @@ public class PlayerModel : MonoBehaviour {
     {
         transform.parent = owner.transform;
         transform.localPosition = new Vector3(0, 0, 0);
-        name = "p1-model";
+        name = "p-model";
 
         mat = owner.gameObject.GetComponent<MeshRenderer>().material;
         mat.shader = Shader.Find("Transparent/Diffuse");

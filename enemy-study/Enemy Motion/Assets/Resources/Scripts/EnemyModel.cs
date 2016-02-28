@@ -65,10 +65,10 @@ public class EnemyModel : MonoBehaviour {
         Vector3 direction3D = demo.p1.model.transform.position - transform.position;
         Vector2 direction = new Vector2(direction3D.x, direction3D.y).normalized;
 
-        RaycastHit2D TopLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, height / 4), direction);
-        RaycastHit2D TopRightHit = Physics2D.Raycast(start + new Vector2(width / 4, height / 4), direction);
-        RaycastHit2D BotLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, -height / 4), direction);
-        RaycastHit2D BotRightHit = Physics2D.Raycast(start + new Vector2(width / 4, -height / 4), direction);
+        RaycastHit2D TopLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, height / 4), direction, direction3D.magnitude);
+        RaycastHit2D TopRightHit = Physics2D.Raycast(start + new Vector2(width / 4, height / 4), direction, direction3D.magnitude);
+        RaycastHit2D BotLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, -height / 4), direction, direction3D.magnitude);
+        RaycastHit2D BotRightHit = Physics2D.Raycast(start + new Vector2(width / 4, -height / 4), direction, direction3D.magnitude);
 
         List<RaycastHit2D> hitList = new List<RaycastHit2D>();
         hitList.Add(TopLeftHit);
@@ -87,6 +87,8 @@ public class EnemyModel : MonoBehaviour {
         if(hitList.Count > 0) {
             
             int wallHit = 0;
+
+            Debug.Log("new set");
 
             foreach(RaycastHit2D hit in hitList.ToArray())
             {

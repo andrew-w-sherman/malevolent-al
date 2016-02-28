@@ -5,10 +5,12 @@ public class Player : MonoBehaviour
 {
 
     public PlayerModel model;
+    public int num;
 
     // Use this for initialization
-    public void init(MotionDemo demo)
+    public void init(int num, MotionDemo demo)
     {
+        this.num = num;
         gameObject.tag = "player";
 
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -35,21 +37,48 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        if (num == 1)
         {
-            transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+            if (Camera.current != null)
+            {
+                Vector3 relativePosition = Camera.current.transform.InverseTransformDirection(transform.position - Camera.current.transform.position);
+                Debug.Log(relativePosition);
+            }
+            if (Input.GetKey("w"))
+            {
+                transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey("a"))
+            {
+                transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey("s"))
+            {
+                transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey("d"))
+            {
+                transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+            }
         }
-        if (Input.GetKey("a"))
+        if(num == 2)
         {
-            transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey("s"))
-        {
-            transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey("d"))
-        {
-            transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+            if (Input.GetKey("["))
+            {
+                transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey(";"))
+            {
+                transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey("'"))
+            {
+                transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey("return"))
+            {
+                transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+            }
         }
     }
 }
