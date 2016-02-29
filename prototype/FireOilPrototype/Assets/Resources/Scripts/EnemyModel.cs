@@ -4,26 +4,26 @@ using System.Collections.Generic;
 
 public class EnemyModel : MonoBehaviour {
 
-    private MotionDemo demo;
+    private GameController demo;
     private Enemy owner;
+    public string type;
     private Material mat;
     private Vector3 lastSeen;
     private Vector3 lastDirection;
-    private static int NaN = 10 ^ 30;
-    private static Vector3 NULL = new Vector3(NaN, NaN, NaN);
     private float lostTimer;
     private int lost;
 
     public float height;
     public float width;
+    
 
-    // Use this for initialization
-    public void init(Enemy owner, MotionDemo demo)
+    public void init(Enemy owner, GameController demo, string type)
     {
         this.demo = demo;
         this.owner = owner;
-        lastSeen = NULL;
-        lastDirection = NULL;
+        this.type = type;
+        lastSeen = GameController.NULL;
+        lastDirection = GameController.NULL;
         lost = 0;
         lostTimer = 0f;
 
@@ -57,12 +57,30 @@ public class EnemyModel : MonoBehaviour {
         height = GetComponent<Renderer>().bounds.size.y;
     }
 
-    // Update is called once per frame
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "projectile-friendly")
+        {
+            owner.health--;
+        }
+    }
+    
+
     void Update () {
 
         Vector2 start = new Vector2(transform.position.x, transform.position.y);
+        Vector3 direction3D = GameController.NULL;
 
-        Vector3 direction3D = demo.p1.model.transform.position - transform.position;
+        if (type.Equals("fire"))
+        {
+            direction3D = demo.fire.model.transform.position - transform.position;
+        }
+
+        if (type.Equals("oil"))
+        {
+            direction3D = demo.oil.model.transform.position - transform.position;
+        }
+
         Vector2 direction = new Vector2(direction3D.x, direction3D.y).normalized;
 
         RaycastHit2D TopLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, height / 4), direction, direction3D.magnitude);
@@ -88,11 +106,11 @@ public class EnemyModel : MonoBehaviour {
             
             int wallHit = 0;
 
-            Debug.Log("new set");
+            //Debug.Log("new set");
 
             foreach(RaycastHit2D hit in hitList.ToArray())
             {
-                Debug.Log(hit.collider);
+                //Debug.Log(hit.collider);
                 if(hit.collider.gameObject.tag == "wall")
                 {
                     wallHit = 1;
@@ -103,13 +121,22 @@ public class EnemyModel : MonoBehaviour {
             {
                 lost = 0;
                 lostTimer = 0f;
-                lastSeen = demo.p1.model.transform.position;
+                if (type.Equals("fire"))
+                {
+                    lastSeen = demo.fire.model.transform.position;
+                }
+
+                if (type.Equals("oil"))
+                {
+                    lastSeen = demo.oil.model.transform.position;
+                }
+                
                 lastDirection = direction3D;
                 transform.Translate(lastDirection.normalized * Time.deltaTime);
             }
             else
             {
-                if (lastDirection != NULL)
+                if (lastDirection != GameController.NULL)
                 {
                     if (lost != 1)
                     {

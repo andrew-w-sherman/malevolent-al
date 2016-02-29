@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/GemDemo.unity
+- path: Assets/FireOilScene.unity
   isLoaded: 1
   isActive: 1

@@ -3,8 +3,10 @@ using System.Collections;
 
 public class OilBall : MonoBehaviour {
 
-    Controller c;
-    BoxCollider2D coll;
+    public GameController demo;
+    public CircleCollider2D coll;
+    public OilModel model;
+    public Vector3 lastDirection;
     float clock;
     float movementCounter;
     float movementCheck;
@@ -14,13 +16,34 @@ public class OilBall : MonoBehaviour {
     float timeLastExploded;
     public bool canLayPatches;
 
-    public void init(Controller c)
+    public void init(GameController demo)
     {
-        this.c = c;
+        this.demo = demo;
+        lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
-        coll = GetComponent<BoxCollider2D>();
+
+        gameObject.tag = "oil ball";
+
+        GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var filter = gameObject.AddComponent<MeshFilter>();
+        filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
+        Destroy(uselessQuad);
+
+        var renderer = gameObject.AddComponent<MeshRenderer>();
+        renderer.enabled = true;
+
+        var body = gameObject.AddComponent<Rigidbody2D>();
+        body.gravityScale = 0;
+        body.isKinematic = false;
+
+        coll = gameObject.AddComponent<CircleCollider2D>();
+        coll.radius = (float).33;
+        coll.isTrigger = false;
+
+        //coll = GetComponent<CircleCollider2D>();
+
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        OilModel model = modelObject.AddComponent<OilModel>();
+        model = modelObject.AddComponent<OilModel>();
         model.init(true, this, null);
         movementCheck = 2f;
         movementCounter = 0f;
@@ -74,18 +97,40 @@ public class OilBall : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         clock = clock + Time.deltaTime;
-	    if (Input.GetButton("Vertical"))
+
+        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
+        Vector3 direction = Vector3.zero;
+
+        if (Input.GetButton("Oil Up") && relativePosition.y < 4)
         {
-            Vector3 yMov = Vector3.up * Input.GetAxis("Vertical") * Time.deltaTime * 1.5f;
-            transform.Translate(yMov, Space.World);
-            movementCounter += Mathf.Abs(yMov.y);
+            direction += Vector3.up;
         }
-        if (Input.GetButton("Horizontal"))
+
+        if (Input.GetButton("Oil Down") && relativePosition.y > -4)
         {
-            Vector3 xMov = Vector3.right * Input.GetAxis("Horizontal") * Time.deltaTime * 1.5f;
-            transform.Translate(xMov, Space.World);
-            movementCounter += Mathf.Abs(xMov.x);
+            direction += Vector3.down;
         }
+
+        if (Input.GetButton("Oil Right") && relativePosition.x < 9.5)
+        {
+            direction += Vector3.right;
+        }
+
+        if (Input.GetButton("Oil Left") && relativePosition.x > -9.5)
+        {
+            direction += Vector3.left;
+        }
+
+        lastDirection = direction;
+        transform.position += direction.normalized * Time.deltaTime;
+        movementCounter += (direction.normalized * Time.deltaTime).magnitude;
+
+        if (Input.GetButtonDown("Oil Shoot"))
+        {
+            demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+        }
+
+        
 
         if (movementCounter > coll.bounds.size.x - 0.1f)
         {

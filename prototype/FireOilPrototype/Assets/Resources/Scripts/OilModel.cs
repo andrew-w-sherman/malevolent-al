@@ -25,7 +25,7 @@ public class OilModel : MonoBehaviour {
             mat.renderQueue = 5001;
             mat.color = new Color(1, 1, 1);
             mat.shader = Shader.Find("Transparent/Diffuse");
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/ball");
+            mat.mainTexture = Resources.Load<Texture2D>("Textures/oil ball");
         }
         else
         {
