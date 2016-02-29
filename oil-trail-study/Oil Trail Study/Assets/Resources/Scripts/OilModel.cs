@@ -48,4 +48,13 @@ public class OilModel : MonoBehaviour {
             mat.mainTexture = Resources.Load<Texture2D>("Textures/Fire");
         }
     }
+    public void setSpeeding(bool speeding)
+    {
+        if (isCharacter)
+        {
+            if (speeding) { mat.mainTexture = Resources.Load<Texture2D>("Textures/speeding_oilball"); }
+            else { mat.mainTexture = Resources.Load<Texture2D>("Textures/ball"); }
+        }
+    }
 }
+

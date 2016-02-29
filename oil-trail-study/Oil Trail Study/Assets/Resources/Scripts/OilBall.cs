@@ -5,31 +5,52 @@ public class OilBall : MonoBehaviour {
 
     Controller c;
     BoxCollider2D coll;
+    OilModel model;
     float clock;
+
     float movementCounter;
     float movementCheck;
     public OilPatch[] oilList;
-    public int numPatches = 10;
+    public int numPatches;
+    float patchDistance;
+
     float explodeTimer;
+    float explosionTime;
     float timeLastExploded;
-    public bool canLayPatches;
+
+
+    float speedingTime;
+    float timeBeenSpeeding;
+    float speedingThreshold;
+    bool speeding;
+    Vector3 speedDirection;
 
     public void init(Controller c)
     {
         this.c = c;
-        oilList = new OilPatch[numPatches];
         coll = GetComponent<BoxCollider2D>();
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        OilModel model = modelObject.AddComponent<OilModel>();
-        model.init(true, this, null);
+
+        numPatches = 10;
         movementCheck = 2f;
         movementCounter = 0f;
+        explodeTimer = 4f; //how long we wait between explosions
+        explosionTime = 1.2f; //how long an explosion lasts
+        speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
+        timeLastExploded = -1f;
+        patchDistance = coll.bounds.size.x - 0.1f;
+        speedingTime = 3f; //how long we speed for
+        timeBeenSpeeding = 0f;
+        speeding = false;
+
+        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        model = modelObject.AddComponent<OilModel>();
+        model.init(true, this, null);
+
         oilList = new OilPatch[numPatches];
 
         createPatch(0);
 
-        explodeTimer = 4f;
-        timeLastExploded = -1f;
+
     }
 
     void Start()
@@ -37,27 +58,54 @@ public class OilBall : MonoBehaviour {
         clock = 0f;
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "FireBall")
+        {
+            print(other.gameObject.GetComponent<FireBall>().delta);
+
+            if (other.gameObject.GetComponent<FireBall>().speed > speedingThreshold)
+            {
+                speeding = true;
+                timeBeenSpeeding = 0f;
+                speedDirection = other.gameObject.GetComponent<FireBall>().delta;
+                model.setSpeeding(true); //tell model to change color
+            }
+            
+        }
+    }
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "spreading")
+        if (coll.gameObject.tag == "OilPatch_Spreading")
         {
             if (clock - timeLastExploded > explodeTimer)
             {
-                print("boom");
                 timeLastExploded = clock;
+                /*
                 var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                modelObject.tag = "Explosion";
                 ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
-                model.init(this);
+                model.init(this, explosionTime);
+                */
+                GameObject explModel = new GameObject();
+                explModel.tag = "Explosion";
+                BoxCollider2D coll2 = explModel.AddComponent<BoxCollider2D>();
+                explModel.SetActive(true);
+                coll2.isTrigger = true;
+                Explosion explosion = explModel.AddComponent<Explosion>();
+                explosion.transform.position = transform.position;
+                explosion.init(explosionTime);
             }
         }
     }
 
 
+    //creates a new oil patch in index i of oilList[], the array of oil patches.
     void createPatch(int i)
     {
         GameObject oilPatchObject = new GameObject();
-        oilPatchObject.tag = "patch";
+        oilPatchObject.tag = "OilPatch";
         oilList[i] = oilPatchObject.AddComponent<OilPatch>();
         CircleCollider2D coll2 = oilPatchObject.AddComponent<CircleCollider2D>();
         Rigidbody2D rig = oilPatchObject.AddComponent<Rigidbody2D>();
@@ -68,12 +116,39 @@ public class OilBall : MonoBehaviour {
         coll2.isTrigger = true;
         //coll2.size = new Vector2(1, 1);
         oilList[i].transform.position = transform.position;
-        oilList[i].init(this, i);
+        oilList[i].init(this);
     }
 
-    // Update is called once per frame
+  
     void Update () {
         clock = clock + Time.deltaTime;
+
+
+        if (speeding)
+        {
+            timeBeenSpeeding = timeBeenSpeeding + Time.deltaTime;
+
+            Vector3 speedMov = speedDirection * Time.deltaTime * 6;
+            Vector3 yMov = new Vector3(0, 0, 0);
+            Vector3 xMov = new Vector3(0, 0, 0);
+            if (Input.GetButton("Vertical"))
+            {
+                yMov = Vector3.up * Input.GetAxis("Vertical") * Time.deltaTime * 1.5f;
+            }
+            if (Input.GetButton("Horizontal"))
+            {
+                xMov = Vector3.right * Input.GetAxis("Horizontal") * Time.deltaTime * 1.5f;
+            }
+            transform.Translate(speedMov + xMov + yMov);
+
+            if (timeBeenSpeeding > speedingTime)
+            {
+                speeding = false;
+                model.setSpeeding(false);
+            }
+        }
+        else { 
+
 	    if (Input.GetButton("Vertical"))
         {
             Vector3 yMov = Vector3.up * Input.GetAxis("Vertical") * Time.deltaTime * 1.5f;
@@ -87,40 +162,39 @@ public class OilBall : MonoBehaviour {
             movementCounter += Mathf.Abs(xMov.x);
         }
 
-        if (movementCounter > coll.bounds.size.x - 0.1f)
-        {
-            if (clock - timeLastExploded > 1.2f)
+            //check if it's time to lay down a new patch
+            if (movementCounter > patchDistance)
             {
-                movementCounter = 0f;
-                int x = 0;
-                bool patchMade = false;
-                for (int i = 0; i < numPatches; i++)
-                {
-                    if (!patchMade && oilList[i] == null)
-                    {
-                        createPatch(i);
-                        patchMade = true;
-                    }
-                    else { x++; }
-                }
-                if (x == numPatches)
-                {
-                    float oldestClock = -1f;
-                    int oldestIndex = -1;
+                if (clock - timeLastExploded > 1.2f) //a check so we don't lay down oil patches right after the ball explodes
+                {                                    // (we didn't explicitly discuss this, but it seemed natural to me. feel free to change)
+                    movementCounter = 0f;
+                    bool patchMade = false;
                     for (int i = 0; i < numPatches; i++)
                     {
-                        if (oilList[i].clock > oldestClock)
+                        if (!patchMade && oilList[i] == null)
                         {
-                            oldestClock = oilList[i].clock;
-                            oldestIndex = i;
+                            createPatch(i);
+                            patchMade = true;
                         }
                     }
-                    if (oldestIndex != -1)
+                    if (!patchMade)
                     {
-                        Destroy(oilList[oldestIndex].gameObject);
-                        createPatch(oldestIndex);
+                        float oldestClock = -1f;
+                        int oldestIndex = -1;
+                        for (int i = 0; i < numPatches; i++)
+                        {
+                            if (oilList[i].clock > oldestClock)
+                            {
+                                oldestClock = oilList[i].clock;
+                                oldestIndex = i;
+                            }
+                        }
+                        if (oldestIndex != -1)
+                        {
+                            Destroy(oilList[oldestIndex].gameObject);
+                            createPatch(oldestIndex);
+                        }
                     }
-                    else { print("oldestIndex set incorrectly"); }
                 }
             }
         }

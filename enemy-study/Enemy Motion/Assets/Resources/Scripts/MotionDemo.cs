@@ -14,8 +14,8 @@ public class MotionDemo : MonoBehaviour {
         enemies = new List<Enemy>();
         walls = new List<Wall>();
         addPlayer(0, 3, 1);
-        //addPlayer(0, 1, 2);
-        addEnemy(10, 3);
+        addPlayer(0, 1, 2);
+        //addEnemy(10, 3);
         addWall(5, 2);
         addWall(5, 3);
         addWall(5, 4);
@@ -65,31 +65,21 @@ public class MotionDemo : MonoBehaviour {
         walls.Add(w);
     }
 
+    private void updateCamera()
+    {
+        if (Camera.main != null)
+        {
+            Vector3 direction = p2.transform.position - p1.transform.position;
+            Vector3 halfwayPoint = p1.transform.position + (direction / 2) + new Vector3(0, 0, -10);
+            
+            Camera.main.transform.position = halfwayPoint;
+        }
+    }
+
     // Update is called once per frame
     void Update () {
-        //if (Camera.current != null)
-        //{
-        //    Vector3 direction = new Vector3(0, 0, 0);
 
-        //    if (Input.GetKey("w"))
-        //    {
-        //        direction += new Vector3(0, 1, 0);
-        //    }
-        //    if (Input.GetKey("a"))
-        //    {
-        //        direction += new Vector3(-1, 0, 0);
-        //    }
-        //    if (Input.GetKey("s"))
-        //    {
-        //        direction += new Vector3(0, -1, 0);
-        //    }
-        //    if (Input.GetKey("d"))
-        //    {
-        //        direction += new Vector3(1, 0, 0);
-        //    }
-
-        //    Camera.current.transform.Translate(direction.normalized * Time.deltaTime);
-        //}
+        updateCamera();
 
     }
 }
