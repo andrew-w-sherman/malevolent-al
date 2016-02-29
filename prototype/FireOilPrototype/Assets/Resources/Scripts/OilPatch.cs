@@ -18,6 +18,11 @@ public class OilPatch : MonoBehaviour {
     {
         this.b = b;
         indexIAm = i;
+
+        var coll = gameObject.AddComponent<CircleCollider2D>();
+        coll.radius = (float).33;
+        coll.isTrigger = true;
+
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<OilModel>();
         model.init(false, null, this);
@@ -33,9 +38,12 @@ public class OilPatch : MonoBehaviour {
 	
 	}
 
-    void OnMouseUpAsButton()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        setOnFire();
+        if (other.gameObject.tag == "fire ball")
+        {
+            setOnFire();
+        }
     }
 
     void setOnFire()
