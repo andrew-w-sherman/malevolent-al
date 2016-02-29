@@ -14,10 +14,9 @@ public class OilPatch : MonoBehaviour {
     int indexIAm;
     OilModel model;
 
-    public void init(OilBall b, int i)
+    public void init(OilBall b)
     {
         this.b = b;
-        indexIAm = i;
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<OilModel>();
         model.init(false, null, this);
@@ -27,11 +26,6 @@ public class OilPatch : MonoBehaviour {
         spreadLimit = 0.5f;
         fireLimit = 2f;
     }
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 
     void OnMouseUpAsButton()
     {
@@ -43,13 +37,14 @@ public class OilPatch : MonoBehaviour {
         if (!onFire)
         {
             onFire = true;
+            this.gameObject.tag = "OilPatch_OnFire";
             model.putOnFire();
         }
     }
     
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "spreading")
+        if (coll.gameObject.tag == "OilPatch_Spreading")
         {
             setOnFire();
             /*
@@ -60,9 +55,12 @@ public class OilPatch : MonoBehaviour {
 
         */
         }
-        if (spreading && coll.gameObject.tag == "ball")
+        if (spreading && coll.gameObject.tag == "OilBall")
         {
             Destroy(this.gameObject);
+        }
+        if (coll.gameObject.tag == "FireBall") {
+            setOnFire();
         }
     }
 
@@ -75,7 +73,7 @@ public class OilPatch : MonoBehaviour {
             if (onFireTimer > spreadLimit)
             {
                 spreading = true;
-                this.tag = "spreading";
+                this.gameObject.tag = "OilPatch_Spreading";
                 if (onFireTimer > fireLimit + spreadLimit)
                 {
                     Destroy(this.gameObject);
