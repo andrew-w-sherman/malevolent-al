@@ -14,7 +14,7 @@ public class ExplosionModel : MonoBehaviour {
         mat = GetComponent<Renderer>().material;
         mat.renderQueue = 5001;
         mat.color = new Color(1, 1, 1);
-        mat.shader = Shader.Find("Transparent/Diffuse");
+        mat.shader = Shader.Find("Sprites/Default");
         mat.mainTexture = Resources.Load<Texture2D>("Textures/explosion");
         clock = 0f;
         maxTime = explosionTime;
