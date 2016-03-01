@@ -11,21 +11,43 @@ public class GameController : MonoBehaviour {
     public List<Wall> walls;
     public List<Projectile> projectiles;
     public int projectileCount;
+    public float clock;
+    public int addEnemyInterval = 5;
+    public int whenAddEnemy;
+    public int whichAddEnemy;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
 
     void Start () {
         projectileCount = 0;
+        clock = 0f;
+        whenAddEnemy = 0;
+        whichAddEnemy = 0;
 
         enemies = new List<Enemy>();
         walls = new List<Wall>();
         addFire(0, 3);
         addOil(0, 1);
-        addEnemy(10, 3, "fire");
-        //addWall(5, 2);
-        //addWall(5, 3);
-        //addWall(5, 4);
+    }
+
+    private void addEnemyPeriodically()
+    {
+        if (clock > whenAddEnemy)
+        {
+            if (whichAddEnemy == 0)
+            {
+                addEnemy(10, 3, "fire");
+                whenAddEnemy += addEnemyInterval;
+                whichAddEnemy = 1;
+            }
+            else if (whichAddEnemy == 1)
+            {
+                addEnemy(10, 3, "oil");
+                whenAddEnemy += addEnemyInterval;
+                whichAddEnemy = 0;
+            }
+        }
     }
 
     private void addFire(float x, float y)
@@ -102,7 +124,8 @@ public class GameController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        clock += Time.deltaTime;
         updateCamera();
-
+        addEnemyPeriodically();
     }
 }
