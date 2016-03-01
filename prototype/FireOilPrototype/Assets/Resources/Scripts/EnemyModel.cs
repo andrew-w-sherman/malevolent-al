@@ -50,11 +50,11 @@ public class EnemyModel : MonoBehaviour {
         name = "enemy-model";
 
         mat = gameObject.GetComponent<MeshRenderer>().material;
-        mat.shader = Shader.Find("Transparent/Diffuse"); if (type.Equals("fire"))
+        mat.shader = Shader.Find("Transparent/Diffuse");
+        if (type.Equals("fire"))
         {
             mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
         }
-
         if (type.Equals("oil"))
         {
             mat.mainTexture = Resources.Load<Texture2D>("Textures/gem2");
@@ -75,7 +75,7 @@ public class EnemyModel : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "explosion")
+        if (coll.gameObject.tag == "Explosion")
         {
             owner.health--;
         }
