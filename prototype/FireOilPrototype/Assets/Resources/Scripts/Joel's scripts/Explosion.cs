@@ -7,8 +7,10 @@ public class Explosion : MonoBehaviour {
     BoxCollider2D coll;
     float clock;
 
-    public void init(float explosionTime)
+    public void init(OilBall b, float explosionTime)
     {
+        transform.parent = b.transform;
+
         this.explosionTime = explosionTime;
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         modelObject.tag = "Explosion";
@@ -25,7 +27,7 @@ public class Explosion : MonoBehaviour {
         coll.size = new Vector2(clock * 5f, clock * 5f);
         if (clock > explosionTime)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

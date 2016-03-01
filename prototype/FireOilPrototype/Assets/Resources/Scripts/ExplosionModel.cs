@@ -2,14 +2,13 @@
 using System.Collections;
 
 public class ExplosionModel : MonoBehaviour {
-
-    // Use this for 
+     
     Material mat;
     float clock;
     float maxTime;
 
-    public void init(OilBall b) {
-        transform.parent = b.transform;
+    public void init(Explosion e, float explosionTime) {
+        transform.parent = e.transform;
         transform.localPosition = new Vector3(0, 0, 0);
         name = "Explosion Model";
         mat = GetComponent<Renderer>().material;
@@ -18,7 +17,7 @@ public class ExplosionModel : MonoBehaviour {
         mat.shader = Shader.Find("Transparent/Diffuse");
         mat.mainTexture = Resources.Load<Texture2D>("Textures/explosion");
         clock = 0f;
-        maxTime = 1.2f;
+        maxTime = explosionTime;
     }
 	
 	// Update is called once per frame

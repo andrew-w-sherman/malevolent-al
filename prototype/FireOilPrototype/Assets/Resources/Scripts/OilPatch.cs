@@ -11,13 +11,11 @@ public class OilPatch : MonoBehaviour {
     float fireLimit;
 
     OilBall b;
-    int indexIAm;
     OilModel model;
 
-    public void init(OilBall b, int i)
+    public void init(OilBall b)
     {
         this.b = b;
-        indexIAm = i;
 
         var coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
@@ -31,6 +29,8 @@ public class OilPatch : MonoBehaviour {
         onFire = false; spreading = false;
         spreadLimit = 0.5f;
         fireLimit = 2f;
+
+        gameObject.tag = "OilPatch";
     }
 
 	// Use this for initialization
@@ -40,7 +40,7 @@ public class OilPatch : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "fire ball")
+        if (other.gameObject.tag == "FireBall")
         {
             setOnFire();
         }
@@ -51,31 +51,25 @@ public class OilPatch : MonoBehaviour {
         if (!onFire)
         {
             onFire = true;
+            gameObject.tag = "OilPatch_OnFire";
             model.putOnFire();
         }
     }
-    
+
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "spreading")
+        if (coll.gameObject.tag == "OilPatch_Spreading")
         {
             setOnFire();
-            /*
-            if (coll.gameObject.GetComponent<OilPatch>().spreading)
-            {
-                setOnFire();
-            }
-
-        */
         }
-        if (spreading && coll.gameObject.tag == "ball")
+        if (spreading && coll.gameObject.tag == "OilBall")
         {
             Destroy(this.gameObject);
         }
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         clock = clock + Time.deltaTime;
         if (onFire)
         {
@@ -83,7 +77,7 @@ public class OilPatch : MonoBehaviour {
             if (onFireTimer > spreadLimit)
             {
                 spreading = true;
-                this.tag = "spreading";
+                this.tag = "OilPatch_Spreading";
                 if (onFireTimer > fireLimit + spreadLimit)
                 {
                     Destroy(this.gameObject);

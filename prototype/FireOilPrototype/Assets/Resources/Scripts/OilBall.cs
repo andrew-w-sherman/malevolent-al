@@ -3,18 +3,28 @@ using System.Collections;
 
 public class OilBall : MonoBehaviour {
 
-    public GameController demo;
+    GameController demo;
     public CircleCollider2D coll;
     public OilModel model;
-    public Vector3 lastDirection;
     float clock;
-    float movementCounter;
-    float movementCheck;
+    Vector3 lastDirection;
+
+    float movementCounter = 0f;
+    float movementCheck = 2f;
     public OilPatch[] oilList;
     public int numPatches = 10;
-    float explodeTimer;
-    float timeLastExploded;
-    public bool canLayPatches;
+    float patchDistance;
+
+    float explodeTimer = 4f;//how long we wait between explosions
+    float explosionTime = 1.2f; //how long an explosion lasts
+    float timeLastExploded = -1f; //
+
+
+    float speedingTime = 3f; //how long we speed for
+    float timeBeenSpeeding = 0f;
+    float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
+    bool speeding = false;
+    Vector3 speedDirection;
 
     public void init(GameController demo)
     {
@@ -22,7 +32,7 @@ public class OilBall : MonoBehaviour {
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
 
-        gameObject.tag = "oil ball";
+        gameObject.tag = "OilBall";
 
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
@@ -40,19 +50,13 @@ public class OilBall : MonoBehaviour {
         coll.radius = (float).33;
         coll.isTrigger = false;
 
-        //coll = GetComponent<CircleCollider2D>();
-
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<OilModel>();
         model.init(true, this, null);
-        movementCheck = 2f;
-        movementCounter = 0f;
+
         oilList = new OilPatch[numPatches];
 
         createPatch(0);
-
-        explodeTimer = 4f;
-        timeLastExploded = -1f;
     }
 
     void Start()
@@ -60,18 +64,39 @@ public class OilBall : MonoBehaviour {
         clock = 0f;
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "FireBall")
+        {
+            //print(other.gameObject.GetComponent<FireBall>().lastDirection);
+            //print(other.gameObject.GetComponent<FireBall>().speed);
+
+            if (other.gameObject.GetComponent<FireBall>().speed > speedingThreshold)
+            {
+                print("Time to speed!");
+                speeding = true;
+                timeBeenSpeeding = 0f;
+                speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
+                model.setSpeeding(true); //tell model to change color
+            }
+        }
+    }
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "spreading")
+        if (coll.gameObject.tag == "OilPatch_Spreading")
         {
             if (clock - timeLastExploded > explodeTimer)
             {
-                print("boom");
                 timeLastExploded = clock;
-                var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
-                model.init(this);
+                GameObject explModel = new GameObject();
+                explModel.tag = "Explosion";
+                BoxCollider2D coll2 = explModel.AddComponent<BoxCollider2D>();
+                explModel.SetActive(true);
+                coll2.isTrigger = true;
+                Explosion explosion = explModel.AddComponent<Explosion>();
+                explosion.transform.position = transform.position;
+                explosion.init(this, explosionTime);
             }
         }
     }
@@ -80,7 +105,7 @@ public class OilBall : MonoBehaviour {
     void createPatch(int i)
     {
         GameObject oilPatchObject = new GameObject();
-        oilPatchObject.tag = "patch";
+        oilPatchObject.tag = "OilPatch";
         oilList[i] = oilPatchObject.AddComponent<OilPatch>();
         CircleCollider2D coll2 = oilPatchObject.AddComponent<CircleCollider2D>();
         Rigidbody2D rig = oilPatchObject.AddComponent<Rigidbody2D>();
@@ -91,7 +116,7 @@ public class OilBall : MonoBehaviour {
         coll2.isTrigger = true;
         //coll2.size = new Vector2(1, 1);
         oilList[i].transform.position = transform.position;
-        oilList[i].init(this, i);
+        oilList[i].init(this);
     }
 
     // Update is called once per frame
@@ -100,7 +125,7 @@ public class OilBall : MonoBehaviour {
 
         Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
         Vector3 direction = Vector3.zero;
-
+        
         if (Input.GetButton("Oil Up") && relativePosition.y < 4)
         {
             direction += Vector3.up;
@@ -123,6 +148,16 @@ public class OilBall : MonoBehaviour {
 
         lastDirection = direction;
         transform.position += direction.normalized * Time.deltaTime;
+        if (speeding)
+        {
+            timeBeenSpeeding += Time.deltaTime;
+            transform.position += speedDirection * Time.deltaTime * 6;
+            if (timeBeenSpeeding > speedingTime)
+            {
+                speeding = false;
+                model.setSpeeding(false);
+            }
+        }
         movementCounter += (direction.normalized * Time.deltaTime).magnitude;
 
         if (Input.GetButtonDown("Oil Shoot"))

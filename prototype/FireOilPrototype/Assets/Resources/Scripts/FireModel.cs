@@ -16,7 +16,7 @@ public class FireModel : MonoBehaviour {
 
         mat = owner.gameObject.GetComponent<MeshRenderer>().material;
         mat.shader = Shader.Find("Transparent/Diffuse");
-        mat.mainTexture = Resources.Load<Texture2D>("Textures/marble");
+        mat.mainTexture = Resources.Load<Texture2D>("Textures/fireball");
         mat.color = new Color(1, 1, 1);
     }
 }

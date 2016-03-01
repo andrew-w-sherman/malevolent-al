@@ -7,7 +7,7 @@ public class Controller : MonoBehaviour {
     GameObject fireBallObject;
 
 	void Start () {
-        
+        /*
         oilBallObject = new GameObject();
         oilBallObject.tag = "OilBall";
         BoxCollider2D coll = oilBallObject.AddComponent<BoxCollider2D>();
@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour {
         FireBall fireball = fireBallObject.AddComponent<FireBall>();
         fireball.transform.position = new Vector3(-2, -2, 0);
         fireball.init(this);
-        
+        */
 	}
 	
 	// Update is called once per frame
