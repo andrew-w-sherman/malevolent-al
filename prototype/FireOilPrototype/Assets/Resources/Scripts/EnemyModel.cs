@@ -26,6 +26,7 @@ public class EnemyModel : MonoBehaviour {
         lastDirection = GameController.NULL;
         lost = 0;
         lostTimer = 0f;
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
@@ -50,7 +51,14 @@ public class EnemyModel : MonoBehaviour {
 
         mat = gameObject.GetComponent<MeshRenderer>().material;
         mat.shader = Shader.Find("Transparent/Diffuse");
-        mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
+        if (type.Equals("fire"))
+        {
+            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
+        }
+        if (type.Equals("oil"))
+        {
+            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem2");
+        }
         mat.color = new Color(1, 1, 1);
 
         width = GetComponent<Renderer>().bounds.size.x;
@@ -64,7 +72,15 @@ public class EnemyModel : MonoBehaviour {
             owner.health--;
         }
     }
-    
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Explosion")
+        {
+            owner.health--;
+        }
+    }
+
 
     void Update () {
 
