@@ -25,6 +25,7 @@ public class OilBall : MonoBehaviour {
     float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
     bool speeding = false;
     Vector3 speedDirection;
+    Rigidbody2D body;
 
     public void init(GameController demo)
     {
@@ -42,13 +43,15 @@ public class OilBall : MonoBehaviour {
         var renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.enabled = true;
 
-        var body = gameObject.AddComponent<Rigidbody2D>();
+        body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
         body.isKinematic = false;
+        
 
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
         coll.isTrigger = false;
+        
 
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<OilModel>();
@@ -78,7 +81,56 @@ public class OilBall : MonoBehaviour {
                 timeBeenSpeeding = 0f;
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
                 model.setSpeeding(true); //tell model to change color
+                body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                
             }
+        }else if(other.gameObject.tag == "wall")
+        {
+
+            print(other.contacts[0].normal);
+
+            speedDirection = Vector3.Reflect(speedDirection, other.contacts[0].normal);
+            print(speedDirection);
+
+            /*print("hit wall");
+            Vector3 wallNormal;
+            Ray MyRay;
+            RaycastHit MyRayHit;
+            Vector3 direction = (other.gameObject.transform.position - transform.position).normalized;
+            MyRay = new Ray(other.gameObject.transform.position, direction);
+            if (Physics.Raycast(MyRay, out MyRayHit))
+            {
+                print("if phys");
+
+                if (MyRayHit.collider != null)
+                {
+                    Vector3 contactPoint = other.contacts[0].point;
+                    Vector3 center = collider.bounds.center;
+
+                    if( contactPoint.x > center.x)
+                    {
+
+                    }
+                    bool top = contactPoint.y > center.y;
+
+                    
+                    Vector3 MyNormal = MyRayHit.normal;
+                    MyNormal = MyRayHit.transform.TransformDirection(MyNormal);
+                    print(MyNormal.ToString());
+                    
+                                        if (MyNormal == MyRayHit.transform.up) {  }
+                                        if (MyNormal == -MyRayHit.transform.up) { wallNormal =  }
+                                        if (MyNormal == MyRayHit.transform.forward) {  }
+                                        if (MyNormal == -MyRayHit.transform.forward) { hitDirection = HitDirection.Back; }
+                                        if (MyNormal == MyRayHit.transform.right) { hitDirection = HitDirection.Right; }
+                                        if (MyNormal == -MyRayHit.transform.right) { hitDirection = HitDirection.Left; }
+                                        
+                                        
+
+                    speedDirection = Vector3.Reflect(other.relativeVelocity, MyNormal);
+                }
+            }
+            */
         }
     }
 
@@ -120,7 +172,7 @@ public class OilBall : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         clock = clock + Time.deltaTime;
 
         Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
@@ -156,6 +208,7 @@ public class OilBall : MonoBehaviour {
             {
                 speeding = false;
                 model.setSpeeding(false);
+                body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
             }
         }
         movementCounter += (direction.normalized * Time.deltaTime).magnitude;
