@@ -82,6 +82,7 @@ public class OilBall : MonoBehaviour {
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
                 model.setSpeeding(true); //tell model to change color
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                gameObject.tag = "OilBall_Speeding";
                 
             }
         }else if(other.gameObject.tag == "wall")
@@ -166,7 +167,6 @@ public class OilBall : MonoBehaviour {
         rig.gravityScale = 0f;
         rig.isKinematic = true;
         coll2.isTrigger = true;
-        //coll2.size = new Vector2(1, 1);
         oilList[i].transform.position = transform.position;
         oilList[i].init(this);
     }
@@ -213,6 +213,7 @@ public class OilBall : MonoBehaviour {
             {
                 speeding = false;
                 model.setSpeeding(false);
+                gameObject.tag = "OilBall";
                 body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
             }
         }

@@ -63,10 +63,10 @@ public class GameController : MonoBehaviour {
 
     private void addOil(float x, float y)
     {
-        GameObject playerObject = new GameObject();            // Create a new empty game object that will hold a gem.
+        GameObject playerObject = new GameObject();            
 
         oil = playerObject.AddComponent<OilBall>();
-        oil.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        oil.transform.position = new Vector3(x, y, 0);     							
         oil.name = "Oil Ball";
 
         oil.init(this);
@@ -74,10 +74,10 @@ public class GameController : MonoBehaviour {
 
     private void addEnemy(float x, float y, string type)
     {
-        GameObject enemyObject = new GameObject();            // Create a new empty game object that will hold a gem.
-        Enemy e1 = enemyObject.AddComponent<Enemy>();            // Add the Gem.cs script to the object.
+        GameObject enemyObject = new GameObject();            
+        Enemy e1 = enemyObject.AddComponent<Enemy>();           
 
-        e1.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        e1.transform.position = new Vector3(x, y, 0);      								
         e1.name = "e1";
 
         e1.init(this, type);

@@ -76,6 +76,10 @@ public class EnemyModel : MonoBehaviour {
         {
             owner.health--;
         }
+        if (coll.gameObject.tag == "OilBall_Speeding")
+        {
+            owner.health--;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D coll)
