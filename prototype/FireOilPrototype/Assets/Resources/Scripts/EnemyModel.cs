@@ -15,10 +15,15 @@ public class EnemyModel : MonoBehaviour {
 
     public float height;
     public float width;
-    
+
+    SpriteRenderer sr;
+    Sprite[] charSp;
+
 
     public void init(Enemy owner, GameController demo, string type)
     {
+        charSp = Resources.LoadAll<Sprite>("Sprite Sheets/char-front");
+
         this.demo = demo;
         this.owner = owner;
         this.type = type;
@@ -33,9 +38,6 @@ public class EnemyModel : MonoBehaviour {
         filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
         Destroy(uselessQuad);
 
-        var renderer = gameObject.AddComponent<MeshRenderer>();
-        renderer.enabled = true;
-
         var body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
         body.isKinematic = false;
@@ -49,20 +51,23 @@ public class EnemyModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);
         name = "enemy-model";
 
-        mat = gameObject.GetComponent<MeshRenderer>().material;
-        mat.shader = Shader.Find("Transparent/Diffuse");
+        DestroyImmediate(GetComponent<MeshFilter>());
+        DestroyImmediate(GetComponent<MeshRenderer>());
+        gameObject.AddComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 2;
+
         if (type.Equals("fire"))
         {
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
+            sr.sprite = charSp[8];
         }
         if (type.Equals("oil"))
         {
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem2");
+            sr.sprite = charSp[9];
         }
-        mat.color = new Color(1, 1, 1);
 
-        width = GetComponent<Renderer>().bounds.size.x;
-        height = GetComponent<Renderer>().bounds.size.y;
+        width = sr.bounds.size.x;
+        height = sr.bounds.size.y;
     }
 
     void OnCollisionEnter2D(Collision2D coll)

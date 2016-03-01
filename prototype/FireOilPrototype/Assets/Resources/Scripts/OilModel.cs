@@ -9,43 +9,51 @@ public class OilModel : MonoBehaviour {
     OilBall b;
     OilPatch p;
     private Material mat;
+    SpriteRenderer sr;
+    Sprite[] charSp;
+    Sprite[] idle;
+    Sprite[] run;
+    public bool isRunning = false;
 
     public void init(bool isCharacter, OilBall b, OilPatch p)
     {
+        charSp = Resources.LoadAll<Sprite>("Sprite Sheets/char-front");
         this.isCharacter = isCharacter;
         this.b = b;
         this.p = p;
 
         if (isCharacter)
         {
+            DestroyImmediate(b.GetComponent<MeshFilter>());
+            DestroyImmediate(b.GetComponent<MeshRenderer>());
+            b.gameObject.AddComponent<SpriteRenderer>();
+            sr = b.GetComponent<SpriteRenderer>();
             transform.parent = b.transform;
             transform.localPosition = new Vector3(0, 0, 0);
             name = "Oil Ball Model";
-            mat = GetComponent<Renderer>().material;
-            mat.renderQueue = 5001;
-            mat.color = new Color(1, 1, 1);
-            mat.shader = Shader.Find("Transparent/Diffuse");
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/oil ball");
+            sr.sortingOrder = 2;
+            sr.sprite = charSp[4];
         }
         else
         {
+            p.gameObject.AddComponent<SpriteRenderer>();
+            sr = p.GetComponent<SpriteRenderer>();
             transform.parent = p.transform;
             transform.localPosition = new Vector3(0, 0, 0);
             name = "Oil Patch Model";
-            mat = GetComponent<Renderer>().material;
-            mat.renderQueue = 4998;
-            mat.color = new Color(1, 1, 1);
-            mat.shader = Shader.Find("Transparent/Diffuse");
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/patch");
+            sr.sprite = charSp[10];
         }
+
+        idle = new Sprite[] { charSp[4], charSp[5] };
+        run = new Sprite[] { charSp[5], charSp[6], charSp[5], charSp[7] };
     }
 
     public void putOnFire()
     {
         if (!isCharacter)
         {
-            mat.renderQueue = 4999;
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/Fire");
+            sr.sortingOrder = 1;
+            sr.sprite = charSp[11];
         }
     }
 
@@ -53,8 +61,24 @@ public class OilModel : MonoBehaviour {
     {
         if (isCharacter)
         {
-            if (speeding) { mat.mainTexture = Resources.Load<Texture2D>("Textures/speeding_oilball"); }
-            else { mat.mainTexture = Resources.Load<Texture2D>("Textures/oil ball"); }
+            if (speeding) { sr.sprite = charSp[11]; }
+            else { sr.sprite = charSp[4]; }
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (!isRunning && isCharacter)
+        {
+            int index = (int)(Time.timeSinceLevelLoad * 2f);
+            index = index % idle.Length;
+            sr.sprite = idle[index];
+        }
+        else if (isCharacter)
+        {
+            int index = (int)(Time.timeSinceLevelLoad * 2f);
+            index = index % run.Length;
+            sr.sprite = run[index];
         }
     }
 

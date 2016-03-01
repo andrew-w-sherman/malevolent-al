@@ -51,9 +51,9 @@ public class OilBall : MonoBehaviour {
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
         coll.isTrigger = false;
-        
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
         model.init(true, this, null);
 
@@ -197,6 +197,11 @@ public class OilBall : MonoBehaviour {
         {
             direction += Vector3.left;
         }
+        if (direction != Vector3.zero)
+        {
+            model.isRunning = true;
+        }
+        else model.isRunning = false;
 
         lastDirection = direction;
         transform.position += direction.normalized * Time.deltaTime;

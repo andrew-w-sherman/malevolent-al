@@ -21,7 +21,7 @@ public class OilPatch : MonoBehaviour {
         coll.radius = (float).33;
         coll.isTrigger = true;
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
         model.init(false, null, this);
 

@@ -6,8 +6,8 @@ public class EditorWall : MonoBehaviour {
     public GameController demo;
     public EditorWallModel model;
 
-	// Use this for initialization
-	void Start() {
+    // Use this for initialization
+    void Start() {
         
         gameObject.tag = "wall";
 

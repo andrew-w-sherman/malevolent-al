@@ -102,7 +102,9 @@ public class FireBall : MonoBehaviour {
         {
             lastDirection = direction;
             transform.position += direction.normalized * Time.deltaTime * speed;
+            model.isRunning = true;
         }
+        else model.isRunning = false;
 
         if(Input.GetButtonDown("Fire Shoot"))
         {

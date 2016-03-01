@@ -17,7 +17,7 @@ public class EditorWallModel : MonoBehaviour {
 
         mat = GetComponent<Renderer>().material;
         mat.shader = Shader.Find("Transparent/Diffuse");
-        mat.mainTexture = Resources.Load<Texture2D>("Textures/tileWall");
+        mat.mainTexture = Resources.Load<Texture2D>("Sprite Sheets/env-tile_0");
         mat.color = new Color(1, 1, 1);
     }
 
