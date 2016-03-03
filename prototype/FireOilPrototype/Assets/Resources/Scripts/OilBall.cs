@@ -7,6 +7,9 @@ public class OilBall : MonoBehaviour {
     public CircleCollider2D coll;
     public OilModel model;
     float clock;
+    public float speed;
+    public float maxSpeed = 10f;
+    public float minSpeed = 1.5f;
     Vector3 lastDirection;
 
     float movementCounter = 0f;
@@ -32,6 +35,9 @@ public class OilBall : MonoBehaviour {
         this.demo = demo;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
+
+        speed = minSpeed;
+
 
         gameObject.tag = "OilBall";
 
@@ -60,6 +66,7 @@ public class OilBall : MonoBehaviour {
         oilList = new OilPatch[numPatches];
 
         createPatch(0);
+
     }
 
     void Start()
@@ -199,12 +206,12 @@ public class OilBall : MonoBehaviour {
         }
         if (direction != Vector3.zero)
         {
+            lastDirection = direction;
+            transform.position += direction.normalized * Time.deltaTime * speed;
             model.isRunning = true;
         }
         else model.isRunning = false;
-
-        lastDirection = direction;
-        transform.position += direction.normalized * Time.deltaTime;
+        
         if (speeding)
         {
             timeBeenSpeeding += Time.deltaTime;
