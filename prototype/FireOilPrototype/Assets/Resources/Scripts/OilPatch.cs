@@ -26,7 +26,7 @@ public class OilPatch : MonoBehaviour {
 
         clock = 0f; onFireTimer = 0f;
         onFire = false; spreading = false;
-        spreadLimit = 0.1f;
+        spreadLimit = 0.7f;
         fireLimit = 2f;
 
         gameObject.tag = "OilPatch";

@@ -70,32 +70,39 @@ public class FireBall : MonoBehaviour {
         Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
         Vector3 direction = Vector3.zero;
 
-        if (onOil)
-        {
-            if (speed < maxSpeed) { speed += speedChange; }
-        }
-        else {
-            if (speed > minSpeed) { speed -= speedChange; }
-        }
+
 
         if (Input.GetButton("Fire Up"))
         {
             direction += Vector3.up;
         }
 
+        bool moving = false;
+
         if (Input.GetButton("Fire Down"))
         {
             direction += Vector3.down;
+            moving = true;
         }
 
         if (Input.GetButton("Fire Right"))
         {
             direction += Vector3.right;
+            moving = true;
         }
 
         if (Input.GetButton("Fire Left"))
         {
             direction += Vector3.left;
+            moving = true;
+        }
+
+        if (onOil && moving)
+        {
+            if (speed < maxSpeed) { speed += speedChange; }
+        }
+        else {
+            if (speed > minSpeed) { speed -= speedChange; }
         }
 
         if (direction != Vector3.zero)
