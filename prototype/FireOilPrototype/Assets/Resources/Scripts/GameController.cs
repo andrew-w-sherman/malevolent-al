@@ -126,8 +126,10 @@ public class GameController : MonoBehaviour {
         float fireY = fire.transform.position.y;
         float oilX = oil.transform.position.x;
         float oilY = oil.transform.position.y;
-        float whenResizeX = 5f;
-        float whenResizeY = 3f;
+        float whenIncreaseSizeX = 5f;
+        float whenIncreaseSizeY = 3f;
+        float whenDecreaseSizeX = 5f;
+        float whenDecreaseSizeY = 3f;
         float camDelta = 0f;
         float minCamDelta = 0.005f;
 
@@ -137,15 +139,15 @@ public class GameController : MonoBehaviour {
             Vector3 halfwayPoint = fire.transform.position + (direction / 2) + new Vector3(0, 0, -10);
             cam.transform.position = halfwayPoint;
 
-            if(fireX > camX + width/2 - whenResizeX || fireX < camX - width/2 + whenResizeX ||
-               fireY > camY + height/2 - whenResizeY || fireY < camY - height/2 + whenResizeY ||
-               oilX > camX + width / 2 - whenResizeX || oilX < camX - width / 2 + whenResizeX ||
-               oilY > camY + height / 2 - whenResizeY || oilY < camY - height / 2 + whenResizeY)
+            if(fireX > camX + width/2 - whenIncreaseSizeX || fireX < camX - width/2 + whenIncreaseSizeX ||
+               fireY > camY + height/2 - whenIncreaseSizeY || fireY < camY - height/2 + whenIncreaseSizeY ||
+               oilX > camX + width / 2 - whenIncreaseSizeX || oilX < camX - width / 2 + whenIncreaseSizeX ||
+               oilY > camY + height / 2 - whenIncreaseSizeY || oilY < camY - height / 2 + whenIncreaseSizeY)
             {
-                while (fireX > camX + width / 2 - whenResizeX || fireX < camX - width / 2 + whenResizeX ||
-                       fireY > camY + height / 2 - whenResizeY || fireY < camY - height / 2 + whenResizeY ||
-                       oilX > camX + width / 2 - whenResizeX || oilX < camX - width / 2 + whenResizeX ||
-                       oilY > camY + height / 2 - whenResizeY || oilY < camY - height / 2 + whenResizeY)
+                while (fireX > camX + width / 2 - whenIncreaseSizeX || fireX < camX - width / 2 + whenIncreaseSizeX ||
+                       fireY > camY + height / 2 - whenIncreaseSizeY || fireY < camY - height / 2 + whenIncreaseSizeY ||
+                       oilX > camX + width / 2 - whenIncreaseSizeX || oilX < camX - width / 2 + whenIncreaseSizeX ||
+                       oilY > camY + height / 2 - whenIncreaseSizeY || oilY < camY - height / 2 + whenIncreaseSizeY)
                 {
                     camDelta += minCamDelta;
                     height = 2f * (cam.orthographicSize + camDelta);
@@ -156,15 +158,15 @@ public class GameController : MonoBehaviour {
             }
             else if(cam.orthographicSize > minCamSize)
             {
-                if(fireX < camX + width / 2 - whenResizeX && fireX > camX - width / 2 + whenResizeX &&
-                   fireY < camY + height / 2 - whenResizeY && fireY > camY - height / 2 + whenResizeY &&
-                   oilX < camX + width / 2 - whenResizeX && oilX > camX - width / 2 + whenResizeX &&
-                   oilY < camY + height / 2 - whenResizeY && oilY > camY - height / 2 + whenResizeY)
+                if(fireX < camX + width / 2 - whenDecreaseSizeX && fireX > camX - width / 2 + whenDecreaseSizeX &&
+                   fireY < camY + height / 2 - whenDecreaseSizeY && fireY > camY - height / 2 + whenDecreaseSizeY &&
+                   oilX < camX + width / 2 - whenDecreaseSizeX && oilX > camX - width / 2 + whenDecreaseSizeX &&
+                   oilY < camY + height / 2 - whenDecreaseSizeY && oilY > camY - height / 2 + whenDecreaseSizeY)
                 {
-                    while (fireX < camX + width / 2 - whenResizeX && fireX > camX - width / 2 + whenResizeX &&
-                           fireY < camY + height / 2 - whenResizeY && fireY > camY - height / 2 + whenResizeY &&
-                           oilX < camX + width / 2 - whenResizeX && oilX > camX - width / 2 + whenResizeX &&
-                           oilY < camY + height / 2 - whenResizeY && oilY > camY - height / 2 + whenResizeY
+                    while (fireX < camX + width / 2 - whenDecreaseSizeX && fireX > camX - width / 2 + whenDecreaseSizeX &&
+                           fireY < camY + height / 2 - whenDecreaseSizeY && fireY > camY - height / 2 + whenDecreaseSizeY &&
+                           oilX < camX + width / 2 - whenDecreaseSizeX && oilX > camX - width / 2 + whenDecreaseSizeX &&
+                           oilY < camY + height / 2 - whenDecreaseSizeY && oilY > camY - height / 2 + whenDecreaseSizeY
                            && cam.orthographicSize + camDelta >= minCamSize)
                     {
                         camDelta -= minCamDelta;
