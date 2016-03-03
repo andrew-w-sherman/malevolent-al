@@ -9,7 +9,7 @@ public class FireBall : MonoBehaviour {
     public Vector3 lastDirection;
 
     public float maxSpeed = 10f;
-    public float minSpeed = 1.5f;
+    public float minSpeed = 3f;
     public float speedChange = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
     public float speed;
     public bool onOil = false;

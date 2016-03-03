@@ -23,7 +23,7 @@ public class OilBall : MonoBehaviour {
     float timeLastExploded = -1f; //
 
 
-    float speedingTime = 3f; //how long we speed for
+    float speedingTime = 10f; //how long we speed for
     float timeBeenSpeeding = 0f;
     float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
     bool speeding = false;
@@ -36,7 +36,7 @@ public class OilBall : MonoBehaviour {
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
 
-        speed = minSpeed;
+        speed = 3;
 
 
         gameObject.tag = "OilBall";

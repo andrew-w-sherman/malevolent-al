@@ -126,6 +126,6 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
-        addEnemyPeriodically();
+        //addEnemyPeriodically();
     }
 }
