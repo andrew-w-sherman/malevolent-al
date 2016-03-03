@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour {
     public int addEnemyInterval = 5;
     public int whenAddEnemy;
     public int whichAddEnemy;
+    public Camera cam;
+    public float minCamSize;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -29,6 +31,9 @@ public class GameController : MonoBehaviour {
         walls = new List<Wall>();
         addFire(0, 3);
         addOil(0, 1);
+
+        cam = Camera.main;
+        minCamSize = cam.orthographicSize;
     }
 
     private void addEnemyPeriodically()
@@ -112,13 +117,66 @@ public class GameController : MonoBehaviour {
 
     private void updateCamera()
     {
-        if (Camera.main != null)
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
+        float camX = cam.transform.position.x;
+        float camY = cam.transform.position.y;
+        float fireX = fire.transform.position.x;
+        float fireY = fire.transform.position.y;
+        float oilX = oil.transform.position.x;
+        float oilY = oil.transform.position.y;
+        float whenResizeX = 5f;
+        float whenResizeY = 3f;
+        float camDelta = 0f;
+        float minCamDelta = 0.005f;
+
+        if (cam != null)
         {
             Vector3 direction = oil.transform.position - fire.transform.position;
             Vector3 halfwayPoint = fire.transform.position + (direction / 2) + new Vector3(0, 0, -10);
-            
-            Camera.main.transform.position = halfwayPoint;
+            cam.transform.position = halfwayPoint;
+
+            if(fireX > camX + width/2 - whenResizeX || fireX < camX - width/2 + whenResizeX ||
+               fireY > camY + height/2 - whenResizeY || fireY < camY - height/2 + whenResizeY ||
+               oilX > camX + width / 2 - whenResizeX || oilX < camX - width / 2 + whenResizeX ||
+               oilY > camY + height / 2 - whenResizeY || oilY < camY - height / 2 + whenResizeY)
+            {
+                while (fireX > camX + width / 2 - whenResizeX || fireX < camX - width / 2 + whenResizeX ||
+                       fireY > camY + height / 2 - whenResizeY || fireY < camY - height / 2 + whenResizeY ||
+                       oilX > camX + width / 2 - whenResizeX || oilX < camX - width / 2 + whenResizeX ||
+                       oilY > camY + height / 2 - whenResizeY || oilY < camY - height / 2 + whenResizeY)
+                {
+                    camDelta += minCamDelta;
+                    height = 2f * (cam.orthographicSize + camDelta);
+                    width = height * cam.aspect;
+                }
+
+                camDelta -= minCamDelta;
+            }
+            else if(cam.orthographicSize > minCamSize)
+            {
+                if(fireX < camX + width / 2 - whenResizeX && fireX > camX - width / 2 + whenResizeX &&
+                   fireY < camY + height / 2 - whenResizeY && fireY > camY - height / 2 + whenResizeY &&
+                   oilX < camX + width / 2 - whenResizeX && oilX > camX - width / 2 + whenResizeX &&
+                   oilY < camY + height / 2 - whenResizeY && oilY > camY - height / 2 + whenResizeY)
+                {
+                    while (fireX < camX + width / 2 - whenResizeX && fireX > camX - width / 2 + whenResizeX &&
+                           fireY < camY + height / 2 - whenResizeY && fireY > camY - height / 2 + whenResizeY &&
+                           oilX < camX + width / 2 - whenResizeX && oilX > camX - width / 2 + whenResizeX &&
+                           oilY < camY + height / 2 - whenResizeY && oilY > camY - height / 2 + whenResizeY
+                           && cam.orthographicSize + camDelta >= minCamSize)
+                    {
+                        camDelta -= minCamDelta;
+                        height = 2f * (cam.orthographicSize + camDelta);
+                        width = height * cam.aspect;
+                    }
+
+                    camDelta += minCamDelta;
+                }
+            }
         }
+
+        cam.orthographicSize += camDelta;
     }
 
     // Update is called once per frame

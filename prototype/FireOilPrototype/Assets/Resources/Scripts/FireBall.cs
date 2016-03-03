@@ -78,22 +78,22 @@ public class FireBall : MonoBehaviour {
             if (speed > minSpeed) { speed -= speedChange; }
         }
 
-        if (Input.GetButton("Fire Up") && relativePosition.y < 4)
+        if (Input.GetButton("Fire Up"))
         {
             direction += Vector3.up;
         }
 
-        if (Input.GetButton("Fire Down") && relativePosition.y > -4)
+        if (Input.GetButton("Fire Down"))
         {
             direction += Vector3.down;
         }
 
-        if (Input.GetButton("Fire Right") && relativePosition.x < 9.5)
+        if (Input.GetButton("Fire Right"))
         {
             direction += Vector3.right;
         }
 
-        if (Input.GetButton("Fire Left") && relativePosition.x > -9.5)
+        if (Input.GetButton("Fire Left"))
         {
             direction += Vector3.left;
         }

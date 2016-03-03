@@ -185,22 +185,22 @@ public class OilBall : MonoBehaviour {
         Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
         Vector3 direction = Vector3.zero;
         
-        if (Input.GetButton("Oil Up") && relativePosition.y < 4)
+        if (Input.GetButton("Oil Up"))
         {
             direction += Vector3.up;
         }
 
-        if (Input.GetButton("Oil Down") && relativePosition.y > -4)
+        if (Input.GetButton("Oil Down"))
         {
             direction += Vector3.down;
         }
 
-        if (Input.GetButton("Oil Right") && relativePosition.x < 9.5)
+        if (Input.GetButton("Oil Right"))
         {
             direction += Vector3.right;
         }
 
-        if (Input.GetButton("Oil Left") && relativePosition.x > -9.5)
+        if (Input.GetButton("Oil Left"))
         {
             direction += Vector3.left;
         }
