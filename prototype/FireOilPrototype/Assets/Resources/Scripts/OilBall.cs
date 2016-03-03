@@ -233,7 +233,7 @@ public class OilBall : MonoBehaviour {
 
         
 
-        if (movementCounter > coll.bounds.size.x - 0.1f)
+        if (movementCounter > coll.bounds.size.x / 2)
         {
             if (clock - timeLastExploded > 1.2f)
             {

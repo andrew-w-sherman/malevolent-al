@@ -17,8 +17,7 @@ public class OilPatch : MonoBehaviour {
     {
         this.b = b;
 
-        var coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).33;
+        var coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = true;
 
         var modelObject = new GameObject();
@@ -27,7 +26,7 @@ public class OilPatch : MonoBehaviour {
 
         clock = 0f; onFireTimer = 0f;
         onFire = false; spreading = false;
-        spreadLimit = 0.5f;
+        spreadLimit = 0.1f;
         fireLimit = 2f;
 
         gameObject.tag = "OilPatch";
