@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
+
     }
 
     private void addEnemyPeriodically()

@@ -19,6 +19,7 @@ public class EnemyModel : MonoBehaviour {
     SpriteRenderer sr;
     Sprite[] charSp;
 
+    public float onOilSpeedChange;
 
     public void init(Enemy owner, GameController demo, string type)
     {
@@ -68,6 +69,8 @@ public class EnemyModel : MonoBehaviour {
 
         width = sr.bounds.size.x;
         height = sr.bounds.size.y;
+
+        onOilSpeedChange = 1;
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -85,6 +88,19 @@ public class EnemyModel : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Explosion")
+        {
+            owner.health--;
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "OilPatch")
+        {
+            onOilSpeedChange = 0.5f;
+        }
+        if (coll.gameObject.tag == "OilPatch_OnFire" ||
+            coll.gameObject.tag == "OilPatch_Spreading")
         {
             owner.health--;
         }
@@ -157,7 +173,7 @@ public class EnemyModel : MonoBehaviour {
                 }
                 
                 lastDirection = direction3D;
-                transform.Translate(lastDirection.normalized * Time.deltaTime);
+                transform.Translate(lastDirection.normalized * onOilSpeedChange * Time.deltaTime);
             }
             else
             {
@@ -182,6 +198,6 @@ public class EnemyModel : MonoBehaviour {
                 }
             }
         }
-
+        onOilSpeedChange = 1;
     }
 }
