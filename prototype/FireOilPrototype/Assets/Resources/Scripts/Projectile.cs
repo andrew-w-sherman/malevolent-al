@@ -46,8 +46,14 @@ public class Projectile : MonoBehaviour {
         circleCollider.radius = (float).1;
         circleCollider.isTrigger = false;
 
-        Physics2D.IgnoreCollision(circleCollider, demo.fire.coll);
-        Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
+        if (type == FIRE)
+        {
+            Physics2D.IgnoreCollision(circleCollider, demo.fire.coll);
+            Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
+        } else
+        {
+            Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
+        }
 
         mat = GetComponent<Renderer>().material;
         mat.shader = Shader.Find("Sprites/Default");

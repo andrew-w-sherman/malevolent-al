@@ -13,6 +13,7 @@ public class FireBall : MonoBehaviour {
     public float speedChange = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
     public float speed;
     public bool onOil = false;
+    public int charge = 0; //counter to keep track of how many times oil has shot fire
 
     // Use this for initialization
     public void init(GameController demo)
@@ -61,6 +62,15 @@ public class FireBall : MonoBehaviour {
         {
             //print("Fireball registered a collide with oilball");
             speed = minSpeed;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
+    {
+        if (coll.gameObject.tag == "projectile-friendly")
+        {
+            charge++;
+            print("charge is " + charge);
         }
     }
 
@@ -115,8 +125,23 @@ public class FireBall : MonoBehaviour {
 
         if(Input.GetButtonDown("Fire Shoot"))
         {
-            Debug.Log(lastDirection);
-            demo.addProjectile(transform.position + lastDirection.normalized/2, lastDirection.normalized, Projectile.FIRE);
+            if (charge == 0)
+            {
+
+                //Debug.Log(lastDirection);
+                demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
+
+            } else {                                 //if we're charged, do that radius attack!
+                if (charge > 4) { charge = 4; }  
+                charge *= 4;
+                for (int i = 0; i < charge; i++)
+                {
+                    float radians = (Mathf.PI * 2f / (float)charge * i);
+                    Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
+                    demo.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+                }
+                charge = 0;
+            }
         }
 
         onOil = false;
