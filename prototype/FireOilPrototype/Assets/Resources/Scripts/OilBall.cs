@@ -25,7 +25,6 @@ public class OilBall : Character {
     float speedingTime = 10f; //how long we speed for
     float timeBeenSpeeding = 0f;
     float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
-    bool speeding = false;
     Vector3 speedDirection;
     Rigidbody2D body;
     
@@ -33,6 +32,7 @@ public class OilBall : Character {
     public void init(GameController demo)
     {
         this.demo = demo;
+        whichCharacter = OIL_INT;
         startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
@@ -191,8 +191,6 @@ public class OilBall : Character {
     void FixedUpdate()
     {
      
-
-
         if (falling == 1)
         {
             fallSequence();

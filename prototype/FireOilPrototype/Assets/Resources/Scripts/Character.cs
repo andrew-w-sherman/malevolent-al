@@ -3,9 +3,15 @@ using System.Collections;
 
 public class Character : MonoBehaviour {
 
+    public const int FIRE_INT = 1;
+    public const int OIL_INT = 2;
+
     public Vector3 startPosition;
     public float clock = 0f;
 
+    public bool speeding = false;
+
+    public int whichCharacter;
     public int falling;
     public Collider2D fallingInto;
     public float initialDistance;
@@ -20,7 +26,7 @@ public class Character : MonoBehaviour {
     {
         if (other.gameObject.tag == "Pit")
         {
-            if (other.gameObject.GetComponent<Pit>().filled == 0)
+            if (other.gameObject.GetComponent<Pit>().filled == 0 && speeding == false)
             {
                 fallingInto = other;
                 initialDistance = Vector2.Distance(transform.position, other.transform.position);
@@ -34,7 +40,10 @@ public class Character : MonoBehaviour {
     {
         if (clock < whenFell + 1)
         {
-            currentScale = currentScale - Time.deltaTime;
+            if (currentScale - Time.deltaTime >= 0)
+            {
+                currentScale = currentScale - Time.deltaTime;
+            }
             transform.localScale = new Vector3(currentScale, currentScale, currentScale);
             transform.position = Vector2.MoveTowards(transform.position, fallingInto.transform.position, initialDistance * Time.deltaTime);
         }
