@@ -6,7 +6,6 @@ public class OilBall : Character {
     GameController demo;
     public CircleCollider2D coll;
     public OilModel model;
-    float clock;
     public float speed;
     public float maxSpeed = 10f;
     public float minSpeed = 1.5f;
@@ -29,16 +28,12 @@ public class OilBall : Character {
     bool speeding = false;
     Vector3 speedDirection;
     Rigidbody2D body;
-
-    public int falling = 0;
-    public Collider2D fallingInto;
-    public float initialDistance;
-    public float whenFell = 0;
-    float currentScale = 1f; // your scale factor
+    
 
     public void init(GameController demo)
     {
         this.demo = demo;
+        startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
 
@@ -150,13 +145,7 @@ public class OilBall : Character {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Pit")
-        {
-            fallingInto = other;
-            initialDistance = Vector2.Distance(transform.position, other.transform.position);
-            whenFell = clock;
-            falling = 1;
-        }
+        pitHit(other);
     }
 
     
@@ -201,26 +190,12 @@ public class OilBall : Character {
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        //Debug.Log("Oil: " + transform.position);
-
-        clock = clock + Time.deltaTime;
+     
 
 
         if (falling == 1)
         {
-            if(clock < whenFell + 1)
-            {
-                currentScale = currentScale - Time.deltaTime;
-                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-                transform.position = Vector2.MoveTowards(transform.position, fallingInto.transform.position, initialDistance * Time.deltaTime);
-            }
-            else
-            {
-                falling = 0;
-            }
-            
-
+            fallSequence();
         }
         else {
             Vector3 direction = Vector3.zero;

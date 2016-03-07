@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour {
         GameObject pitObject = new GameObject();            // Create a new empty game object that will hold a gem.
         Pit pit = pitObject.AddComponent<Pit>();            // Add the Gem.cs script to the object.
 
-        pit.transform.position = new Vector3(x, y, -1);      // Position the gem at x,y.								
+        pit.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
        // pit.name = "Pit" + (walls.Count + 1);
 
         pit.init(this);

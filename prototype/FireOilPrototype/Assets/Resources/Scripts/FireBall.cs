@@ -19,6 +19,7 @@ public class FireBall : Character {
     public void init(GameController demo)
     {
         this.demo = demo;
+        startPosition = transform.position;
         lastDirection = Vector3.up;
 
         gameObject.tag = "FireBall";
@@ -64,10 +65,8 @@ public class FireBall : Character {
             speed = minSpeed;
         }
 
-        if (other.gameObject.tag == "Pit")
-        {
-            Debug.Log("hit");
-        }
+        pitHit(other);
+            
     }
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
@@ -80,78 +79,83 @@ public class FireBall : Character {
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Debug.Log("Fire: " + transform.position);
 
-        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
-        Vector3 direction = Vector3.zero;
 
-
-
-        if (Input.GetButton("Fire Up"))
+        if (falling == 1)
         {
-            direction += Vector3.up;
-        }
-
-        bool moving = false;
-
-        if (Input.GetButton("Fire Down"))
-        {
-            direction += Vector3.down;
-            moving = true;
-        }
-
-        if (Input.GetButton("Fire Right"))
-        {
-            direction += Vector3.right;
-            moving = true;
-        }
-
-        if (Input.GetButton("Fire Left"))
-        {
-            direction += Vector3.left;
-            moving = true;
-        }
-
-        if (onOil && moving)
-        {
-            if (speed < maxSpeed) { speed += speedChange; }
+            fallSequence();
         }
         else {
-            if (speed > minSpeed) { speed -= speedChange; }
-        }
 
-        if (direction != Vector3.zero)
-        {
-            lastDirection = direction;
-            transform.position += direction.normalized * Time.deltaTime * speed;
-            model.isRunning = true;
-        }
-        else model.isRunning = false;
+            Vector3 direction = Vector3.zero;
 
-        if(Input.GetButtonDown("Fire Shoot"))
-        {
-            if (charge == 0)
+            if (Input.GetButton("Fire Up"))
             {
-
-                //Debug.Log(lastDirection);
-                demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
-
-            } else {                                 //if we're charged, do that radius attack!
-                if (charge > 4) { charge = 4; }  
-                charge *= 4;
-                for (int i = 0; i < charge; i++)
-                {
-                    float radians = (Mathf.PI * 2f / (float)charge * i);
-                    Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
-                    demo.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
-                }
-                charge = 0;
+                direction += Vector3.up;
             }
-        }
 
-        onOil = false;
-    
+            bool moving = false;
+
+            if (Input.GetButton("Fire Down"))
+            {
+                direction += Vector3.down;
+                moving = true;
+            }
+
+            if (Input.GetButton("Fire Right"))
+            {
+                direction += Vector3.right;
+                moving = true;
+            }
+
+            if (Input.GetButton("Fire Left"))
+            {
+                direction += Vector3.left;
+                moving = true;
+            }
+
+            if (onOil && moving)
+            {
+                if (speed < maxSpeed) { speed += speedChange; }
+            }
+            else {
+                if (speed > minSpeed) { speed -= speedChange; }
+            }
+
+            if (direction != Vector3.zero)
+            {
+                lastDirection = direction;
+                transform.position += direction.normalized * Time.deltaTime * speed;
+                model.isRunning = true;
+            }
+            else model.isRunning = false;
+
+            if (Input.GetButtonDown("Fire Shoot"))
+            {
+                if (charge == 0)
+                {
+
+                    //Debug.Log(lastDirection);
+                    demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
+
+                }
+                else {                                 //if we're charged, do that radius attack!
+                    if (charge > 4) { charge = 4; }
+                    charge *= 4;
+                    for (int i = 0; i < charge; i++)
+                    {
+                        float radians = (Mathf.PI * 2f / (float)charge * i);
+                        Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
+                        demo.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+                    }
+                    charge = 0;
+                }
+            }
+
+            onOil = false;
+        }
     }
 }
