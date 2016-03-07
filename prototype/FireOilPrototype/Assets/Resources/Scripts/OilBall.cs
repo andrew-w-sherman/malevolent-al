@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OilBall : MonoBehaviour {
+public class OilBall : Character {
 
     GameController demo;
     public CircleCollider2D coll;
@@ -29,6 +29,12 @@ public class OilBall : MonoBehaviour {
     bool speeding = false;
     Vector3 speedDirection;
     Rigidbody2D body;
+
+    public int falling = 0;
+    public Collider2D fallingInto;
+    public float initialDistance;
+    public float whenFell = 0;
+    float currentScale = 1f; // your scale factor
 
     public void init(GameController demo)
     {
@@ -142,6 +148,20 @@ public class OilBall : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Pit")
+        {
+            fallingInto = other;
+            initialDistance = Vector2.Distance(transform.position, other.transform.position);
+            whenFell = clock;
+            falling = 1;
+        }
+    }
+
+    
+        
+
     void OnTriggerStay2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "OilPatch_Spreading")
@@ -179,93 +199,114 @@ public class OilBall : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
+    void FixedUpdate()
+    {
+
+        //Debug.Log("Oil: " + transform.position);
+
         clock = clock + Time.deltaTime;
 
-        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
-        Vector3 direction = Vector3.zero;
-        
-        if (Input.GetButton("Oil Up"))
-        {
-            direction += Vector3.up;
-        }
 
-        if (Input.GetButton("Oil Down"))
+        if (falling == 1)
         {
-            direction += Vector3.down;
-        }
-
-        if (Input.GetButton("Oil Right"))
-        {
-            direction += Vector3.right;
-        }
-
-        if (Input.GetButton("Oil Left"))
-        {
-            direction += Vector3.left;
-        }
-        if (direction != Vector3.zero)
-        {
-            lastDirection = direction;
-            transform.position += direction.normalized * Time.deltaTime * speed;
-            model.isRunning = true;
-        }
-        else model.isRunning = false;
-        
-        if (speeding)
-        {
-            timeBeenSpeeding += Time.deltaTime;
-            transform.position += speedDirection * Time.deltaTime * 6;
-            if (timeBeenSpeeding > speedingTime)
+            if(clock < whenFell + 1)
             {
-                speeding = false;
-                model.setSpeeding(false);
-                gameObject.tag = "OilBall";
-                body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+                currentScale = currentScale - Time.deltaTime;
+                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+                transform.position = Vector2.MoveTowards(transform.position, fallingInto.transform.position, initialDistance * Time.deltaTime);
             }
-        }
-        movementCounter += (direction.normalized * Time.deltaTime).magnitude;
-
-        if (Input.GetButtonDown("Oil Shoot"))
-        {
-            demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
-        }
-
-        
-        if (movementCounter > coll.bounds.size.x / 2 && !speeding)
-        {
-            if (clock - timeLastExploded > 1.2f)
+            else
             {
-                movementCounter = 0f;
-                int x = 0;
-                bool patchMade = false;
-                for (int i = 0; i < numPatches; i++)
+                falling = 0;
+            }
+            
+
+        }
+        else {
+            Vector3 direction = Vector3.zero;
+
+            if (Input.GetButton("Oil Up"))
+            {
+                direction += Vector3.up;
+            }
+
+            if (Input.GetButton("Oil Down"))
+            {
+                direction += Vector3.down;
+            }
+
+            if (Input.GetButton("Oil Right"))
+            {
+                direction += Vector3.right;
+            }
+
+            if (Input.GetButton("Oil Left"))
+            {
+                direction += Vector3.left;
+            }
+            if (direction != Vector3.zero)
+            {
+                lastDirection = direction;
+                transform.position += direction.normalized * Time.deltaTime * speed;
+                model.isRunning = true;
+            }
+            else model.isRunning = false;
+
+            if (speeding)
+            {
+                timeBeenSpeeding += Time.deltaTime;
+                transform.position += speedDirection * Time.deltaTime * 6;
+                if (timeBeenSpeeding > speedingTime)
                 {
-                    if (!patchMade && oilList[i] == null)
-                    {
-                        createPatch(i);
-                        patchMade = true;
-                    }
-                    else { x++; }
+                    speeding = false;
+                    model.setSpeeding(false);
+                    gameObject.tag = "OilBall";
+                    body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
                 }
-                if (x == numPatches)
+            }
+            movementCounter += (direction.normalized * Time.deltaTime).magnitude;
+
+            if (Input.GetButtonDown("Oil Shoot"))
+            {
+                demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+            }
+
+
+            if (movementCounter > coll.bounds.size.x / 2 && !speeding)
+            {
+                if (clock - timeLastExploded > 1.2f)
                 {
-                    float oldestClock = -1f;
-                    int oldestIndex = -1;
+                    movementCounter = 0f;
+                    int x = 0;
+                    bool patchMade = false;
                     for (int i = 0; i < numPatches; i++)
                     {
-                        if (oilList[i].clock > oldestClock)
+                        if (!patchMade && oilList[i] == null)
                         {
-                            oldestClock = oilList[i].clock;
-                            oldestIndex = i;
+                            createPatch(i);
+                            patchMade = true;
                         }
+                        else { x++; }
                     }
-                    if (oldestIndex != -1)
+                    if (x == numPatches)
                     {
-                        Destroy(oilList[oldestIndex].gameObject);
-                        createPatch(oldestIndex);
+                        float oldestClock = -1f;
+                        int oldestIndex = -1;
+                        for (int i = 0; i < numPatches; i++)
+                        {
+                            if (oilList[i].clock > oldestClock)
+                            {
+                                oldestClock = oilList[i].clock;
+                                oldestIndex = i;
+                            }
+                        }
+                        if (oldestIndex != -1)
+                        {
+                            Destroy(oilList[oldestIndex].gameObject);
+                            createPatch(oldestIndex);
+                        }
+                        else { print("oldestIndex set incorrectly"); }
                     }
-                    else { print("oldestIndex set incorrectly"); }
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireBall : MonoBehaviour {
+public class FireBall : Character {
 
     public GameController demo;
     public FireModel model;
@@ -63,6 +63,11 @@ public class FireBall : MonoBehaviour {
             //print("Fireball registered a collide with oilball");
             speed = minSpeed;
         }
+
+        if (other.gameObject.tag == "Pit")
+        {
+            Debug.Log("hit");
+        }
     }
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
@@ -77,6 +82,8 @@ public class FireBall : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("Fire: " + transform.position);
+
         Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
         Vector3 direction = Vector3.zero;
 
