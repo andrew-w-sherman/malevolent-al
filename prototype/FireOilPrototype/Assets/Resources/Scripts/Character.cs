@@ -26,7 +26,7 @@ public class Character : MonoBehaviour {
     {
         if (other.gameObject.tag == "Pit")
         {
-            if (other.gameObject.GetComponent<Pit>().filled == 0 && speeding == false)
+            if (other.gameObject.GetComponent<Pit>().on == 1 && speeding == false)
             {
                 fallingInto = other;
                 initialDistance = Vector2.Distance(transform.position, other.transform.position);

@@ -32,9 +32,13 @@ public class GameController : MonoBehaviour {
         addFire(0, 3);
         addOil(0, 1);
 
-        Pit pit = addPit(-2, 1);
-        pit.fill();
-        pit.empty();
+        for(int i = -7; i < 9; i++)
+        {
+            addPit(-2, i);
+        }
+        //Pit pit = addPit(-2, 1);
+        //pit.turnOff();
+        //pit.turnOn();
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;

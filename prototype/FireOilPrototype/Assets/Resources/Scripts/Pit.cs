@@ -5,7 +5,7 @@ public class Pit : MonoBehaviour {
 
     public GameController demo;
     public PitModel model;
-    public int filled;
+    public int on;
 
     // Use this for initialization
     public void init(GameController demo)
@@ -13,7 +13,7 @@ public class Pit : MonoBehaviour {
 
         this.demo = demo;
         gameObject.tag = "Pit";
-        filled = 0;
+        on = 1;
 
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<PitModel>();
@@ -31,20 +31,20 @@ public class Pit : MonoBehaviour {
 
     }
 
-    public void fill()
+    public void turnOff()
     {
-        if (filled == 0)
+        if (on == 1)
         {
-            filled = 1;
+            on = 0;
             model.rend.enabled = false;
         }
     }
 
-    public void empty()
+    public void turnOn()
     {
-        if (filled == 1)
+        if (on == 0)
         {
-            filled = 0;
+            on = 1;
             model.rend.enabled = true;
         }
     }
