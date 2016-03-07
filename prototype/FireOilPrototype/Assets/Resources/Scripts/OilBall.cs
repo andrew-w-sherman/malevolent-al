@@ -32,7 +32,6 @@ public class OilBall : Character {
     public void init(GameController demo)
     {
         this.demo = demo;
-        whichCharacter = OIL_INT;
         startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];

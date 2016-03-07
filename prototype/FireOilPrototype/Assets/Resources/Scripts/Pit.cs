@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Pit : MonoBehaviour {
 
     public GameController demo;
     public PitModel model;
     public int on;
+    public float collDimensions = 1f;
+    public BoxCollider2D coll;
+    
 
     // Use this for initialization
     public void init(GameController demo)
@@ -24,10 +28,11 @@ public class Pit : MonoBehaviour {
         //body.velocity = Vector3.zero;
         //body.isKinematic = false;
 
-        var boxCollider = gameObject.AddComponent<BoxCollider2D>();
-        boxCollider.isTrigger = true;
-        boxCollider.enabled = true;
-        boxCollider.size = new Vector2(0.5f, 0.5f);
+        coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.isTrigger = true;
+        coll.enabled = true;
+        coll.size = new Vector2(collDimensions, collDimensions);
+        
 
     }
 
@@ -37,6 +42,7 @@ public class Pit : MonoBehaviour {
         {
             on = 0;
             model.rend.enabled = false;
+            coll.enabled = false;
         }
     }
 
@@ -46,6 +52,15 @@ public class Pit : MonoBehaviour {
         {
             on = 1;
             model.rend.enabled = true;
+            coll.enabled = true;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (on == 1 && coll.gameObject.tag == "OilPatch_Spreading" || coll.gameObject.tag == "OilPatch")
+        {
+            Destroy(coll.gameObject);
         }
     }
 

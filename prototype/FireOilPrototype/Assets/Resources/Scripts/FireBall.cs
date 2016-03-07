@@ -19,7 +19,6 @@ public class FireBall : Character {
     public void init(GameController demo)
     {
         this.demo = demo;
-        whichCharacter = FIRE_INT;
         startPosition = transform.position;
         lastDirection = Vector3.up;
 

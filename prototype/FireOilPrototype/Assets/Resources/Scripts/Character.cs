@@ -3,15 +3,11 @@ using System.Collections;
 
 public class Character : MonoBehaviour {
 
-    public const int FIRE_INT = 1;
-    public const int OIL_INT = 2;
-
     public Vector3 startPosition;
     public float clock = 0f;
 
     public bool speeding = false;
-
-    public int whichCharacter;
+    
     public int falling;
     public Collider2D fallingInto;
     public float initialDistance;
@@ -33,7 +29,7 @@ public class Character : MonoBehaviour {
                 whenFell = clock;
                 falling = 1;
             }
-        } 
+        }
     }
 
     public void fallSequence()

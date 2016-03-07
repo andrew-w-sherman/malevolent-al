@@ -83,6 +83,10 @@ public class EnemyModel : MonoBehaviour {
         {
             owner.health--;
         }
+        if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -145,20 +149,20 @@ public class EnemyModel : MonoBehaviour {
 
         if(hitList.Count > 0) {
             
-            int wallHit = 0;
+            int obstacleHit = 0;
 
             //Debug.Log("new set");
 
             foreach(RaycastHit2D hit in hitList.ToArray())
             {
                 //Debug.Log(hit.collider);
-                if(hit.collider.gameObject.tag == "wall")
+                if(hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit")
                 {
-                    wallHit = 1;
+                    obstacleHit = 1;
                 }
             }
 
-            if (wallHit == 0)
+            if (obstacleHit == 0)
             {
                 lost = 0;
                 lostTimer = 0f;

@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
     public List<Enemy> enemies;
     public List<Wall> walls;
     public List<Projectile> projectiles;
+    public List<Pit> pits;
     public int projectileCount;
     public float clock;
     public int addEnemyInterval = 5;
@@ -29,13 +30,24 @@ public class GameController : MonoBehaviour {
 
         enemies = new List<Enemy>();
         walls = new List<Wall>();
+        pits = new List<Pit>();
         addFire(0, 3);
         addOil(0, 1);
 
+        Pit pit = null;
         for(int i = -7; i < 9; i++)
         {
-            addPit(-2, i);
+            pit = addPit(-2, i);
+
+            //if (i == 1 || i == 2 || i == 3)
+            //{
+            //    pit.turnOff();
+            //}
+           
         }
+
+        addEnemy(-4, 1, "fire");
+        addEnemy(-4, 3, "oil");
         //Pit pit = addPit(-2, 1);
         //pit.turnOff();
         //pit.turnOn();
@@ -43,6 +55,24 @@ public class GameController : MonoBehaviour {
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
 
+    }
+
+    public void pitSwitch()
+    {
+        if(clock % 10 > 5)
+        {
+            foreach(Pit pit in pits)
+            {
+                pit.turnOff();
+            }
+        }
+        else
+        {
+            foreach (Pit pit in pits)
+            {
+                pit.turnOn();
+            }
+        }
     }
 
     private void addEnemyPeriodically()
@@ -95,6 +125,13 @@ public class GameController : MonoBehaviour {
         e1.name = "e1";
 
         e1.init(this, type);
+
+        foreach(Enemy e2 in enemies)
+        {
+            Physics2D.IgnoreCollision(e1.model.GetComponent<Collider2D>(), e2.model.GetComponent<Collider2D>());
+        }
+
+        enemies.Add(e1);
     }
 
     private void addWall(float x, float y)
@@ -119,6 +156,8 @@ public class GameController : MonoBehaviour {
        // pit.name = "Pit" + (walls.Count + 1);
 
         pit.init(this);
+
+        pits.Add(pit);
 
         return pit;
         
@@ -209,6 +248,7 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
+        pitSwitch();
         //addEnemyPeriodically();
     }
 }

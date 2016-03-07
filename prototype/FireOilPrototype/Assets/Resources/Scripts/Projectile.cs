@@ -37,6 +37,7 @@ public class Projectile : MonoBehaviour {
 
         var renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.enabled = true;
+        renderer.sortingOrder = 2;
 
         var body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
