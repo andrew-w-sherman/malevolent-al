@@ -103,6 +103,7 @@ public class GameController : MonoBehaviour {
         fire.name = "Fire Ball";
 
         fire.init(this);
+		print ("fire health is " + fire.health);
     }
 
     private void addOil(float x, float y)
@@ -114,6 +115,7 @@ public class GameController : MonoBehaviour {
         oil.name = "Oil Ball";
 
         oil.init(this);
+		print ("fire health is " + oil.health);
     }
 
     private void addEnemy(float x, float y, string type)
@@ -251,4 +253,9 @@ public class GameController : MonoBehaviour {
         pitSwitch();
         //addEnemyPeriodically();
     }
+
+	void OnGUI(){
+		GUI.TextField (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
+		GUI.TextField (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
+	}
 }

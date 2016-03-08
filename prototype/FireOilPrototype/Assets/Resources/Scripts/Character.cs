@@ -14,8 +14,19 @@ public class Character : MonoBehaviour {
     public float whenFell = 0;
     float currentScale = 1f; // your scale factor
 
+	//health stuff
+	public float health;
+	public float maxHealth = 10;
+	float healthRegenCooldown = 7; //how long health takes to regenerate after taking damage
+	float lastDamage;
+	float healthRegenRate = 1;     //hp gained per second while regenerating
+	float lastRegen;
+
     void Start () {
         falling = 0;
+		lastDamage = 0;
+		lastRegen = 0;
+		health = maxHealth;
 	}
 
     public void pitHit(Collider2D other)
@@ -52,8 +63,30 @@ public class Character : MonoBehaviour {
         }
     }
 
+
+	public void damage(int amount)
+	{
+		lastDamage = clock;
+		if (health - amount <= 0) {
+			transform.position = startPosition;
+			print ("You died :(");
+			health = 10;
+		} else {
+			health -= amount;
+		}
+	}
+
     // Update is called once per frame
     void Update () {
+		
         clock = clock + Time.deltaTime;
+
+		if (health < maxHealth &&
+		    clock - lastDamage > healthRegenCooldown &&
+		    clock - lastRegen > healthRegenRate) 
+		{
+			health++;
+			lastRegen = clock;
+		}
     }
 }

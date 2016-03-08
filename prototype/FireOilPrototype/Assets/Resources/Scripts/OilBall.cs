@@ -72,6 +72,7 @@ public class OilBall : Character {
     void Start()
     {
         clock = 0f;
+		health = maxHealth;
     }
 
     void OnCollisionEnter2D(Collision2D other)

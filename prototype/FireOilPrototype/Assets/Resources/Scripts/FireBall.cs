@@ -78,6 +78,11 @@ public class FireBall : Character {
         }
     }
 
+	void Start()
+	{
+		health = maxHealth;
+	}
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -145,16 +150,19 @@ public class FireBall : Character {
                 else {                                 //if we're charged, do that radius attack!
                     if (charge > 4) { charge = 4; }
                     charge *= 4;
-                    for (int i = 0; i < charge; i++)
-                    {
-                        float radians = (Mathf.PI * 2f / (float)charge * i);
-                        Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
-                        demo.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
-                    }
+					float diagonalModifier = 0f;
+					if (direction.x != 0 && direction.y != 0) {
+						diagonalModifier = Mathf.PI / 4f;
+					}
+					for (int i = 0; i < charge; i++) {
+					float radians = (Mathf.PI * 2f / (float)charge * i) + diagonalModifier;
+						Vector3 degreeVector = new Vector3 (Mathf.Cos (radians), Mathf.Sin (radians), 0);
+						demo.addProjectile (transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+						
+					}
                     charge = 0;
                 }
             }
-
             onOil = false;
         }
     }
