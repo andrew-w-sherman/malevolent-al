@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireBall : MonoBehaviour {
+public class FireBall : Character {
 
     public GameController demo;
     public FireModel model;
@@ -9,15 +9,17 @@ public class FireBall : MonoBehaviour {
     public Vector3 lastDirection;
 
     public float maxSpeed = 10f;
-    public float minSpeed = 1.5f;
+    public float minSpeed = 3f;
     public float speedChange = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
     public float speed;
     public bool onOil = false;
+    public int charge = 0; //counter to keep track of how many times oil has shot fire
 
     // Use this for initialization
     public void init(GameController demo)
     {
         this.demo = demo;
+        startPosition = transform.position;
         lastDirection = Vector3.up;
 
         gameObject.tag = "FireBall";
@@ -62,57 +64,106 @@ public class FireBall : MonoBehaviour {
             //print("Fireball registered a collide with oilball");
             speed = minSpeed;
         }
+
+        pitHit(other);
+            
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
     {
-        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
-        Vector3 direction = Vector3.zero;
-
-        if (onOil)
+        if (coll.gameObject.tag == "projectile-friendly")
         {
-            if (speed < maxSpeed) { speed += speedChange; }
+            charge++;
+            print("charge is " + charge);
+        }
+    }
+
+	void Start()
+	{
+		health = maxHealth;
+	}
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        //Debug.Log("Fire: " + transform.position);
+
+
+        if (falling == 1)
+        {
+            fallSequence();
         }
         else {
-            if (speed > minSpeed) { speed -= speedChange; }
-        }
 
-        if (Input.GetButton("Fire Up") && relativePosition.y < 4)
-        {
-            direction += Vector3.up;
-        }
+            Vector3 direction = Vector3.zero;
 
-        if (Input.GetButton("Fire Down") && relativePosition.y > -4)
-        {
-            direction += Vector3.down;
-        }
+            if (Input.GetButton("Fire Up"))
+            {
+                direction += Vector3.up;
+            }
 
-        if (Input.GetButton("Fire Right") && relativePosition.x < 9.5)
-        {
-            direction += Vector3.right;
-        }
+            bool moving = false;
 
-        if (Input.GetButton("Fire Left") && relativePosition.x > -9.5)
-        {
-            direction += Vector3.left;
-        }
+            if (Input.GetButton("Fire Down"))
+            {
+                direction += Vector3.down;
+                moving = true;
+            }
 
-        if (direction != Vector3.zero)
-        {
-            lastDirection = direction;
-            transform.position += direction.normalized * Time.deltaTime * speed;
-            model.isRunning = true;
-        }
-        else model.isRunning = false;
+            if (Input.GetButton("Fire Right"))
+            {
+                direction += Vector3.right;
+                moving = true;
+            }
 
-        if(Input.GetButtonDown("Fire Shoot"))
-        {
-            Debug.Log(lastDirection);
-            demo.addProjectile(transform.position + lastDirection.normalized/2, lastDirection.normalized, Projectile.FIRE);
-        }
+            if (Input.GetButton("Fire Left"))
+            {
+                direction += Vector3.left;
+                moving = true;
+            }
 
-        onOil = false;
-    
+            if (onOil && moving)
+            {
+                if (speed < maxSpeed) { speed += speedChange; }
+            }
+            else {
+                if (speed > minSpeed) { speed -= speedChange; }
+            }
+
+            if (direction != Vector3.zero)
+            {
+                lastDirection = direction;
+                transform.position += direction.normalized * Time.deltaTime * speed;
+                model.isRunning = true;
+            }
+            else model.isRunning = false;
+
+            if (Input.GetButtonDown("Fire Shoot"))
+            {
+                if (charge == 0)
+                {
+
+                    //Debug.Log(lastDirection);
+                    demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
+
+                }
+                else {                                 //if we're charged, do that radius attack!
+                    if (charge > 4) { charge = 4; }
+                    charge *= 4;
+					float diagonalModifier = 0f;
+					if (direction.x != 0 && direction.y != 0) {
+						diagonalModifier = Mathf.PI / 4f;
+					}
+					for (int i = 0; i < charge; i++) {
+					float radians = (Mathf.PI * 2f / (float)charge * i) + diagonalModifier;
+						Vector3 degreeVector = new Vector3 (Mathf.Cos (radians), Mathf.Sin (radians), 0);
+						demo.addProjectile (transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+						
+					}
+                    charge = 0;
+                }
+            }
+            onOil = false;
+        }
     }
 }

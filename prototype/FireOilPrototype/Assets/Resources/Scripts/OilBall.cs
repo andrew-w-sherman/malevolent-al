@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OilBall : MonoBehaviour {
+public class OilBall : Character {
 
-    GameController demo;
+    public GameController demo;
     public CircleCollider2D coll;
     public OilModel model;
-    float clock;
+    public float speed;
+    public float maxSpeed = 10f;
+    public float minSpeed = 1.5f;
     Vector3 lastDirection;
 
     float movementCounter = 0f;
@@ -23,15 +25,19 @@ public class OilBall : MonoBehaviour {
     float speedingTime = 3f; //how long we speed for
     float timeBeenSpeeding = 0f;
     float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
-    bool speeding = false;
     Vector3 speedDirection;
     Rigidbody2D body;
+    
 
     public void init(GameController demo)
     {
         this.demo = demo;
+        startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
+
+        speed = 3;
+
 
         gameObject.tag = "OilBall";
 
@@ -60,11 +66,13 @@ public class OilBall : MonoBehaviour {
         oilList = new OilPatch[numPatches];
 
         createPatch(0);
+
     }
 
     void Start()
     {
         clock = 0f;
+		health = maxHealth;
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -82,6 +90,7 @@ public class OilBall : MonoBehaviour {
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
                 model.setSpeeding(true); //tell model to change color
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                gameObject.tag = "OilBall_Speeding";
                 
             }
         }else if(other.gameObject.tag == "wall")
@@ -134,6 +143,14 @@ public class OilBall : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        pitHit(other);
+    }
+
+    
+        
+
     void OnTriggerStay2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "OilPatch_Spreading")
@@ -166,99 +183,103 @@ public class OilBall : MonoBehaviour {
         rig.gravityScale = 0f;
         rig.isKinematic = true;
         coll2.isTrigger = true;
-        //coll2.size = new Vector2(1, 1);
         oilList[i].transform.position = transform.position;
         oilList[i].init(this);
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
-        clock = clock + Time.deltaTime;
-
-        Vector3 relativePosition = Camera.main.transform.InverseTransformDirection(transform.position - Camera.main.transform.position);
-        Vector3 direction = Vector3.zero;
-        
-        if (Input.GetButton("Oil Up") && relativePosition.y < 4)
+    void FixedUpdate()
+    {
+     
+        if (falling == 1)
         {
-            direction += Vector3.up;
+            fallSequence();
         }
+        else {
+            Vector3 direction = Vector3.zero;
 
-        if (Input.GetButton("Oil Down") && relativePosition.y > -4)
-        {
-            direction += Vector3.down;
-        }
-
-        if (Input.GetButton("Oil Right") && relativePosition.x < 9.5)
-        {
-            direction += Vector3.right;
-        }
-
-        if (Input.GetButton("Oil Left") && relativePosition.x > -9.5)
-        {
-            direction += Vector3.left;
-        }
-        if (direction != Vector3.zero)
-        {
-            model.isRunning = true;
-        }
-        else model.isRunning = false;
-
-        lastDirection = direction;
-        transform.position += direction.normalized * Time.deltaTime;
-        if (speeding)
-        {
-            timeBeenSpeeding += Time.deltaTime;
-            transform.position += speedDirection * Time.deltaTime * 6;
-            if (timeBeenSpeeding > speedingTime)
+            if (Input.GetButton("Oil Up"))
             {
-                speeding = false;
-                model.setSpeeding(false);
-                body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+                direction += Vector3.up;
             }
-        }
-        movementCounter += (direction.normalized * Time.deltaTime).magnitude;
 
-        if (Input.GetButtonDown("Oil Shoot"))
-        {
-            demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
-        }
-
-        
-
-        if (movementCounter > coll.bounds.size.x - 0.1f)
-        {
-            if (clock - timeLastExploded > 1.2f)
+            if (Input.GetButton("Oil Down"))
             {
-                movementCounter = 0f;
-                int x = 0;
-                bool patchMade = false;
-                for (int i = 0; i < numPatches; i++)
+                direction += Vector3.down;
+            }
+
+            if (Input.GetButton("Oil Right"))
+            {
+                direction += Vector3.right;
+            }
+
+            if (Input.GetButton("Oil Left"))
+            {
+                direction += Vector3.left;
+            }
+            if (direction != Vector3.zero)
+            {
+                lastDirection = direction;
+                transform.position += direction.normalized * Time.deltaTime * speed;
+                model.isRunning = true;
+            }
+            else model.isRunning = false;
+
+            if (speeding)
+            {
+                timeBeenSpeeding += Time.deltaTime;
+                transform.position += speedDirection * Time.deltaTime * 6;
+                if (timeBeenSpeeding > speedingTime)
                 {
-                    if (!patchMade && oilList[i] == null)
-                    {
-                        createPatch(i);
-                        patchMade = true;
-                    }
-                    else { x++; }
+                    speeding = false;
+                    model.setSpeeding(false);
+                    gameObject.tag = "OilBall";
+                    body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
                 }
-                if (x == numPatches)
+            }
+            movementCounter += (direction.normalized * Time.deltaTime).magnitude;
+
+            if (Input.GetButtonDown("Oil Shoot"))
+            {
+                demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+            }
+
+
+            if (movementCounter > coll.bounds.size.x / 2 && !speeding)
+            {
+                if (clock - timeLastExploded > 1.2f)
                 {
-                    float oldestClock = -1f;
-                    int oldestIndex = -1;
+                    movementCounter = 0f;
+                    int x = 0;
+                    bool patchMade = false;
                     for (int i = 0; i < numPatches; i++)
                     {
-                        if (oilList[i].clock > oldestClock)
+                        if (!patchMade && oilList[i] == null)
                         {
-                            oldestClock = oilList[i].clock;
-                            oldestIndex = i;
+                            createPatch(i);
+                            patchMade = true;
                         }
+                        else { x++; }
                     }
-                    if (oldestIndex != -1)
+                    if (x == numPatches)
                     {
-                        Destroy(oilList[oldestIndex].gameObject);
-                        createPatch(oldestIndex);
+                        float oldestClock = -1f;
+                        int oldestIndex = -1;
+                        for (int i = 0; i < numPatches; i++)
+                        {
+                            if (oilList[i].clock > oldestClock)
+                            {
+                                oldestClock = oilList[i].clock;
+                                oldestIndex = i;
+                            }
+                        }
+                        if (oldestIndex != -1)
+                        {
+                            Destroy(oilList[oldestIndex].gameObject);
+                            createPatch(oldestIndex);
+                        }
+                        else { print("oldestIndex set incorrectly"); }
                     }
-                    else { print("oldestIndex set incorrectly"); }
                 }
             }
         }
