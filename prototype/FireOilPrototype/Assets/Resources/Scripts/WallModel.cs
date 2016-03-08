@@ -16,10 +16,17 @@ public class WallModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
         name = "wall-model";
 
+        DestroyImmediate(GetComponent<MeshFilter>());
+        DestroyImmediate(GetComponent<MeshRenderer>());
+        SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 2;
+        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[1];
+        /*
         mat = GetComponent<Renderer>().material;
         mat.shader = Shader.Find("Transparent/Diffuse");
         mat.mainTexture = Resources.Load<Texture2D>("Textures/tileWall");
-        mat.color = new Color(1, 1, 1);
+        mat.color = new Color(1, 1, 1);*/
     }
 
     // Update is called once per frame

@@ -14,21 +14,27 @@ public class ObstacleModel : MonoBehaviour {
         this.owner = owner;
         controller = gc;
 
-        //this.sr = owner.gameObject.AddComponent<SpriteRenderer>();
-        Material mat = GetComponent<Renderer>().material;
-        mat.shader = Shader.Find("Transparent/Diffuse");
+        DestroyImmediate(GetComponent<MeshFilter>());
+        DestroyImmediate(GetComponent<MeshRenderer>());
+        sr= gameObject.AddComponent<SpriteRenderer>();       
+        sr.sortingOrder = 2;     
+        
+       // Material mat = GetComponent<Renderer>().material;
+        //mat.shader = Shader.Find("Transparent/Diffuse");
         transform.parent = owner.transform;
         transform.localPosition = new Vector3(0, 0, 0);
         name = "Obstacle Model";
 
         if(wallType == 0)
         {
-            
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
+
+            //mat.mainTexture = Resources.Load<Texture2D>("Textures/gem3");
+            sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[10];
         }
         else
         {
-            mat.mainTexture = Resources.Load<Texture2D>("Textures/gem2");
+            //mat.mainTexture = Resources.Load<Texture2D>("Textures/gem2");
+            sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[11];
         }
 
 

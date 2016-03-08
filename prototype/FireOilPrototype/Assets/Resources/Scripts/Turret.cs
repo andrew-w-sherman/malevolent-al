@@ -4,13 +4,7 @@ using System.Collections.Generic;
 
 public class Turret : MonoBehaviour
 {
-
-    //What do I need to make a turret. i need the orientation, whether it is rotatable or not 
-    //(if it's rotatable it can rotate left and right 90deg)  it will shoot in whatever it's current direction is
-    //(if it's rotatable, it shoots when it hits one of the 8directions)
-
-    // REMBEMBER TO ADD IN GAMECONTROLLER PARENT IN INIT FNXN
-
+    
    public  int curDir;
     bool rotate;
     GameController demo;
@@ -33,7 +27,7 @@ public class Turret : MonoBehaviour
         model = modelObject.AddComponent<TurretModel>();
         modelObject.AddComponent<Rigidbody>();
         model.init(this, demo, rotate);
-        gameObject.AddComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame

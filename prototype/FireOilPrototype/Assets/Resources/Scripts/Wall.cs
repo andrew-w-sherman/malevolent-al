@@ -20,6 +20,7 @@ public class Wall : MonoBehaviour {
         //body.gravityScale = 0;
         //body.velocity = Vector3.zero;
         //body.isKinematic = false;
+       
 
         var boxCollider = gameObject.AddComponent<BoxCollider2D>();
         boxCollider.isTrigger = false;
