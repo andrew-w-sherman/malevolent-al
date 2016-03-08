@@ -34,6 +34,10 @@ public class GameController : MonoBehaviour {
         addFire(0, 3);
         addOil(0, 1);
 
+        //addTurret(0, -2);
+        //addObstacle(0, -2, 0);
+        
+
         Pit pit = null;
         for(int i = -7; i < 9; i++)
         {
@@ -260,6 +264,25 @@ public class GameController : MonoBehaviour {
         updateCamera();
         pitSwitch();
         //addEnemyPeriodically();
+    }
+
+    void addTurret(float x, float y)
+    {
+        GameObject obj = new GameObject();            // Create a new empty game object that will hold a gem.
+
+       Turret turret = obj.AddComponent<Turret>();
+        turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        turret.name = "turret";
+
+        turret.init(1, true,this);
+    }
+
+    void addObstacle(float x, float y, int type)
+    {
+        GameObject obj = new GameObject();
+        Obstacle obs = obj.AddComponent<Obstacle>();
+        obs.transform.position = new Vector3(x, y, 0);
+        obs.init(this, type);
     }
 
 	void OnGUI(){
