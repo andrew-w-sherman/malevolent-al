@@ -100,6 +100,7 @@ public class FireBall : Character {
             if (Input.GetButton("Fire Up"))
             {
                 direction += Vector3.up;
+				moving = true;
             }
 
             bool moving = false;

@@ -21,7 +21,7 @@ public class SpikesModel : MonoBehaviour {
 		DestroyImmediate(GetComponent<MeshRenderer>());
 		gameObject.AddComponent<SpriteRenderer>();
 		sr = GetComponent<SpriteRenderer>();
-		sr.sortingOrder = 2;
+		sr.sortingOrder = 1;
 		sr.sprite = Resources.LoadAll<Sprite> ("Sprite Sheets/env-tile") [12];
 	}
 
