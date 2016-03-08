@@ -3,7 +3,7 @@ using System.Collections;
 
 public class OilBall : Character {
 
-    GameController demo;
+    public GameController demo;
     public CircleCollider2D coll;
     public OilModel model;
     public float speed;
