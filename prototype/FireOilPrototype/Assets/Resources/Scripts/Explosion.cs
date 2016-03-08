@@ -19,6 +19,7 @@ public class Explosion : MonoBehaviour {
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
         model.init(this, explosionTime);
 
+        coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
         coll.isTrigger = true;
         clock = 0f;
