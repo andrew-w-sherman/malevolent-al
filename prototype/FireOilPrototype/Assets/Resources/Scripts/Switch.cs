@@ -26,13 +26,20 @@ public class Switch : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        
 	
 	}
     
-    void OnMouseDown()
+    void OnColliderStay2D(Collision2D coll)
     {
-        print("switch hit");
-        switchTime();
+        //Right now it switches after hitting shoot button
+        
+        if(coll.gameObject.tag=="FireBall" || coll.gameObject.tag=="OilBall" )
+        {
+            //print("switch hit");
+            switchTime();
+        }        
     }
 
     void switchTime()
