@@ -29,6 +29,10 @@ public class GameController : MonoBehaviour {
         walls = new List<Wall>();
         addFire(0, 3);
         addOil(0, 1);
+
+        //addTurret(0, -2);
+        //addObstacle(0, -2, 0);
+        
     }
 
     private void addEnemyPeriodically()
@@ -128,4 +132,25 @@ public class GameController : MonoBehaviour {
         updateCamera();
         addEnemyPeriodically();
     }
+
+    void addTurret(float x, float y)
+    {
+        GameObject obj = new GameObject();            // Create a new empty game object that will hold a gem.
+
+       Turret turret = obj.AddComponent<Turret>();
+        turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        turret.name = "turret";
+
+        turret.init(1, true,this);
+    }
+
+    void addObstacle(float x, float y, int type)
+    {
+        GameObject obj = new GameObject();
+        Obstacle obs = obj.AddComponent<Obstacle>();
+        obs.transform.position = new Vector3(x, y, 0);
+        obs.init(this, type);
+    }
+
+    
 }
