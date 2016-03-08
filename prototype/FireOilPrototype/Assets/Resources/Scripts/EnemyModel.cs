@@ -101,6 +101,10 @@ public class EnemyModel : MonoBehaviour {
         {
             owner.health--;
         }
+		if (coll.gameObject.tag == "Spikes") 
+		{
+			owner.health--;
+		}
     }
 
     void OnTriggerStay2D(Collider2D coll)

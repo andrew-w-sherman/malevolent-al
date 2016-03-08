@@ -46,6 +46,8 @@ public class GameController : MonoBehaviour {
            
         }
 
+		addSpikes (0, 6);
+
         addEnemy(-4, 1, "fire");
         addEnemy(-4, 3, "oil");
         //Pit pit = addPit(-2, 1);
@@ -162,6 +164,14 @@ public class GameController : MonoBehaviour {
         return pit;
         
     }
+
+	private void addSpikes (float x, float y)
+	{
+		GameObject spikesObject = new GameObject ();
+		Spikes spikes = spikesObject.AddComponent<Spikes> ();
+		spikes.transform.position = new Vector3 (x, y, 0);
+		spikes.init (this);
+	}
 
     public void addProjectile(Vector3 start, Vector3 velocity, int type)
     {
