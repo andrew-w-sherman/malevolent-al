@@ -4,29 +4,33 @@ using System.Collections;
 public class Explosion : MonoBehaviour {
 
     float explosionTime;
-    BoxCollider2D coll;
+    CircleCollider2D coll;
+    OilBall b;
     float clock;
 
     public void init(OilBall b, float explosionTime)
     {
-        transform.parent = b.transform;
+        transform.parent = b.demo.transform;
 
         this.explosionTime = explosionTime;
+        this.b = b;
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         modelObject.tag = "Explosion";
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
         model.init(this, explosionTime);
 
-        CircleCollider2D coll = gameObject.AddComponent<CircleCollider2D>();
+        coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
-        coll.isTrigger = false;
+        coll.isTrigger = true;
         clock = 0f;
+
     }
 
 	// Update is called once per frame
 	void Update () {
+        transform.position = b.transform.position;
         clock = clock + Time.deltaTime;
-        coll.size = new Vector2(clock * 5f, clock * 5f);
+        coll.radius = 2.5f * clock;
         if (clock > explosionTime)
         {
             Destroy(gameObject);

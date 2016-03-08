@@ -86,6 +86,12 @@ public class EnemyModel : MonoBehaviour {
         if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
         {
             Destroy(gameObject);
+
+			if (coll.gameObject.tag == "OilBall") {
+				coll.gameObject.GetComponent<OilBall> ().damage (5);
+			} else {
+				coll.gameObject.GetComponent<FireBall> ().damage (5);
+			}
         }
     }
 
