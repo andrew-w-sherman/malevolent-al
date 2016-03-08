@@ -96,14 +96,13 @@ public class FireBall : Character {
         else {
 
             Vector3 direction = Vector3.zero;
+			bool moving = false;
 
             if (Input.GetButton("Fire Up"))
             {
                 direction += Vector3.up;
 				moving = true;
             }
-
-            bool moving = false;
 
             if (Input.GetButton("Fire Down"))
             {

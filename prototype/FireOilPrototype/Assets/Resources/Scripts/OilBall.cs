@@ -228,7 +228,12 @@ public class OilBall : Character {
             if (speeding)
             {
                 timeBeenSpeeding += Time.deltaTime;
-                transform.position += speedDirection * Time.deltaTime * 6;
+				float s_speed = 6f;
+				if (timeBeenSpeeding > (speedingTime * 7f / 8f)) 
+				{
+					s_speed -= ((timeBeenSpeeding - (speedingTime * 7f / 8f)) / (speedingTime / 8f)) * 3f;
+				}
+                transform.position += speedDirection * Time.deltaTime * s_speed;
                 if (timeBeenSpeeding > speedingTime)
                 {
                     speeding = false;
