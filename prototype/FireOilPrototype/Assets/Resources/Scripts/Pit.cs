@@ -41,7 +41,7 @@ public class Pit : MonoBehaviour {
         if (on == 1)
         {
             on = 0;
-            model.rend.enabled = false;
+            model.sr.enabled = false;
             coll.enabled = false;
         }
     }
@@ -51,7 +51,7 @@ public class Pit : MonoBehaviour {
         if (on == 0)
         {
             on = 1;
-            model.rend.enabled = true;
+            model.sr.enabled = true;
             coll.enabled = true;
         }
     }
