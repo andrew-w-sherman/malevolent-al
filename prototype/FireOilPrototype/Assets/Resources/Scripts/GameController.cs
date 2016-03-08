@@ -10,11 +10,14 @@ public class GameController : MonoBehaviour {
     public List<Enemy> enemies;
     public List<Wall> walls;
     public List<Projectile> projectiles;
+    public List<Pit> pits;
     public int projectileCount;
     public float clock;
     public int addEnemyInterval = 5;
     public int whenAddEnemy;
     public int whichAddEnemy;
+    public Camera cam;
+    public float minCamSize;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -27,8 +30,49 @@ public class GameController : MonoBehaviour {
 
         enemies = new List<Enemy>();
         walls = new List<Wall>();
+        pits = new List<Pit>();
         addFire(0, 3);
         addOil(0, 1);
+
+        Pit pit = null;
+        for(int i = -7; i < 9; i++)
+        {
+            pit = addPit(-2, i);
+
+            //if (i == 1 || i == 2 || i == 3)
+            //{
+            //    pit.turnOff();
+            //}
+           
+        }
+
+        addEnemy(-4, 1, "fire");
+        addEnemy(-4, 3, "oil");
+        //Pit pit = addPit(-2, 1);
+        //pit.turnOff();
+        //pit.turnOn();
+
+        cam = Camera.main;
+        minCamSize = cam.orthographicSize;
+
+    }
+
+    public void pitSwitch()
+    {
+        if(clock % 10 > 5)
+        {
+            foreach(Pit pit in pits)
+            {
+                pit.turnOff();
+            }
+        }
+        else
+        {
+            foreach (Pit pit in pits)
+            {
+                pit.turnOn();
+            }
+        }
     }
 
     private void addEnemyPeriodically()
@@ -63,10 +107,10 @@ public class GameController : MonoBehaviour {
 
     private void addOil(float x, float y)
     {
-        GameObject playerObject = new GameObject();            // Create a new empty game object that will hold a gem.
+        GameObject playerObject = new GameObject();            
 
         oil = playerObject.AddComponent<OilBall>();
-        oil.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        oil.transform.position = new Vector3(x, y, 0);     							
         oil.name = "Oil Ball";
 
         oil.init(this);
@@ -74,13 +118,20 @@ public class GameController : MonoBehaviour {
 
     private void addEnemy(float x, float y, string type)
     {
-        GameObject enemyObject = new GameObject();            // Create a new empty game object that will hold a gem.
-        Enemy e1 = enemyObject.AddComponent<Enemy>();            // Add the Gem.cs script to the object.
+        GameObject enemyObject = new GameObject();            
+        Enemy e1 = enemyObject.AddComponent<Enemy>();           
 
-        e1.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        e1.transform.position = new Vector3(x, y, 0);      								
         e1.name = "e1";
 
         e1.init(this, type);
+
+        foreach(Enemy e2 in enemies)
+        {
+            Physics2D.IgnoreCollision(e1.model.GetComponent<Collider2D>(), e2.model.GetComponent<Collider2D>());
+        }
+
+        enemies.Add(e1);
     }
 
     private void addWall(float x, float y)
@@ -94,6 +145,22 @@ public class GameController : MonoBehaviour {
         w.init(this);
 
         walls.Add(w);
+    }
+
+    private Pit addPit(float x, float y)
+    {
+        GameObject pitObject = new GameObject();            // Create a new empty game object that will hold a gem.
+        Pit pit = pitObject.AddComponent<Pit>();            // Add the Gem.cs script to the object.
+
+        pit.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+       // pit.name = "Pit" + (walls.Count + 1);
+
+        pit.init(this);
+
+        pits.Add(pit);
+
+        return pit;
+        
     }
 
     public void addProjectile(Vector3 start, Vector3 velocity, int type)
@@ -112,13 +179,68 @@ public class GameController : MonoBehaviour {
 
     private void updateCamera()
     {
-        if (Camera.main != null)
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
+        float camX = cam.transform.position.x;
+        float camY = cam.transform.position.y;
+        float fireX = fire.transform.position.x;
+        float fireY = fire.transform.position.y;
+        float oilX = oil.transform.position.x;
+        float oilY = oil.transform.position.y;
+        float whenIncreaseSizeX = 5f;
+        float whenIncreaseSizeY = 3f;
+        float whenDecreaseSizeX = 5f;
+        float whenDecreaseSizeY = 3f;
+        float camDelta = 0f;
+        float minCamDelta = 0.005f;
+
+        if (cam != null)
         {
             Vector3 direction = oil.transform.position - fire.transform.position;
             Vector3 halfwayPoint = fire.transform.position + (direction / 2) + new Vector3(0, 0, -10);
-            
-            Camera.main.transform.position = halfwayPoint;
+            cam.transform.position = halfwayPoint;
+
+            if(fireX > camX + width/2 - whenIncreaseSizeX || fireX < camX - width/2 + whenIncreaseSizeX ||
+               fireY > camY + height/2 - whenIncreaseSizeY || fireY < camY - height/2 + whenIncreaseSizeY ||
+               oilX > camX + width / 2 - whenIncreaseSizeX || oilX < camX - width / 2 + whenIncreaseSizeX ||
+               oilY > camY + height / 2 - whenIncreaseSizeY || oilY < camY - height / 2 + whenIncreaseSizeY)
+            {
+                while (fireX > camX + width / 2 - whenIncreaseSizeX || fireX < camX - width / 2 + whenIncreaseSizeX ||
+                       fireY > camY + height / 2 - whenIncreaseSizeY || fireY < camY - height / 2 + whenIncreaseSizeY ||
+                       oilX > camX + width / 2 - whenIncreaseSizeX || oilX < camX - width / 2 + whenIncreaseSizeX ||
+                       oilY > camY + height / 2 - whenIncreaseSizeY || oilY < camY - height / 2 + whenIncreaseSizeY)
+                {
+                    camDelta += minCamDelta;
+                    height = 2f * (cam.orthographicSize + camDelta);
+                    width = height * cam.aspect;
+                }
+
+                camDelta -= minCamDelta;
+            }
+            else if(cam.orthographicSize > minCamSize)
+            {
+                if(fireX < camX + width / 2 - whenDecreaseSizeX && fireX > camX - width / 2 + whenDecreaseSizeX &&
+                   fireY < camY + height / 2 - whenDecreaseSizeY && fireY > camY - height / 2 + whenDecreaseSizeY &&
+                   oilX < camX + width / 2 - whenDecreaseSizeX && oilX > camX - width / 2 + whenDecreaseSizeX &&
+                   oilY < camY + height / 2 - whenDecreaseSizeY && oilY > camY - height / 2 + whenDecreaseSizeY)
+                {
+                    while (fireX < camX + width / 2 - whenDecreaseSizeX && fireX > camX - width / 2 + whenDecreaseSizeX &&
+                           fireY < camY + height / 2 - whenDecreaseSizeY && fireY > camY - height / 2 + whenDecreaseSizeY &&
+                           oilX < camX + width / 2 - whenDecreaseSizeX && oilX > camX - width / 2 + whenDecreaseSizeX &&
+                           oilY < camY + height / 2 - whenDecreaseSizeY && oilY > camY - height / 2 + whenDecreaseSizeY
+                           && cam.orthographicSize + camDelta >= minCamSize)
+                    {
+                        camDelta -= minCamDelta;
+                        height = 2f * (cam.orthographicSize + camDelta);
+                        width = height * cam.aspect;
+                    }
+
+                    camDelta += minCamDelta;
+                }
+            }
         }
+
+        cam.orthographicSize += camDelta;
     }
 
     // Update is called once per frame
@@ -126,6 +248,7 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
-        addEnemyPeriodically();
+        pitSwitch();
+        //addEnemyPeriodically();
     }
 }
