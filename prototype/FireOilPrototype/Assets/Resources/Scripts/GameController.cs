@@ -103,7 +103,6 @@ public class GameController : MonoBehaviour {
         fire.name = "Fire Ball";
 
         fire.init(this);
-		print ("fire health is " + fire.health);
     }
 
     private void addOil(float x, float y)
@@ -115,7 +114,6 @@ public class GameController : MonoBehaviour {
         oil.name = "Oil Ball";
 
         oil.init(this);
-		print ("fire health is " + oil.health);
     }
 
     private void addEnemy(float x, float y, string type)

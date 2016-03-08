@@ -19,18 +19,10 @@ public class Explosion : MonoBehaviour {
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
         model.init(this, explosionTime);
 
-<<<<<<< HEAD:prototype/FireOilPrototype/Assets/Resources/Scripts/Explosion.cs
-
-		coll = gameObject.GetComponent<BoxCollider2D> ();
-		/*
-        CircleCollider2D coll = gameObject.AddComponent<CircleCollider2D>();
-=======
-        coll = gameObject.AddComponent<CircleCollider2D>();
->>>>>>> 69928509f7c6c8c36ba7667515ff317c33bf9456:prototype/FireOilPrototype/Assets/Resources/Scripts/Joel's scripts/Explosion.cs
         coll.radius = (float).33;
         coll.isTrigger = true;
         clock = 0f;
-		*/
+
     }
 
 	// Update is called once per frame
