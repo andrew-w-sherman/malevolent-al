@@ -15,7 +15,7 @@ public class Spikes : MonoBehaviour {
 	{
 
 		this.demo = demo;
-		gameObject.tag = "Pit";
+		gameObject.tag = "Spikes";
 
 		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		model = modelObject.AddComponent<SpikesModel>();
