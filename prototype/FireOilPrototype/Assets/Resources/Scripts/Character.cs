@@ -17,15 +17,15 @@ public class Character : MonoBehaviour {
 	//health stuff
 	public float health;
 	public float maxHealth = 10;
-	float healthRegenCooldown = 7; //how long health takes to regenerate after taking damage
-	float lastDamage;
-	float healthRegenRate = 1;     //hp gained per second while regenerating
-	float lastRegen;
-	float damageCooldown = 1.5f; //how long we wait in between taking damage (so things like spikes don't kill in a couple frames)
+	public float healthRegenCooldown = 7; //how long health takes to regenerate after taking damage
+	public float lastDamage;
+	public float healthRegenRate = 1;     //hp gained per second while regenerating
+	public float lastRegen;
+	public float damageCooldown = 1.5f; //how long we wait in between taking damage (so things like spikes don't kill in a couple frames)
 
     void Start () {
         falling = 0;
-		lastDamage = 0;
+		lastDamage = -5;
 		lastRegen = 0;
 		health = maxHealth;
 	}

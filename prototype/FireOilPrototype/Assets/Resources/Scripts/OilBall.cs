@@ -68,13 +68,7 @@ public class OilBall : Character {
         createPatch(0);
 
     }
-
-    void Start()
-    {
-        clock = 0f;
-		health = maxHealth;
-    }
-
+		
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "FireBall")
@@ -84,7 +78,7 @@ public class OilBall : Character {
 
             if (other.gameObject.GetComponent<FireBall>().speed > speedingThreshold)
             {
-                print("Time to speed!");
+                //print("Time to speed!");
                 speeding = true;
                 timeBeenSpeeding = 0f;
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
@@ -96,10 +90,10 @@ public class OilBall : Character {
         }else if(other.gameObject.tag == "wall")
         {
 
-            print(other.contacts[0].normal);
+            //print(other.contacts[0].normal);
 
             speedDirection = Vector3.Reflect(speedDirection, other.contacts[0].normal);
-            print(speedDirection);
+            //print(speedDirection);
 
             /*print("hit wall");
             Vector3 wallNormal;
@@ -191,11 +185,18 @@ public class OilBall : Character {
     void FixedUpdate()
     {
      
-        if (falling == 1)
-        {
-            fallSequence();
-        }
+		if (falling == 1) {
+			fallSequence ();
+		}
+
         else {
+
+			if (clock - lastDamage < damageCooldown) {
+				model.flicker = true;
+			} else {
+				model.flicker = false;
+			}
+
             Vector3 direction = Vector3.zero;
 
             if (Input.GetButton("Oil Up"))
@@ -250,7 +251,7 @@ public class OilBall : Character {
             }
 
 
-            if (movementCounter > coll.bounds.size.x / 2 && !speeding)
+			if (movementCounter > (coll.radius * 3f / 4f) && !speeding)
             {
                 if (clock - timeLastExploded > 1.2f)
                 {

@@ -174,7 +174,7 @@ public class GameController : MonoBehaviour {
 		GameObject spikesObject = new GameObject ();
 		Spikes spikes = spikesObject.AddComponent<Spikes> ();
 		spikes.transform.position = new Vector3 (x, y, 0);
-		spikes.init (this);
+		spikes.init (this, oil, fire);
 	}
 
     public void addProjectile(Vector3 start, Vector3 velocity, int type)

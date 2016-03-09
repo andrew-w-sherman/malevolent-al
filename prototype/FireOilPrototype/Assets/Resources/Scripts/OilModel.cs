@@ -14,6 +14,8 @@ public class OilModel : MonoBehaviour {
     Sprite[] idle;
     Sprite[] run;
     public bool isRunning = false;
+	public bool flicker;
+	public float clock;
 
     public void init(bool isCharacter, OilBall b, OilPatch p)
     {
@@ -46,6 +48,7 @@ public class OilModel : MonoBehaviour {
 
         idle = new Sprite[] { charSp[4], charSp[5] };
         run = new Sprite[] { charSp[5], charSp[6], charSp[5], charSp[7] };
+		flicker = false;
     }
 
     public void putOnFire()
@@ -66,8 +69,15 @@ public class OilModel : MonoBehaviour {
         }
     }
 
+	public void Start(){
+		clock = 0f;
+	}
+
     void LateUpdate()
     {
+
+		clock += Time.deltaTime;
+
         if (!isRunning && isCharacter)
         {
             int index = (int)(Time.timeSinceLevelLoad * 2f);
@@ -80,6 +90,13 @@ public class OilModel : MonoBehaviour {
             index = index % run.Length;
             sr.sprite = run[index];
         }
+		if (isCharacter) {
+			if (flicker) {
+				if ((int)(clock * 10) % 2 == 0) {
+					sr.sprite = null;
+				}
+			}
+		}
     }
 
 }

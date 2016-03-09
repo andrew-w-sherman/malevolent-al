@@ -45,6 +45,13 @@ public class FireBall : Character {
         model.init(this, demo);
 
         speed = minSpeed;
+
+		/*
+		falling = 0;
+		lastDamage = -5;
+		lastRegen = 0;
+		health = maxHealth;
+        */
     }
 
     void OnTriggerStay2D(Collider2D collider)
@@ -77,16 +84,22 @@ public class FireBall : Character {
             print("charge is " + charge);
         }
     }
-
+	/*
 	void Start()
 	{
+		
 		health = maxHealth;
 	}
-
+    */
     // Update is called once per frame
     void FixedUpdate()
     {
         //Debug.Log("Fire: " + transform.position);
+		if (clock - lastDamage < damageCooldown) {
+			model.flicker = true;
+		} else {
+			model.flicker = false;
+		}
 
 
         if (falling == 1)
