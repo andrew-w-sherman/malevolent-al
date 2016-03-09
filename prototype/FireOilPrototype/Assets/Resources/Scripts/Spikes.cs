@@ -31,7 +31,7 @@ public class Spikes : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D(Collider2D coll)
+	void OnTriggerStay2D(Collider2D coll)
 	{
 		if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "OilBall_Speeding") {
 			coll.gameObject.GetComponent<OilBall> ().damage (1);

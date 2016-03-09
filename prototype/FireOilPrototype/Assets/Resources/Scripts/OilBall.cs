@@ -155,7 +155,7 @@ public class OilBall : Character {
     {
         if (coll.gameObject.tag == "OilPatch_Spreading")
         {
-            if (clock - timeLastExploded > explodeTimer)
+			if (clock - timeLastExploded > explodeTimer && !speeding)
             {
                 timeLastExploded = clock;
                 GameObject explModel = new GameObject();
