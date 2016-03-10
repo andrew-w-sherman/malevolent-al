@@ -57,6 +57,10 @@ public class GameController : MonoBehaviour {
         //Pit pit = addPit(-2, 1);
         //pit.turnOff();
         //pit.turnOn();
+        addBurnWall(1, -3);
+        addBurnWall(2, -3);
+        addBurnWall(3, -3);
+        addBurnWall(4, -3);
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
@@ -273,7 +277,6 @@ public class GameController : MonoBehaviour {
        Turret turret = obj.AddComponent<Turret>();
         turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
         turret.name = "turret";
-
         turret.init(1, true,this);
     }
 
@@ -283,6 +286,14 @@ public class GameController : MonoBehaviour {
         Obstacle obs = obj.AddComponent<Obstacle>();
         obs.transform.position = new Vector3(x, y, 0);
         obs.init(this, type);
+    }
+
+    void addBurnWall(float x, float y)
+    {
+        GameObject obj = new GameObject();
+        BurnWall obs = obj.AddComponent<BurnWall>();
+        obs.transform.position = new Vector3(x, y, 0);
+        obs.init(this);
     }
 
 	void OnGUI(){

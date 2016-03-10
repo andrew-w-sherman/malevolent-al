@@ -5,6 +5,7 @@ public class Explosion : MonoBehaviour {
 
     float explosionTime;
     CircleCollider2D coll;
+    Rigidbody2D body;
     OilBall b;
     float clock;
 
@@ -19,10 +20,14 @@ public class Explosion : MonoBehaviour {
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
         model.init(this, explosionTime);
 
+
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
         coll.isTrigger = true;
         clock = 0f;
+        body = gameObject.AddComponent<Rigidbody2D>();
+        body.isKinematic = true;
+        
 
     }
 
@@ -36,4 +41,6 @@ public class Explosion : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+   
 }
