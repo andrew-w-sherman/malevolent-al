@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Pit : MonoBehaviour {
+public class Pit : Tile {
 
     public GameController demo;
     public PitModel model;
