@@ -14,8 +14,8 @@ public class Board : MonoBehaviour {
     char[][] characters;
     Tile[,] tiles;
     GameObject tileFolder;
-    List<Enemy> enemies;
-    List<Turret> turrets;
+    List<GameObject> enemies = new List<GameObject>();
+    List<GameObject> turrets = new List<GameObject>();
 
     Switch[] switches = new Switch[10];
     List<Tile>[] switchingTiles = new List<Tile>[10];
@@ -51,6 +51,7 @@ public class Board : MonoBehaviour {
             {
                 char c1 = characters[i][j];
                 char c2 = characters[i][j + 1];
+                Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
                 GameObject obj = new GameObject();
                 Tile tile = null;
                 switch (c1)
@@ -135,12 +136,12 @@ public class Board : MonoBehaviour {
                         Enemy en = enemyGO.AddComponent<Enemy>();
                         if (c2 == 'f') en.init(gc, "fire");
                         else if (c2 == 'o') en.init(gc, "oil");
-                        en.transform.position = this.transform.position + new Vector3(j/2, characters.Length - i - 1, 0);
-                        enemies.Add(en);
+                        en.transform.position = pos;
+                        enemies.Add(enemyGO);
                         break;
                     case 's':
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
-                        Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
+                        
                         if (c2 == 'f')
                         {
                             fb.transform.position = pos;
@@ -159,8 +160,8 @@ public class Board : MonoBehaviour {
                         Turret tr = turretGO.AddComponent<Turret>();
                         if (c2 == 'f') tr.init(0, true, gc);
                         else if (c2 == 'o') tr.init(0, true, gc);
-                        tr.transform.position = this.transform.position + new Vector3(j/2, characters.Length - i - 1, 0);
-                        turrets.Add(tr);
+                        tr.transform.position = pos;
+                        turrets.Add(turretGO);
                         break;
                     default:
                         print("uhhhhh");
@@ -185,8 +186,8 @@ public class Board : MonoBehaviour {
                 Destroy(tile.gameObject);
             }
         }
-        foreach (Enemy en in enemies) Destroy(en);
-        foreach (Turret tr in turrets) Destroy(tr);
+        foreach (GameObject en in enemies) Destroy(en);
+        foreach (GameObject tr in turrets) Destroy(tr);
         ob.destroyTrail();
         fb.transform.position = Vector2.left;
         ob.transform.position = Vector2.right;

@@ -9,7 +9,6 @@ public class Wall : Tile {
 	// Use this for initialization
 	public override void init (GameController demo) {
 
-        print("runs wall init");
         type = WALL;
         linkTag = LINK_WALL;
         this.demo = demo;
