@@ -11,7 +11,7 @@ public class Board : MonoBehaviour {
     GameController gc;
     FireBall fb;
     OilBall ob;
-    char[,] characters;
+    char[][] characters;
     Tile[,] tiles;
     GameObject tileFolder;
     List<Enemy> enemies;
@@ -27,47 +27,30 @@ public class Board : MonoBehaviour {
 
     public void init(string filename, GameController gc)
     {
+        tileFolder = new GameObject();
         this.gc = gc;
         fb = gc.fire;
         ob = gc.oil;
         for (int i = 0; i < 10; i++) switchingTiles[i] = new List<Tile>();
-        List<char[]> arrlist = new List<char[]>();
-        try {
-            string line;
-            StreamReader theReader = new StreamReader("Levels/" + filename, Encoding.Default);
-            using (theReader)
-            {
-                do {
-                    line = theReader.ReadLine();
+        
+        TextAsset ta = Resources.Load("Levels/" + filename) as TextAsset;
+        string[] lines = ta.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+        characters = new char[lines.Length][];
+        for (int i = 0; i < lines.Length; i++) characters[i] = lines[i].ToCharArray();
 
-                    if (line != null)
-                    {
-                        char[] entries = line.ToCharArray();
-                        if (entries.Length > 0)
-                            arrlist.Add(entries);
-                    }
-                }
-                while (line != null);
-                theReader.Close();
-            }
-        }
-        catch (Exception e) {
-            Console.WriteLine("Level failed to load!");
-        }
-        characters = To2D(arrlist.ToArray());
+        if (characters[0].Length % 2 == 1) print("something bad happened (board)");
 
-        if (characters.GetLength(1) % 2 == 1) print("something bad happened (board)");
-
-        tileFolder.transform.position = new Vector3(-characters.GetLength(1) / 4f, -characters.GetLength(0) / 2f, 0f);
+        tileFolder.transform.position = new Vector3(-(characters[0].Length - 2) / 4f, -(characters.Length - 1) / 2f, 0f);
+        tiles = new Tile[characters[0].Length/2,characters.Length];
 
         // going along y
-        for (int i = characters.GetLength(0) - 1; i >= 0; i--)
+        for (int i = characters.Length - 1; i >= 0; i--)
         {
             // two at a time along x
-            for (int j = 0; j < characters.GetLength(1); j+=2)
+            for (int j = 0; j < characters[0].Length; j+=2)
             {
-                char c1 = characters[i, j];
-                char c2 = characters[i, j + 1];
+                char c1 = characters[i][j];
+                char c2 = characters[i][j + 1];
                 GameObject obj = new GameObject();
                 Tile tile = null;
                 switch (c1)
@@ -152,13 +135,22 @@ public class Board : MonoBehaviour {
                         Enemy en = enemyGO.AddComponent<Enemy>();
                         if (c2 == 'f') en.init(gc, "fire");
                         else if (c2 == 'o') en.init(gc, "oil");
-                        en.transform.position = this.transform.position + new Vector3(j, i, 0);
+                        en.transform.position = this.transform.position + new Vector3(j/2, characters.Length - i - 1, 0);
                         enemies.Add(en);
                         break;
                     case 's':
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
-                        if (c2 == 'f') fb.transform.position = this.transform.position + new Vector3(j, i, 0);
-                        else if (c2 == 'o') ob.transform.position = this.transform.position + new Vector3(j, i, 0);
+                        Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
+                        if (c2 == 'f')
+                        {
+                            fb.transform.position = pos;
+                            fb.startPosition = pos;
+                        }
+                        else if (c2 == 'o')
+                        {
+                            ob.transform.position = pos;
+                            ob.startPosition = pos;
+                        }
                         else print("bad syntax");
                         break;
                     case 't':
@@ -167,7 +159,7 @@ public class Board : MonoBehaviour {
                         Turret tr = turretGO.AddComponent<Turret>();
                         if (c2 == 'f') tr.init(0, true, gc);
                         else if (c2 == 'o') tr.init(0, true, gc);
-                        tr.transform.position = this.transform.position + new Vector3(j, i, 0);
+                        tr.transform.position = this.transform.position + new Vector3(j/2, characters.Length - i - 1, 0);
                         turrets.Add(tr);
                         break;
                     default:
@@ -175,8 +167,8 @@ public class Board : MonoBehaviour {
                         break;
                 }
                 tile.transform.parent = tileFolder.transform;
-                tile.transform.localPosition = new Vector3(j, i, 0);
-                tiles[j, i] = tile;
+                tile.transform.localPosition = new Vector3(j/2, characters.Length - i - 1, 0);
+                tiles[j/2, i] = tile;
             }
         }
         linkSwitches();
@@ -210,6 +202,7 @@ public class Board : MonoBehaviour {
     {
         for (int i = 0; i < switches.Length; i++)
         {
+            if (switches[i] == null) continue;
             switches[i].init(gc, switchingTiles[i]);
         }
     }

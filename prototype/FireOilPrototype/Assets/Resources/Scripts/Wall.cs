@@ -7,8 +7,9 @@ public class Wall : Tile {
     public WallModel model;
 
 	// Use this for initialization
-	public void init (GameController demo) {
+	public override void init (GameController demo) {
 
+        print("runs wall init");
         type = WALL;
         linkTag = LINK_WALL;
         this.demo = demo;

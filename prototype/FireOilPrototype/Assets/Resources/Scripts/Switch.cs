@@ -17,7 +17,7 @@ public class Switch : Tile {
         this.tileList = tileList;
         on = true;
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<SwitchModel>();
         //modelObject.AddComponent<Rigidbody>();
         gameObject.AddComponent<BoxCollider2D>();
@@ -45,6 +45,7 @@ public class Switch : Tile {
     void switchTime()
     {
         on = !on;
+        model.switchOwnSprite();
         if (on)
         {
             //add back the box collider

@@ -35,13 +35,17 @@ public class GameController : MonoBehaviour {
         whenAddEnemy = 0;
         whichAddEnemy = 0;
 
+        addFire(0, 3);
+        addOil(0, 1);
+        cam = Camera.main;
+        minCamSize = cam.orthographicSize;
+
         if (DEBUG_LVL)
         {
             enemies = new List<Enemy>();
             walls = new List<Wall>();
             pits = new List<Pit>();
-            addFire(0, 3);
-            addOil(0, 1);
+            
 
             //addTurret(0, -2);
             //addObstacle(0, -2, 0);
@@ -80,9 +84,7 @@ public class GameController : MonoBehaviour {
             board.init(LEVELS[levelIndex], this);
         }
 
-        cam = Camera.main;
-        minCamSize = cam.orthographicSize;
-
+        
     }
 
     public void pitSwitch()

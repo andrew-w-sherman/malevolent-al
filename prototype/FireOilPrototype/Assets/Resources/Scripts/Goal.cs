@@ -7,7 +7,7 @@ public class Goal : Tile {
     SpriteRenderer sr;
 
     // Use this for initialization
-    public void init(GameController gc)
+    public override void init(GameController gc)
     {
         controller = gc;
 

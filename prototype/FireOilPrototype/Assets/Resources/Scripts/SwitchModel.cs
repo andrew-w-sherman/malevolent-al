@@ -5,23 +5,32 @@ public class SwitchModel : MonoBehaviour {
 
     Switch owner;
     GameController controller;
-    Material mat;  
+    SpriteRenderer sr;
     
 
 	public void init (GameController controller, Switch s) {
         this.owner = s;
         this.controller = controller;
         transform.parent = owner.transform;                 // Set the model's parent to the gem.
-        transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent.   
-        mat = GetComponent<Renderer>().material;
-        mat.shader = Shader.Find("Transparent/Diffuse");
-        mat.mainTexture = Resources.Load<Texture2D>("Textures/marble"); //dummy texture for now        
+        transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
+
+        sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.sortingOrder = 2;
+
+        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[13];
+
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void switchOwnSprite()
+    {
+        if (owner.on) sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[14];
+        else sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[13];
+    }
 
     public void switchSprite(Tile t)
     {

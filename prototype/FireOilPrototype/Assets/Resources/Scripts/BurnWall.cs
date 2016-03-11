@@ -12,7 +12,7 @@ public class BurnWall : Tile {
     //when it hits a collider call burn()
 
 	// Use this for initialization
-	public void init (GameController gc) {
+	public override void init (GameController gc) {
         controller = gc;
         myCollider = gameObject.AddComponent<BoxCollider2D>();
         body = gameObject.AddComponent<Rigidbody2D>();

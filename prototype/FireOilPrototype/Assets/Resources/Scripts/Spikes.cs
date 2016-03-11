@@ -16,7 +16,7 @@ public class Spikes : Tile {
 	public bool damagingOil;
 
 	// Use this for initialization
-	public void init(GameController demo)
+	public override void init(GameController demo)
 	{
 
 		this.demo = demo;

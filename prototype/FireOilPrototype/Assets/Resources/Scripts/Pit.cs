@@ -12,7 +12,7 @@ public class Pit : Tile {
     
 
     // Use this for initialization
-    public void init(GameController demo)
+    public override void init(GameController demo)
     {
         type = PIT;
         linkTag = LINK_PIT;

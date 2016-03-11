@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour {
     public int type = NO_TOGGLE;
 
     // Use this for initialization
-    public void init(GameController gc) {
+    public virtual void init(GameController gc) {
         controller = gc;
 
         Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile");
@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour {
 	}
 
     // links tiles to neighbors, usually does nothing
-    public void link() { }
+    public virtual void link() { }
 
     public const int LINK_PIT = 1;
     public const int LINK_WALL = 2;
