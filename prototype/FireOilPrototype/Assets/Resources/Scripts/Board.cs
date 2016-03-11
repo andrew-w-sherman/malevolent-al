@@ -158,8 +158,8 @@ public class Board : MonoBehaviour {
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
                         GameObject turretGO = new GameObject();
                         Turret tr = turretGO.AddComponent<Turret>();
-                        if (c2 == 'f') tr.init(0, true, gc);
-                        else if (c2 == 'o') tr.init(0, true, gc);
+                        if (c2 == 'f') tr.init(0, false, gc);
+                        else if (c2 == 'o') tr.init(0, false, gc);
                         tr.transform.position = pos;
                         turrets.Add(turretGO);
                         break;
