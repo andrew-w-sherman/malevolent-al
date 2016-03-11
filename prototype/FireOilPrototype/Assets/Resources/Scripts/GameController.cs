@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
+
+    public bool DEBUG_LVL;
+    readonly string[] LEVELS = { "test" };
+    int levelIndex;
+
+    public GameObject boardGO;
+    public Board board;
 
     public FireBall fire;
     public OilBall oil;
@@ -28,39 +35,50 @@ public class GameController : MonoBehaviour {
         whenAddEnemy = 0;
         whichAddEnemy = 0;
 
-        enemies = new List<Enemy>();
-        walls = new List<Wall>();
-        pits = new List<Pit>();
-        addFire(0, 3);
-        addOil(0, 1);
-
-        //addTurret(0, -2);
-        //addObstacle(0, -2, 0);
-        
-
-        Pit pit = null;
-        for(int i = -7; i < 9; i++)
+        if (DEBUG_LVL)
         {
-            pit = addPit(-2, i);
+            enemies = new List<Enemy>();
+            walls = new List<Wall>();
+            pits = new List<Pit>();
+            addFire(0, 3);
+            addOil(0, 1);
 
-            //if (i == 1 || i == 2 || i == 3)
-            //{
-            //    pit.turnOff();
-            //}
-           
+            //addTurret(0, -2);
+            //addObstacle(0, -2, 0);
+
+
+            Pit pit = null;
+            for (int i = -7; i < 9; i++)
+            {
+                pit = addPit(-2, i);
+
+                //if (i == 1 || i == 2 || i == 3)
+                //{
+                //    pit.turnOff();
+                //}
+
+            }
+
+            addSpikes(0, 6);
+
+            addEnemy(-4, 1, "fire");
+            addEnemy(-4, 3, "oil");
+            //Pit pit = addPit(-2, 1);
+            //pit.turnOff();
+            //pit.turnOn();
+            addBurnWall(1, -3);
+            addBurnWall(2, -3);
+            addBurnWall(3, -3);
+            addBurnWall(4, -3);
         }
-
-		addSpikes (0, 6);
-
-        addEnemy(-4, 1, "fire");
-        addEnemy(-4, 3, "oil");
-        //Pit pit = addPit(-2, 1);
-        //pit.turnOff();
-        //pit.turnOn();
-        addBurnWall(1, -3);
-        addBurnWall(2, -3);
-        addBurnWall(3, -3);
-        addBurnWall(4, -3);
+        else
+        {
+            // we assume we're working from 
+            levelIndex = 0;
+            boardGO = new GameObject();
+            board = boardGO.AddComponent<Board>();
+            board.init(LEVELS[levelIndex], this);
+        }
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
@@ -300,4 +318,34 @@ public class GameController : MonoBehaviour {
 		GUI.TextField (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
 		GUI.TextField (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
 	}
+
+    //TODO: destroying projectiles probably
+    public void nextLevel() {
+        board.annihilate();
+        levelIndex++;
+        if (levelIndex >= LEVELS.Length) winScreen();
+        else {
+            Destroy(boardGO);
+            boardGO = new GameObject();
+            board = boardGO.AddComponent<Board>();
+            board.init(LEVELS[levelIndex], this);
+        }
+    }
+
+    public void levelSelect(int lvlNum) {
+        board.annihilate();
+        levelIndex = lvlNum;
+        if (levelIndex >= LEVELS.Length || levelIndex < 0) print("what is even happening");
+        else
+        {
+            Destroy(boardGO);
+            board = boardGO.AddComponent<Board>();
+            board.init(LEVELS[levelIndex], this);
+        }
+    }
+
+    public void winScreen()
+    {
+        print("you win!!! (placeholder)");
+    }
 }
