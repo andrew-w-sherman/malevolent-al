@@ -3,23 +3,22 @@ using System.Collections;
 
 public class Tile : MonoBehaviour {
 
-    const int WALL = 0;
-    const int FWALL = 1;
-    const int OWALL = 2;
-    const int PIT = 3;
-
+    // LINKING JUNK
     //neighbors (north, east, south, west)
     public Tile[] neighbors = new Tile[4];
+    public int linkTag = 0;
 
-    public int type;
-    public Vector2 position;
     GameController controller;
     SpriteRenderer sr;
 
-	// Use this for initialization
-	public void init(GameController gc, int type, Vector2 pos) {
-        this.type = type;
-        position = pos;
+    public const int NO_TOGGLE = 0;
+    public const int WALL = 1;
+    public const int PIT = 2;
+
+    public int type = NO_TOGGLE;
+
+    // Use this for initialization
+    public void init(GameController gc) {
         controller = gc;
 
         Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile");
@@ -34,4 +33,10 @@ public class Tile : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    // links tiles to neighbors, usually does nothing
+    public void link() { }
+
+    public const int LINK_PIT = 1;
+    public const int LINK_WALL = 2;
 }

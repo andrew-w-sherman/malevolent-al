@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Obstacle : MonoBehaviour {
+public class Obstacle : Tile {
 
     public const int FIRE = 0; //A firewall is passable only to fire
     public const int OIL = 1;  //An oilwall is passable only to oil

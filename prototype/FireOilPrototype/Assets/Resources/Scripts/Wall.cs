@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Wall : MonoBehaviour {
+public class Wall : Tile {
 
     public GameController demo;
     public WallModel model;
@@ -9,6 +9,8 @@ public class Wall : MonoBehaviour {
 	// Use this for initialization
 	public void init (GameController demo) {
 
+        type = WALL;
+        linkTag = LINK_WALL;
         this.demo = demo;
         gameObject.tag = "wall";
 

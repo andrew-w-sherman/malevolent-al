@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BurnWall : MonoBehaviour {
+public class BurnWall : Tile {
 
     GameController controller;
     BoxCollider2D myCollider;

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Switch : MonoBehaviour {
+public class Switch : Tile {
     //Switches between a regular wall and the desired special wall type
     //Check Tile class for the different types of walls we have
 

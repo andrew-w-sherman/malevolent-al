@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Spikes : MonoBehaviour {
+public class Spikes : Tile {
 
 	public GameController demo;
 	public SpikesModel model;
@@ -16,12 +16,12 @@ public class Spikes : MonoBehaviour {
 	public bool damagingOil;
 
 	// Use this for initialization
-	public void init(GameController demo, OilBall o, FireBall f)
+	public void init(GameController demo)
 	{
 
 		this.demo = demo;
-		this.o = o;
-		this.f = f;
+		this.o = demo.oil;
+		this.f = demo.fire;
 		damagingFire = false;
 		damagingOil = false;
 		gameObject.tag = "Spikes";

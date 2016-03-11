@@ -68,6 +68,14 @@ public class OilBall : Character {
         createPatch(0);
 
     }
+
+    public void destroyTrail()
+    {
+        foreach (OilPatch patch in oilList)
+        {
+            Destroy(patch.gameObject);
+        }
+    }
 		
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -87,7 +95,8 @@ public class OilBall : Character {
                 gameObject.tag = "OilBall_Speeding";
                 
             }
-        }else if(other.gameObject.tag == "wall")
+        }
+        else if(other.gameObject.tag == "wall")
         {
 
             //print(other.contacts[0].normal);

@@ -14,7 +14,8 @@ public class Pit : Tile {
     // Use this for initialization
     public void init(GameController demo)
     {
-
+        type = PIT;
+        linkTag = LINK_PIT;
         this.demo = demo;
         gameObject.tag = "Pit";
         on = 1;

@@ -45,13 +45,9 @@ public class SwitchModel : MonoBehaviour {
 
         switch (type)
         {
-            case 0:
-                return sprites[0];
             case 1:
-                return sprites[10];
+                return sprites[1];
             case 2:
-                return sprites[11];
-            case 3:
                 return sprites[4];
             default:
                 return null;
