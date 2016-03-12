@@ -27,6 +27,8 @@ public class OilBall : Character {
     float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
     Vector3 speedDirection;
     Rigidbody2D body;
+
+    public bool shootButtonDown;
     
 
     public void init(GameController demo)
@@ -35,6 +37,7 @@ public class OilBall : Character {
         startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
+        shootButtonDown = false;
 
         speed = 3;
 
@@ -253,15 +256,24 @@ public class OilBall : Character {
                     body.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
                 }
             }
-            movementCounter += (direction.normalized * Time.deltaTime).magnitude;
 
             if (Input.GetButtonDown("Oil Shoot"))
             {
                 demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+                shootButtonDown = true;
+            }
+            else if (Input.GetButtonUp("Oil Shoot"))
+            {
+                shootButtonDown = false;
+            }
+
+            if (!shootButtonDown)
+            {
+                movementCounter += (direction.normalized * Time.deltaTime).magnitude;
             }
 
 
-			if (movementCounter > (coll.radius * 3f / 4f) && !speeding)
+            if (movementCounter > (coll.radius * 3f / 4f) && !speeding)
             {
                 if (clock - timeLastExploded > 1.2f)
                 {

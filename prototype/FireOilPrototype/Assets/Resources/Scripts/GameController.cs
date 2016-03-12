@@ -336,8 +336,8 @@ public class GameController : MonoBehaviour {
 
 
 	void OnGUI(){
-		GUI.TextField (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
-		GUI.TextField (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
+		GUI.Label (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
+		GUI.Label (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
 	}
 
     //TODO: destroying projectiles probably
