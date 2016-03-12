@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : Character {
 
     public GameController demo;
     public EnemyModel model;
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if(health == 0)
+        if (health == 0)
         {
             Destroy(gameObject);
         }

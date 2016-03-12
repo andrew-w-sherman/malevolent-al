@@ -16,7 +16,7 @@ public class Explosion : MonoBehaviour {
         this.explosionTime = explosionTime;
         this.b = b;
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        modelObject.tag = "Explosion";
+        tag = "Explosion";
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
         model.init(this, explosionTime);
 

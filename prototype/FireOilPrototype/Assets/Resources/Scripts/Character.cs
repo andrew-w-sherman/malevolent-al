@@ -32,10 +32,13 @@ public class Character : MonoBehaviour {
 
     public void pitHit(Collider2D other)
     {
+        Debug.Log("hit1");
         if (other.gameObject.tag == "Pit")
         {
+            Debug.Log("hit2");
             if (other.gameObject.GetComponent<Pit>().on == 1 && speeding == false)
             {
+                Debug.Log("hit3");
                 fallingInto = other;
                 initialDistance = Vector2.Distance(transform.position, other.transform.position);
                 whenFell = clock;

@@ -26,8 +26,8 @@ public class CrumbleWall : Tile {
 
         destroyNextFrame = false;
     }
+    
 
-    // Update is called once per frame
     void Update()
     {
         if (destroyNextFrame)
@@ -36,9 +36,9 @@ public class CrumbleWall : Tile {
         }
     }
 
+
     void OnCollisionEnter2D(Collision2D coll)
     {
-        print("oncolburnwall " + coll.gameObject.tag);
 
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
@@ -54,18 +54,4 @@ public class CrumbleWall : Tile {
         }
     }
 
-
-
-    //void OnTriggerEnter2D(Collider2D col)
-    //{
-
-    //    if (col.gameObject.tag == "BurnWall")
-    //    {
-    //        col.gameObject.GetComponent<BurnWall>().startBurn();
-    //    }
-    //    if (col.gameObject.tag == "Explosion")
-    //    {
-    //        startBurn();
-    //    }
-    //}
 }

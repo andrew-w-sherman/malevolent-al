@@ -62,6 +62,7 @@ public class FireBall : Character {
         {
             onOil = true;
         }
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -73,7 +74,6 @@ public class FireBall : Character {
         }
 
         pitHit(other);
-            
     }
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
