@@ -32,13 +32,13 @@ public class Character : MonoBehaviour {
 
     public void pitHit(Collider2D other)
     {
-        Debug.Log("hit1");
+        //Debug.Log("hit1");
         if (other.gameObject.tag == "Pit")
         {
-            Debug.Log("hit2");
+            //Debug.Log("hit2");
             if (other.gameObject.GetComponent<Pit>().on == 1 && speeding == false)
             {
-                Debug.Log("hit3");
+                //Debug.Log("hit3");
                 fallingInto = other;
                 initialDistance = Vector2.Distance(transform.position, other.transform.position);
                 whenFell = clock;
@@ -60,10 +60,17 @@ public class Character : MonoBehaviour {
         }
         else
         {
-            currentScale = 1f;
-            transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-            transform.position = startPosition;
-            falling = 0;
+            if (tag != "enemy")
+            {
+                currentScale = 1f;
+                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+                transform.position = startPosition;
+                falling = 0;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

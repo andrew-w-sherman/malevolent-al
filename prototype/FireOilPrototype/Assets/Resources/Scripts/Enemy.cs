@@ -6,7 +6,6 @@ public class Enemy : Character {
     public GameController demo;
     public EnemyModel model;
     public string type;
-    public int health;
 
     // Use this for initialization
     public void init(GameController demo, string type)

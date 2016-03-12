@@ -153,7 +153,7 @@ public class GameController : MonoBehaviour {
         Enemy e1 = enemyObject.AddComponent<Enemy>();           
 
         e1.transform.position = new Vector3(x, y, 0);      								
-        e1.name = "e1";
+        e1.name = "enemy-" + (enemies.Count + 1);
 
         e1.init(this, type);
 

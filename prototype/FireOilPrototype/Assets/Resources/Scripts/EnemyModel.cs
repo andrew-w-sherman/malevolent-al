@@ -77,11 +77,11 @@ public class EnemyModel : MonoBehaviour {
     {
         if (coll.gameObject.tag == "projectile-friendly")
         {
-            owner.health--;
+            owner.health -= 5;
         }
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
-            owner.health--;
+            owner.health -= 10;
         }
         if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
         {
@@ -99,12 +99,12 @@ public class EnemyModel : MonoBehaviour {
     {
         if (coll.gameObject.tag == "Explosion")
         {
-            owner.health--;
+            owner.health -= 10;
         }
-		if (coll.gameObject.tag == "Spikes") 
-		{
-			owner.health--;
-		}
+		//if (coll.gameObject.tag == "Spikes") 
+		//{
+		//	owner.health--;
+		//}
         
         owner.pitHit(coll);
     }
