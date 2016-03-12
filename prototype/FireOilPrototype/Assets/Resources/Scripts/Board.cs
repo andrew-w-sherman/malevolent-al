@@ -97,7 +97,7 @@ public class Board : MonoBehaviour {
                     case 'C':
                         if (c2 != 'C') print("syntax err");
                         // TODO: do we have a crumbling wall???
-                        tile = obj.AddComponent<BurnWall>();
+                        tile = obj.AddComponent<CrumbleWall>();
                         tile.init(gc);
                         break;
                     case '^':

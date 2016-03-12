@@ -28,10 +28,6 @@ public class Pit : Tile {
         var renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.enabled = true;
 
-        //var body = gameObject.AddComponent<Rigidbody2D>();
-        //body.gravityScale = 0;
-        //body.isKinematic = false;
-
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).5;
         coll.isTrigger = true;
@@ -39,16 +35,6 @@ public class Pit : Tile {
         var modelObject = new GameObject();
         model = modelObject.AddComponent<PitModel>();
         model.init(this, demo);
-
-        //var body = gameObject.AddComponent<Rigidbody2D>();
-        //body.gravityScale = 0;
-        //body.velocity = Vector3.zero;
-        //body.isKinematic = false;
-
-        //coll = gameObject.AddComponent<BoxCollider2D>();
-        //coll.isTrigger = true;
-        //coll.enabled = true;
-        //coll.size = new Vector2(collDimensions, collDimensions);
         
 
     }
