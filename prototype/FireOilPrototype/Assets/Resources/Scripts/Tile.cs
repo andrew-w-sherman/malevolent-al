@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour {
         DestroyImmediate(GetComponent<MeshRenderer>());
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 0;
         sr.sprite = tileSp[3];
     }
 	

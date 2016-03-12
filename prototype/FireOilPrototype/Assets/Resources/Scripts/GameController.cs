@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour {
 
     public GameObject boardGO;
     public Board board;
+    
+    public bool menuShowing;
 
     public FireBall fire;
     public OilBall oil;
@@ -30,6 +32,7 @@ public class GameController : MonoBehaviour {
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
 
     void Start () {
+
         projectileCount = 0;
         clock = 0f;
         whenAddEnemy = 0;
@@ -330,15 +333,41 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
+
+        escapeCheck();
+
         //pitSwitch();
         //addEnemyPeriodically();
     }
 
 
+    public void escapeCheck()
+    {
+        if (Input.GetButtonDown("Escape"))
+        {
+            menuShowing = !menuShowing;
+            if (menuShowing)
+            {
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
+    }
+
+
 	void OnGUI(){
-		GUI.TextField (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
-		GUI.TextField (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
-	}
+		GUI.Label (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
+		GUI.Label (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
+        if (menuShowing)
+        {
+            Vector3 camCenter = cam.ScreenToWorldPoint(cam.transform.position);
+            Debug.Log(camCenter.x + " " + camCenter.y);
+            GUI.Label(new Rect(400, 300, 100, 30), "Menu");
+        }
+    }
 
     //TODO: destroying projectiles probably
     public void nextLevel() {
