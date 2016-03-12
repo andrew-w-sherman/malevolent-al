@@ -49,6 +49,11 @@ public class Board : MonoBehaviour {
             // two at a time along x
             for (int j = 0; j < characters[0].Length; j+=2)
             {
+                while (characters[i][j] == ' ') {
+                    j++;
+                    // make sure there's still two chars left in the line
+                    if (j + 1 >= characters[0].Length) break;
+                }
                 char c1 = characters[i][j];
                 char c2 = characters[i][j + 1];
                 Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
