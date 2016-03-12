@@ -358,14 +358,30 @@ public class GameController : MonoBehaviour {
     }
 
 
-	void OnGUI(){
-		GUI.Label (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
-		GUI.Label (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
+    void OnGUI()
+    {
+
+        float escapeButtonWidth = 300;
+        float escapeButtonHeight = 50;
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.label);
+
+        buttonStyle = GUI.skin.button;
+        buttonStyle.normal.textColor = Color.white;
+        buttonStyle.fontStyle = FontStyle.Bold;
+        //buttonStyle.padding.top = -4;
+        buttonStyle.padding.left = -10;
+        buttonStyle.padding.right = -10;
+
+        GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
+        GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
         if (menuShowing)
         {
-            Vector3 camCenter = cam.ScreenToWorldPoint(cam.transform.position);
-            Debug.Log(camCenter.x + " " + camCenter.y);
-            GUI.Label(new Rect(400, 300, 100, 30), "Menu");
+            float screenHeight = Screen.height;
+            float screenWidth = Screen.width;
+
+            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle);
+            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart", buttonStyle);
+            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle);
         }
     }
 
