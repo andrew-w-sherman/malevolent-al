@@ -8,7 +8,7 @@ public class Pit : Tile {
     public PitModel model;
     public int on;
     public float collDimensions = 1f;
-    public BoxCollider2D coll;
+    public CircleCollider2D coll;
     
 
     // Use this for initialization
@@ -20,7 +20,23 @@ public class Pit : Tile {
         gameObject.tag = "Pit";
         on = 1;
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var filter = gameObject.AddComponent<MeshFilter>();
+        filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
+        Destroy(uselessQuad);
+
+        var renderer = gameObject.AddComponent<MeshRenderer>();
+        renderer.enabled = true;
+
+        //var body = gameObject.AddComponent<Rigidbody2D>();
+        //body.gravityScale = 0;
+        //body.isKinematic = false;
+
+        coll = gameObject.AddComponent<CircleCollider2D>();
+        coll.radius = (float).5;
+        coll.isTrigger = true;
+
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<PitModel>();
         model.init(this, demo);
 
@@ -29,10 +45,10 @@ public class Pit : Tile {
         //body.velocity = Vector3.zero;
         //body.isKinematic = false;
 
-        coll = gameObject.AddComponent<BoxCollider2D>();
-        coll.isTrigger = true;
-        coll.enabled = true;
-        coll.size = new Vector2(collDimensions, collDimensions);
+        //coll = gameObject.AddComponent<BoxCollider2D>();
+        //coll.isTrigger = true;
+        //coll.enabled = true;
+        //coll.size = new Vector2(collDimensions, collDimensions);
         
 
     }
