@@ -374,12 +374,18 @@ public class GameController : MonoBehaviour {
 
         GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
         GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
+
+
         if (menuShowing)
         {
             float screenHeight = Screen.height;
             float screenWidth = Screen.width;
 
-            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle);
+            if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
+            {
+                menuShowing = !menuShowing;
+                Time.timeScale = 1f;
+            }
             GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart", buttonStyle);
             GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle);
         }
