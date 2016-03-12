@@ -24,6 +24,7 @@ public class Explosion : MonoBehaviour {
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
         coll.isTrigger = true;
+
         clock = 0f;
         body = gameObject.AddComponent<Rigidbody2D>();
         body.isKinematic = true;

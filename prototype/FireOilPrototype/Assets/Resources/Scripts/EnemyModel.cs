@@ -178,7 +178,8 @@ public class EnemyModel : MonoBehaviour
                 foreach (RaycastHit2D hit in hitList.ToArray())
                 {
                     //Debug.Log(hit.collider);
-                    if (hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit")
+                    if (hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit" || 
+                        hit.collider.gameObject.tag == "Explosion")
                     {
                         obstacleHit = 1;
                     }

@@ -278,7 +278,7 @@ public class OilBall : Character
             }
 
 
-            if (movementCounter > (coll.radius * 3f / 4f) && !speeding)
+            if (movementCounter > (coll.radius * 1f / 2f) && !speeding)
             {
                 if (clock - timeLastExploded > 1.2f)
                 {
