@@ -70,10 +70,11 @@ public class GameController : MonoBehaviour {
             //Pit pit = addPit(-2, 1);
             //pit.turnOff();
             //pit.turnOn();
-            addBurnWall(1, -3);
-            addBurnWall(2, -3);
-            addBurnWall(3, -3);
-            addBurnWall(4, -3);
+            addCrumbleWall(1, -3);
+            addCrumbleWall(2, -3);
+            addCrumbleWall(3, -3);
+            addCrumbleWall(4, -3);
+            
         }
         else
         {
@@ -166,16 +167,31 @@ public class GameController : MonoBehaviour {
 
     private void addWall(float x, float y)
     {
-        GameObject wallObject = new GameObject();            // Create a new empty game object that will hold a gem.
-        Wall w = wallObject.AddComponent<Wall>();            // Add the Gem.cs script to the object.
+        GameObject wallObject = new GameObject();           
+        Wall w = wallObject.AddComponent<Wall>();           
 
-        w.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        w.transform.position = new Vector3(x, y, 0);      								
         w.name = "Wall" + (walls.Count + 1);
 
         w.init(this);
 
         walls.Add(w);
     }
+
+
+    private void addCrumbleWall(float x, float y)
+    {
+        GameObject wallObject = new GameObject();           
+        CrumbleWall w = wallObject.AddComponent<CrumbleWall>();            
+
+        w.transform.position = new Vector3(x, y, 0);     								
+        //w.name = "CrumbleWall" + (walls.Count + 1);
+
+        w.init(this);
+
+        //walls.Add(w);
+    }
+
 
     private Pit addPit(float x, float y)
     {
@@ -286,7 +302,7 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
-        pitSwitch();
+        //pitSwitch();
         //addEnemyPeriodically();
     }
 
