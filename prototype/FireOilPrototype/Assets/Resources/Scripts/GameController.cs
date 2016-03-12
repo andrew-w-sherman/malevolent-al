@@ -231,6 +231,34 @@ public class GameController : MonoBehaviour {
         projectiles.Add(p);
     }
 
+
+    void addTurret(float x, float y, int dir, bool isRotating)
+    {
+        GameObject obj = new GameObject();            // Create a new empty game object that will hold a gem.
+
+        Turret turret = obj.AddComponent<Turret>();
+        turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+        turret.name = "turret";
+        turret.init(dir, isRotating, this);
+    }
+
+    void addObstacle(float x, float y, int type)
+    {
+        GameObject obj = new GameObject();
+        Obstacle obs = obj.AddComponent<Obstacle>();
+        obs.transform.position = new Vector3(x, y, 0);
+        obs.init(this, type);
+    }
+
+    void addBurnWall(float x, float y)
+    {
+        GameObject obj = new GameObject();
+        BurnWall obs = obj.AddComponent<BurnWall>();
+        obs.transform.position = new Vector3(x, y, 0);
+        obs.init(this);
+    }
+
+
     private void updateCamera()
     {
         float height = 2f * cam.orthographicSize;
@@ -306,31 +334,6 @@ public class GameController : MonoBehaviour {
         //addEnemyPeriodically();
     }
 
-    void addTurret(float x, float y)
-    {
-        GameObject obj = new GameObject();            // Create a new empty game object that will hold a gem.
-
-       Turret turret = obj.AddComponent<Turret>();
-        turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
-        turret.name = "turret";
-        turret.init(1, true,this);
-    }
-
-    void addObstacle(float x, float y, int type)
-    {
-        GameObject obj = new GameObject();
-        Obstacle obs = obj.AddComponent<Obstacle>();
-        obs.transform.position = new Vector3(x, y, 0);
-        obs.init(this, type);
-    }
-
-    void addBurnWall(float x, float y)
-    {
-        GameObject obj = new GameObject();
-        BurnWall obs = obj.AddComponent<BurnWall>();
-        obs.transform.position = new Vector3(x, y, 0);
-        obs.init(this);
-    }
 
 	void OnGUI(){
 		GUI.TextField (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);

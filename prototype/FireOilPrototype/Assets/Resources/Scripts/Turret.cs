@@ -22,10 +22,10 @@ public class Turret : MonoBehaviour
         buildVectorMap();
         demo = gc;
         timer = 0;
-        speed = 5;    //firing rate in seconds
+        speed = .5f;    //firing rate in seconds
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<TurretModel>();
-        modelObject.AddComponent<Rigidbody>();
+        //modelObject.AddComponent<Rigidbody>();
         model.init(this, demo, rotate);
         
     }
