@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OilModel : MonoBehaviour {
+public class OilModel : MonoBehaviour
+{
 
     // Use this for initialization
 
+    public GameController controller;
     bool isCharacter;
     OilBall b;
     OilPatch p;
@@ -14,13 +16,14 @@ public class OilModel : MonoBehaviour {
     Sprite[] idle;
     Sprite[] run;
     public bool isRunning = false;
-	public bool flicker;
-	public float clock;
+    public bool flicker;
+    public float clock;
 
-    public void init(bool isCharacter, OilBall b, OilPatch p)
+    public void init(bool isCharacter, OilBall b, OilPatch p, GameController controller)
     {
         charSp = Resources.LoadAll<Sprite>("Sprite Sheets/char-front");
         this.isCharacter = isCharacter;
+        this.controller = controller;
         this.b = b;
         this.p = p;
 
@@ -49,7 +52,7 @@ public class OilModel : MonoBehaviour {
 
         idle = new Sprite[] { charSp[4], charSp[5] };
         run = new Sprite[] { charSp[5], charSp[6], charSp[5], charSp[7] };
-		flicker = false;
+        flicker = false;
     }
 
     public void putOnFire()
@@ -70,14 +73,15 @@ public class OilModel : MonoBehaviour {
         }
     }
 
-	public void Start(){
-		clock = 0f;
-	}
+    public void Start()
+    {
+        clock = 0f;
+    }
 
     void LateUpdate()
     {
 
-		clock += Time.deltaTime;
+        clock += Time.deltaTime;
 
         if (!isRunning && isCharacter)
         {
@@ -91,13 +95,15 @@ public class OilModel : MonoBehaviour {
             index = index % run.Length;
             sr.sprite = run[index];
         }
-		if (isCharacter) {
-			if (flicker) {
-				if ((int)(clock * 10) % 2 == 0) {
-					sr.sprite = null;
-				}
-			}
-		}
+        if (isCharacter)
+        {
+            if (flicker)
+            {
+                if ((int)(clock * 10) % 2 == 0)
+                {
+                    sr.sprite = null;
+                }
+            }
+        }
     }
-
 }

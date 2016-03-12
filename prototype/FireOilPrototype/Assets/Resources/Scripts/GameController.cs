@@ -12,6 +12,9 @@ public class GameController : MonoBehaviour {
     public GameObject boardGO;
     public Board board;
 
+    public GameObject menu; // Assign in inspector
+    public bool menuShowing;
+
     public FireBall fire;
     public OilBall oil;
     public List<Enemy> enemies;
@@ -30,6 +33,8 @@ public class GameController : MonoBehaviour {
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
 
     void Start () {
+
+        menuShowing = false;
         projectileCount = 0;
         clock = 0f;
         whenAddEnemy = 0;
@@ -330,8 +335,29 @@ public class GameController : MonoBehaviour {
 
         clock += Time.deltaTime;
         updateCamera();
+
+        escapeCheck();
+
         //pitSwitch();
         //addEnemyPeriodically();
+    }
+
+
+    public void escapeCheck()
+    {
+        if (Input.GetButtonDown("Escape"))
+        {
+            menuShowing = !menuShowing;
+            //menu.SetActive(menuShowing);
+            if (menuShowing)
+            {
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
     }
 
 

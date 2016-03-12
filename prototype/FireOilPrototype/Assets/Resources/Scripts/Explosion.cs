@@ -11,7 +11,7 @@ public class Explosion : MonoBehaviour {
 
     public void init(OilBall b, float explosionTime)
     {
-        transform.parent = b.demo.transform;
+        transform.parent = b.controller.transform;
 
         this.explosionTime = explosionTime;
         this.b = b;

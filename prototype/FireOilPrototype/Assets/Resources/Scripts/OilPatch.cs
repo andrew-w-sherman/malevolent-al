@@ -3,6 +3,8 @@ using System.Collections;
 
 public class OilPatch : MonoBehaviour {
 
+
+    public GameController controller;
     public float clock;
     public float onFireTimer;
     public bool onFire;
@@ -13,16 +15,17 @@ public class OilPatch : MonoBehaviour {
     OilBall b;
     OilModel model;
 
-    public void init(OilBall b)
+    public void init(OilBall b, GameController controller)
     {
         this.b = b;
+        this.controller = controller;
 
         var coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = true;
 
         var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
-        model.init(false, null, this);
+        model.init(false, null, this, controller);
 
         clock = 0f; onFireTimer = 0f;
         onFire = false; spreading = false;

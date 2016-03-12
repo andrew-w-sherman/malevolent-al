@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireBall : Character {
+public class FireBall : Character
+{
 
-    public GameController demo;
+    public GameController controller;
     public FireModel model;
     public CircleCollider2D coll;
     public Vector3 lastDirection;
@@ -18,12 +19,12 @@ public class FireBall : Character {
     // Use this for initialization
     public void init(GameController demo)
     {
-        this.demo = demo;
+        this.controller = demo;
         startPosition = transform.position;
         lastDirection = Vector3.up;
 
         gameObject.tag = "FireBall";
-        
+
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
         filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
@@ -46,7 +47,7 @@ public class FireBall : Character {
 
         speed = minSpeed;
 
-		/*
+        /*
 		falling = 0;
 		lastDamage = -5;
 		lastRegen = 0;
@@ -84,7 +85,7 @@ public class FireBall : Character {
             print("charge is " + charge);
         }
     }
-	/*
+    /*
 	void Start()
 	{
 		
@@ -95,11 +96,13 @@ public class FireBall : Character {
     void FixedUpdate()
     {
         //Debug.Log("Fire: " + transform.position);
-		if (clock - lastDamage < damageCooldown) {
-			model.flicker = true;
-		} else {
-			model.flicker = false;
-		}
+        if (clock - lastDamage < damageCooldown)
+        {
+            model.flicker = true;
+        }
+        else {
+            model.flicker = false;
+        }
 
 
         if (falling == 1)
@@ -109,12 +112,12 @@ public class FireBall : Character {
         else {
 
             Vector3 direction = Vector3.zero;
-			bool moving = false;
+            bool moving = false;
 
             if (Input.GetButton("Fire Up"))
             {
                 direction += Vector3.up;
-				moving = true;
+                moving = true;
             }
 
             if (Input.GetButton("Fire Down"))
@@ -157,22 +160,24 @@ public class FireBall : Character {
                 {
 
                     //Debug.Log(lastDirection);
-                    demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
+                    controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
 
                 }
                 else {                                 //if we're charged, do that radius attack!
                     if (charge > 4) { charge = 4; }
                     charge *= 4;
-					float diagonalModifier = 0f;
-					if (direction.x != 0 && direction.y != 0) {
-						diagonalModifier = Mathf.PI / 4f;
-					}
-					for (int i = 0; i < charge; i++) {
-					float radians = (Mathf.PI * 2f / (float)charge * i) + diagonalModifier;
-						Vector3 degreeVector = new Vector3 (Mathf.Cos (radians), Mathf.Sin (radians), 0);
-						demo.addProjectile (transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
-						
-					}
+                    float diagonalModifier = 0f;
+                    if (direction.x != 0 && direction.y != 0)
+                    {
+                        diagonalModifier = Mathf.PI / 4f;
+                    }
+                    for (int i = 0; i < charge; i++)
+                    {
+                        float radians = (Mathf.PI * 2f / (float)charge * i) + diagonalModifier;
+                        Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
+                        controller.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+
+                    }
                     charge = 0;
                 }
             }

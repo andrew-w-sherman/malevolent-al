@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OilBall : Character {
+public class OilBall : Character
+{
 
-    public GameController demo;
+    public GameController controller;
     public CircleCollider2D coll;
     public OilModel model;
     public float speed;
@@ -29,11 +30,11 @@ public class OilBall : Character {
     Rigidbody2D body;
 
     public bool shootButtonDown;
-    
+
 
     public void init(GameController demo)
     {
-        this.demo = demo;
+        this.controller = demo;
         startPosition = transform.position;
         lastDirection = Vector3.up;
         oilList = new OilPatch[numPatches];
@@ -55,7 +56,7 @@ public class OilBall : Character {
         body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
         body.isKinematic = false;
-        
+
 
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).33;
@@ -64,7 +65,7 @@ public class OilBall : Character {
 
         var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
-        model.init(true, this, null);
+        model.init(true, this, null, controller);
 
         oilList = new OilPatch[numPatches];
 
@@ -79,7 +80,7 @@ public class OilBall : Character {
             Destroy(patch.gameObject);
         }
     }
-		
+
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "FireBall")
@@ -92,14 +93,14 @@ public class OilBall : Character {
                 //print("Time to speed!");
                 speeding = true;
                 timeBeenSpeeding = 0f;
-                speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection ;
+                speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection;
                 model.setSpeeding(true); //tell model to change color
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 gameObject.tag = "OilBall_Speeding";
-                
+
             }
         }
-        else if(other.gameObject.tag == "wall")
+        else if (other.gameObject.tag == "wall")
         {
 
             //print(other.contacts[0].normal);
@@ -154,15 +155,15 @@ public class OilBall : Character {
         pitHit(other);
     }
 
-    
-        
+
+
 
     void OnTriggerStay2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "OilPatch_OnFire" ||
-			coll.gameObject.tag == "OilPatch_Spreading") 
+            coll.gameObject.tag == "OilPatch_Spreading")
         {
-			if (clock - timeLastExploded > explodeTimer && !speeding)
+            if (clock - timeLastExploded > explodeTimer && !speeding)
             {
                 timeLastExploded = clock;
                 GameObject explModel = new GameObject();
@@ -191,24 +192,28 @@ public class OilBall : Character {
         rig.isKinematic = true;
         coll2.isTrigger = true;
         oilList[i].transform.position = transform.position;
-        oilList[i].init(this);
+        oilList[i].init(this, controller);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-     
-		if (falling == 1) {
-			fallSequence ();
-		}
+
+
+        if (falling == 1)
+        {
+            fallSequence();
+        }
 
         else {
 
-			if (clock - lastDamage < damageCooldown) {
-				model.flicker = true;
-			} else {
-				model.flicker = false;
-			}
+            if (clock - lastDamage < damageCooldown)
+            {
+                model.flicker = true;
+            }
+            else {
+                model.flicker = false;
+            }
 
             Vector3 direction = Vector3.zero;
 
@@ -242,11 +247,11 @@ public class OilBall : Character {
             if (speeding)
             {
                 timeBeenSpeeding += Time.deltaTime;
-				float s_speed = 6f;
-				if (timeBeenSpeeding > (speedingTime * 7f / 8f)) 
-				{
-					s_speed -= ((timeBeenSpeeding - (speedingTime * 7f / 8f)) / (speedingTime / 8f)) * 3f;
-				}
+                float s_speed = 6f;
+                if (timeBeenSpeeding > (speedingTime * 7f / 8f))
+                {
+                    s_speed -= ((timeBeenSpeeding - (speedingTime * 7f / 8f)) / (speedingTime / 8f)) * 3f;
+                }
                 transform.position += speedDirection * Time.deltaTime * s_speed;
                 if (timeBeenSpeeding > speedingTime)
                 {
@@ -259,7 +264,7 @@ public class OilBall : Character {
 
             if (Input.GetButtonDown("Oil Shoot"))
             {
-                demo.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+                controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
                 shootButtonDown = true;
             }
             else if (Input.GetButtonUp("Oil Shoot"))
@@ -312,4 +317,5 @@ public class OilBall : Character {
             }
         }
     }
+
 }

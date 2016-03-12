@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnemyModel : MonoBehaviour {
+public class EnemyModel : MonoBehaviour
+{
 
-    private GameController demo;
+    private GameController controller;
     private Enemy owner;
     public string type;
     private Material mat;
@@ -25,7 +26,7 @@ public class EnemyModel : MonoBehaviour {
     {
         charSp = Resources.LoadAll<Sprite>("Sprite Sheets/char-front");
 
-        this.demo = demo;
+        this.controller = demo;
         this.owner = owner;
         this.type = type;
         lastSeen = GameController.NULL;
@@ -87,11 +88,13 @@ public class EnemyModel : MonoBehaviour {
         {
             Destroy(gameObject);
 
-			if (coll.gameObject.tag == "OilBall") {
-				coll.gameObject.GetComponent<OilBall> ().damage (5);
-			} else {
-				coll.gameObject.GetComponent<FireBall> ().damage (5);
-			}
+            if (coll.gameObject.tag == "OilBall")
+            {
+                coll.gameObject.GetComponent<OilBall>().damage(5);
+            }
+            else {
+                coll.gameObject.GetComponent<FireBall>().damage(5);
+            }
         }
     }
 
@@ -101,11 +104,11 @@ public class EnemyModel : MonoBehaviour {
         {
             owner.health -= 10;
         }
-		//if (coll.gameObject.tag == "Spikes") 
-		//{
-		//	owner.health--;
-		//}
-        
+        //if (coll.gameObject.tag == "Spikes") 
+        //{
+        //	owner.health--;
+        //}
+
         owner.pitHit(coll);
     }
 
@@ -136,12 +139,12 @@ public class EnemyModel : MonoBehaviour {
 
             if (type.Equals("fire"))
             {
-                direction3D = demo.fire.model.transform.position - transform.position;
+                direction3D = controller.fire.model.transform.position - transform.position;
             }
 
             if (type.Equals("oil"))
             {
-                direction3D = demo.oil.model.transform.position - transform.position;
+                direction3D = controller.oil.model.transform.position - transform.position;
             }
 
             Vector2 direction = new Vector2(direction3D.x, direction3D.y).normalized;
@@ -187,12 +190,12 @@ public class EnemyModel : MonoBehaviour {
                     lostTimer = 0f;
                     if (type.Equals("fire"))
                     {
-                        lastSeen = demo.fire.model.transform.position;
+                        lastSeen = controller.fire.model.transform.position;
                     }
 
                     if (type.Equals("oil"))
                     {
-                        lastSeen = demo.oil.model.transform.position;
+                        lastSeen = controller.oil.model.transform.position;
                     }
 
                     lastDirection = direction3D;
