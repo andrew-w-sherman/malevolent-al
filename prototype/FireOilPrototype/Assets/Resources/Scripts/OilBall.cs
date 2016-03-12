@@ -156,7 +156,8 @@ public class OilBall : Character {
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "OilPatch_Spreading")
+        if (coll.gameObject.tag == "OilPatch_OnFire" ||
+			coll.gameObject.tag == "OilPatch_Spreading") 
         {
 			if (clock - timeLastExploded > explodeTimer && !speeding)
             {
