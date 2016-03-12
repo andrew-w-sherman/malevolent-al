@@ -11,8 +11,7 @@ public class GameController : MonoBehaviour {
 
     public GameObject boardGO;
     public Board board;
-
-    public GameObject menu; // Assign in inspector
+    
     public bool menuShowing;
 
     public FireBall fire;
@@ -34,7 +33,6 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
-        menuShowing = false;
         projectileCount = 0;
         clock = 0f;
         whenAddEnemy = 0;
@@ -348,7 +346,6 @@ public class GameController : MonoBehaviour {
         if (Input.GetButtonDown("Escape"))
         {
             menuShowing = !menuShowing;
-            //menu.SetActive(menuShowing);
             if (menuShowing)
             {
                 Time.timeScale = 0f;
@@ -364,7 +361,13 @@ public class GameController : MonoBehaviour {
 	void OnGUI(){
 		GUI.Label (new Rect (150, 10, 100, 30), "Fire Health: " + fire.health);
 		GUI.Label (new Rect (270, 10, 100, 30), "Oil Health: " + oil.health);
-	}
+        if (menuShowing)
+        {
+            Vector3 camCenter = cam.ScreenToWorldPoint(cam.transform.position);
+            Debug.Log(camCenter.x + " " + camCenter.y);
+            GUI.Label(new Rect(400, 300, 100, 30), "Menu");
+        }
+    }
 
     //TODO: destroying projectiles probably
     public void nextLevel() {
