@@ -190,6 +190,7 @@ public class OilBall : Character
                 Explosion explosion = explModel.AddComponent<Explosion>();
                 explosion.transform.position = transform.position;
                 explosion.init(this, explosionTime);
+                controller.expl = explosion;
 				audioS.PlayOneShot (explodeSound);
             }
         }

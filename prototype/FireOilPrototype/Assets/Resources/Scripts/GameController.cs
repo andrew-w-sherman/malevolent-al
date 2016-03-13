@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 
     public FireBall fire;
     public OilBall oil;
+    public Explosion expl;
     public List<Enemy> enemies;
     public List<Wall> walls;
     public List<Pit> pits;
