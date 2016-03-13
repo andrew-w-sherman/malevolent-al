@@ -31,6 +31,9 @@ public class OilBall : Character
 
     public bool shootButtonDown;
 
+	AudioSource audioS;
+	AudioClip shootSound;
+	AudioClip explodeSound;
 
     public void init(GameController demo)
     {
@@ -71,6 +74,10 @@ public class OilBall : Character
 
         createPatch(0);
 
+		audioS = this.gameObject.AddComponent<AudioSource> ();
+		shootSound = Resources.Load<AudioClip>("Sound/oil_shoot");
+		explodeSound = Resources.Load<AudioClip> ("Sound/oil_explode");
+		audioS.spatialBlend = 0.0f;
     }
 
     public void destroyTrail()
@@ -97,6 +104,7 @@ public class OilBall : Character
                 model.setSpeeding(true); //tell model to change color
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 gameObject.tag = "OilBall_Speeding";
+				audioS.PlayOneShot (explodeSound);
 
             }
         }
@@ -180,6 +188,7 @@ public class OilBall : Character
                 Explosion explosion = explModel.AddComponent<Explosion>();
                 explosion.transform.position = transform.position;
                 explosion.init(this, explosionTime);
+				audioS.PlayOneShot (explodeSound);
             }
         }
     }
@@ -272,6 +281,7 @@ public class OilBall : Character
             {
                 controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
                 shootButtonDown = true;
+				audioS.PlayOneShot (shootSound);
             }
             else if (Input.GetButtonUp("Oil Shoot"))
             {
