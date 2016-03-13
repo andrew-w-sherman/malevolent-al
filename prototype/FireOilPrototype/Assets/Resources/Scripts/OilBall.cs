@@ -25,7 +25,7 @@ public class OilBall : Character
 
     float speedingTime = 3f; //how long we speed for
     float timeBeenSpeeding = 0f;
-    float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
+    public float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
     Vector3 speedDirection;
     Rigidbody2D body;
 

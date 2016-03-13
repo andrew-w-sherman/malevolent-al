@@ -163,8 +163,10 @@ public class Board : MonoBehaviour {
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
                         GameObject turretGO = new GameObject();
                         Turret tr = turretGO.AddComponent<Turret>();
-                        if (c2 == 'f') tr.init(0, false, gc);
-                        else if (c2 == 'o') tr.init(0, false, gc);
+                        if (c2 == '0' || c2 == '1' || c2 == '2' ||
+                            c2 == '3' || c2 == '4' || c2 == '5' ||
+                            c2 == '6' || c2 == '7') tr.init((int)Char.GetNumericValue(c2), false, gc);
+                        else print("bad syntax");
                         tr.transform.position = pos;
                         turrets.Add(turretGO);
                         break;

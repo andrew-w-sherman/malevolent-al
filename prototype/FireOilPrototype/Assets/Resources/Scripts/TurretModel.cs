@@ -32,13 +32,13 @@ public class TurretModel : MonoBehaviour {
         speed = 3;//??? idk what this should be
         
         startR = transform.rotation.eulerAngles.z;
-        myZ = 360-(45 * owner.curDir); //counted in counter-clockwise fashion
+        myZ = -45 * owner.curDir; //counted in counter-clockwise fashion
 
        
    
         transform.parent = owner.transform;                 // Set the model's parent to the gem.
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
-        transform.Rotate(Vector3.forward, owner.curDir*45,Space.World);
+        transform.Rotate(Vector3.forward, myZ,Space.World);
         name = "wall-model";
 
         mat = GetComponent<Renderer>().material;

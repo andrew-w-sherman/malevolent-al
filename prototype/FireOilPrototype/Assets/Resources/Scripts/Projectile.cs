@@ -122,7 +122,7 @@ public class Projectile : MonoBehaviour {
 
         if (tagOther != "projectile-friendly" && tagOther != "projectile-enemy")
         {
-            demo.projectiles.Remove(this);
+            Destroy(this);
             Destroy(gameObject);
         }
     }

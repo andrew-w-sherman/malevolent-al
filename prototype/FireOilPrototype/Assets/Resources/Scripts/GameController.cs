@@ -18,7 +18,6 @@ public class GameController : MonoBehaviour {
     public OilBall oil;
     public List<Enemy> enemies;
     public List<Wall> walls;
-    public List<Projectile> projectiles;
     public List<Pit> pits;
     public int projectileCount;
     public float clock;
@@ -128,6 +127,16 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void addTile(float x, float y)
+    {
+        GameObject tileObject = new GameObject();            // Create a new empty game object that will hold a gem.
+
+        Tile t = tileObject.AddComponent<Tile>();
+        t.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
+
+        t.init(this);
+    }
+
     private void addFire(float x, float y)
     {
         GameObject playerObject = new GameObject();            // Create a new empty game object that will hold a gem.
@@ -230,8 +239,7 @@ public class GameController : MonoBehaviour {
         projectileCount++;
 
         p.init(start, velocity, type, this);
-
-        projectiles.Add(p);
+       
     }
 
 

@@ -32,9 +32,9 @@ public class BurnWall : Tile {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        print("oncolburnwall "+coll.gameObject.tag);
+        //print("oncolburnwall "+coll.gameObject.tag);
 
-        if(coll.gameObject.tag=="Explosion" || coll.gameObject.tag == "FireBall")
+        if(coll.gameObject.tag == "Explosion" || coll.gameObject.tag == "FireBall")
         {
             startBurn();
             myCollider.size = new Vector2(myCollider.size.x * 1.2f, myCollider.size.y *1.2f);
@@ -44,8 +44,15 @@ public class BurnWall : Tile {
             if (coll.gameObject.GetComponent<BurnWall>().burning)
             {
                 startBurn();
+                myCollider.size = new Vector2(myCollider.size.x * 1.2f, myCollider.size.y * 1.2f);
             }
         }
+    }
+
+    public void replaceWithTile()
+    {
+        Vector3 pos = transform.position;
+        controller.addTile(pos.x, pos.y);
     }
     
    
@@ -70,6 +77,7 @@ public class BurnWall : Tile {
 
     public void startBurn()
     {
+        replaceWithTile();
         model.burn();
         burning = true;
         myCollider.isTrigger = true;

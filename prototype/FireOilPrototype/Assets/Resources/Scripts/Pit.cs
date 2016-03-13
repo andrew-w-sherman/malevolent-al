@@ -29,7 +29,7 @@ public class Pit : Tile {
         renderer.enabled = true;
 
         coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).5;
+        coll.radius = (float).4;
         coll.isTrigger = true;
 
         var modelObject = new GameObject();
