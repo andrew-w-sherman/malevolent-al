@@ -11,8 +11,10 @@ public class GameController : MonoBehaviour {
 
     public GameObject boardGO;
     public Board board;
-    
-    public bool menuShowing;
+
+    public bool startMenu;
+    public bool levelMenu;
+    public bool escapeMenu;
 
     public FireBall fire;
     public OilBall oil;
@@ -36,60 +38,17 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
+        startMenu = true;
+        levelMenu = false;
+        escapeMenu = false;
         projectileCount = 0;
         clock = 0f;
         whenAddEnemy = 0;
         whichAddEnemy = 0;
 
-        if (DEBUG_LVL)
-        {
-            addFire(0, 3);
-            addOil(0, 1);
-            enemies = new List<Enemy>();
-            walls = new List<Wall>();
-            pits = new List<Pit>();
-            
-
-            //addTurret(0, -2);
-            //addObstacle(0, -2, 0);
-
-
-            Pit pit = null;
-            for (int i = -7; i < 9; i++)
-            {
-                pit = addPit(-2, i);
-
-                //if (i == 1 || i == 2 || i == 3)
-                //{
-                //    pit.turnOff();
-                //}
-
-            }
-
-            addSpikes(0, 6);
-
-            addEnemy(-4, 1, "fire");
-            addEnemy(-4, 3, "oil");
-            //Pit pit = addPit(-2, 1);
-            //pit.turnOff();
-            //pit.turnOn();
-            addCrumbleWall(1, -3);
-            addCrumbleWall(2, -3);
-            addCrumbleWall(3, -3);
-            addCrumbleWall(4, -3);
-            
-        }
-        else
-        {
-            // we assume we're working from 
-            levelIndex = 0;
-            boardGO = new GameObject();
-            board = boardGO.AddComponent<Board>();
-            board.init(LEVELS[levelIndex], this);
-        }
-
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
+        
     }
 
     public void pitSwitch()
@@ -357,10 +316,10 @@ public class GameController : MonoBehaviour {
 
     public void escapeCheck()
     {
-        if (Input.GetButtonDown("Escape"))
+        if (Input.GetButtonDown("Escape") && startMenu == false)
         {
-            menuShowing = !menuShowing;
-            if (menuShowing)
+            escapeMenu = !escapeMenu;
+            if (escapeMenu)
             {
                 Time.timeScale = 0f;
             }
@@ -374,9 +333,12 @@ public class GameController : MonoBehaviour {
 
     void OnGUI()
     {
-
+        float screenHeight = Screen.height;
+        float screenWidth = Screen.width;
         float escapeButtonWidth = 300;
         float escapeButtonHeight = 50;
+        float startButtonWidth = 300;
+        float startButtonHeight = 50;
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.label);
 
         buttonStyle = GUI.skin.button;
@@ -386,24 +348,88 @@ public class GameController : MonoBehaviour {
         buttonStyle.padding.left = -10;
         buttonStyle.padding.right = -10;
 
-        if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
-        if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
-
-        if (menuShowing)
+        if (startMenu)
         {
-            float screenHeight = Screen.height;
-            float screenWidth = Screen.width;
 
-            if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
+
+            if (!levelMenu)
             {
-                menuShowing = !menuShowing;
-                Time.timeScale = 1f;
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 25, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
+                {
+                    levelIndex = 0;
+                    loadLevelFromMenu();
+                }
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 25, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
+                {
+                    levelMenu = true;
+                }
             }
-            if(GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
-                changeBoard();
-            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle);
+            else
+            {
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, startButtonWidth, startButtonHeight), "Level 1", buttonStyle))
+                {
+                    levelIndex = 0;
+                    loadLevelFromMenu();
+                }
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 0, startButtonWidth, startButtonHeight), "Level 2", buttonStyle))
+                {
+                    levelIndex = 1;
+                    loadLevelFromMenu();
+                }
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+                {
+                    levelMenu = false;
+                }
+            }
         }
+        else {
+
+            GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
+            GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
+
+            if (escapeMenu)
+            {
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
+                {
+                    escapeMenu = false;
+                    Time.timeScale = 1f;
+                }
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
+                    changeBoard();
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
+                {
+                    destroyEverything();
+                    escapeMenu = false;
+                    startMenu = true;
+                }
+
+            }
+            else
+            {
+                if (Time.timeScale != 1f)
+                {
+                    Time.timeScale = 1f;
+                }
+            }
+        }
+    }
+
+    private void loadLevelFromMenu()
+    {
+        startMenu = false;
+        levelMenu = false;
+        boardGO = new GameObject();
+        board = boardGO.AddComponent<Board>();
+        board.init(LEVELS[levelIndex], this);
+    }
+
+    private void destroyEverything()
+    {
+        board.annihilate();
+        Destroy(boardGO);
+        Destroy(fire.gameObject);
+        Destroy(oil.gameObject);
     }
 
     public void goal(int type)
