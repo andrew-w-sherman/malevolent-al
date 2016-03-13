@@ -75,6 +75,7 @@ public class FireBall : Character
         }
 
         pitHit(other);
+        switchHit(other);
     }
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack

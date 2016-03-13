@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL;
-    readonly string[] LEVELS = { "test" };
+    readonly string[] LEVELS = { "dan level" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -386,7 +386,7 @@ public class GameController : MonoBehaviour {
                 menuShowing = !menuShowing;
                 Time.timeScale = 1f;
             }
-            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart", buttonStyle);
+            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle);
             GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle);
         }
     }

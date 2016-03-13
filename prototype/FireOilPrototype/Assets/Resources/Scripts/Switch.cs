@@ -9,18 +9,21 @@ public class Switch : Tile {
     public bool on; //false for off, true for on (default)
     GameController controller;
     List<Tile> tileList;
-    SwitchModel model;    
+    SwitchModel model;
+    public Collider2D coll;
 
 	// Use this for initialization
 	public void init(GameController gc, List<Tile> tileList) {
         controller = gc;
         this.tileList = tileList;
         on = true;
+        tag = "Switch";
+
+        coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.isTrigger = true;
 
         var modelObject = new GameObject();
         model = modelObject.AddComponent<SwitchModel>();
-        //modelObject.AddComponent<Rigidbody>();
-        gameObject.AddComponent<BoxCollider2D>();
         model.init(controller, this);
     }
 	
@@ -31,18 +34,18 @@ public class Switch : Tile {
 	
 	}
     
-    void OnColliderStay2D(Collision2D coll)
+    void OnTriggerEnter2D(Collision2D coll)
     {
         //Right now it switches after hitting shoot button
         
-        if(coll.gameObject.tag=="FireBall" || coll.gameObject.tag=="OilBall" )
-        {
-            //print("switch hit");
-            switchTime();
-        }        
+        ////if(coll.gameObject.tag=="FireBall" || coll.gameObject.tag=="OilBall" )
+        //{
+        //    //print("switch hit");
+        //    switchTime();
+        //}        
     }
 
-    void switchTime()
+    public void switchTime()
     {
         on = !on;
         model.switchOwnSprite();

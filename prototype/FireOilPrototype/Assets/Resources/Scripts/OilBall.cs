@@ -153,6 +153,7 @@ public class OilBall : Character
     void OnTriggerEnter2D(Collider2D other)
     {
         pitHit(other);
+        switchHit(other);
     }
 
 

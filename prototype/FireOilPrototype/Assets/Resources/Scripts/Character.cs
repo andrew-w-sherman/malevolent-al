@@ -30,6 +30,14 @@ public class Character : MonoBehaviour {
 		health = maxHealth;
 	}
 
+    public void switchHit(Collider2D other)
+    {
+        if (other.gameObject.tag == "Switch")
+        {
+            other.gameObject.GetComponent<Switch>().switchTime();
+        }
+    }
+
     public void pitHit(Collider2D other)
     {
         //Debug.Log("hit1");
