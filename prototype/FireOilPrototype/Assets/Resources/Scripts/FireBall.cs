@@ -17,6 +17,9 @@ public class FireBall : Character
     public bool onOil = false;
     public int charge = 0; //counter to keep track of how many times oil has shot fire
 
+	AudioSource audioS;
+	AudioClip shootSound;
+
     // Use this for initialization
     public void init(GameController demo)
     {
@@ -49,6 +52,11 @@ public class FireBall : Character
         model.init(this, demo);
 
         speed = minSpeed;
+
+		audioS = this.gameObject.AddComponent<AudioSource> ();
+		shootSound = Resources.Load<AudioClip>("Sound/fire_shoot");
+		audioS.spatialBlend = 0.0f;
+		//audioS.clip = shoot;
 
         /*
 		falling = 0;
@@ -168,6 +176,8 @@ public class FireBall : Character
 
             if (Input.GetButtonDown("Fire Shoot"))
             {
+				audioS.PlayOneShot (shootSound);
+
                 if (charge == 0)
                 {
 
