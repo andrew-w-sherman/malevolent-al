@@ -193,6 +193,8 @@ public class Board : MonoBehaviour {
         }
         foreach (GameObject en in enemies) if (en != null) Destroy(en);
         foreach (GameObject tr in turrets) if (tr != null) Destroy(tr);
+        foreach (Projectile pr in gc.projectiles) if (pr != null) Destroy(pr.gameObject);
+        if (gc.expl != null) Destroy(gc.expl.gameObject);
         Destroy(tileFolder);
     }
 	
