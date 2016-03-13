@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
     public List<Enemy> enemies;
     public List<Wall> walls;
     public List<Pit> pits;
+    public List<Projectile> projectiles;
     public int projectileCount;
     public float clock;
     public int addEnemyInterval = 5;
@@ -239,6 +240,7 @@ public class GameController : MonoBehaviour {
         p.transform.position = start;      							
         p.name = "Projectile " + (projectileCount + 1);
         projectileCount++;
+        projectiles.Add(p);
 
         p.init(start, velocity, type, this);
        
