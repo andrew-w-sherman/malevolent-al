@@ -5,6 +5,8 @@ public class Wall : Tile {
 
     public GameController demo;
     public WallModel model;
+    public bool on;
+    public Collider2D coll;
 
 	// Use this for initialization
 	public override void init (GameController demo) {
@@ -24,13 +26,33 @@ public class Wall : Tile {
         //body.isKinematic = false;
        
 
-        var boxCollider = gameObject.AddComponent<BoxCollider2D>();
-        boxCollider.isTrigger = false;
-        boxCollider.enabled = true;
+        coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.isTrigger = false;
+        coll.enabled = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void turnOff()
+    {
+        if (on == true)
+        {
+            on = false;
+            model.sr.enabled = false;
+            coll.enabled = false;
+        }
+    }
+
+    public void turnOn()
+    {
+        if (on == false)
+        {
+            on = true;
+            model.sr.enabled = true;
+            coll.enabled = true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 	
 	}
 }

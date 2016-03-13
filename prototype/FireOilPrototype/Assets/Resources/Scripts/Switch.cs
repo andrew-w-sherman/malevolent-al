@@ -16,7 +16,7 @@ public class Switch : Tile {
 	public void init(GameController gc, List<Tile> tileList) {
         controller = gc;
         this.tileList = tileList;
-        on = true;
+        on = false;
         tag = "Switch";
 
         coll = gameObject.AddComponent<BoxCollider2D>();
@@ -39,21 +39,23 @@ public class Switch : Tile {
     {
         on = !on;
         model.switchOwnSprite();
-        if (on)
+        if (!on)
         {
             //add back the box collider
             foreach(Tile t in tileList)
             {
-                t.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+       
+                t.gameObject.GetComponent<Collider2D>().enabled = true;
                 model.switchSprite(t);
-                updateTag();                
+                updateTag();    
+                                
             }
         }
         else
         {
             foreach (Tile t in tileList)
             {
-                t.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                t.gameObject.GetComponent<Collider2D>().enabled = false;
                 model.switchSprite(t);
                 updateTag();
             }

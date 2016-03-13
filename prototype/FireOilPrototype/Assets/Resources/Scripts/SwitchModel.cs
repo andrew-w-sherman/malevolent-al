@@ -36,13 +36,13 @@ public class SwitchModel : MonoBehaviour {
     {
         SpriteRenderer tileSr;
         tileSr = t.gameObject.GetComponentsInChildren<SpriteRenderer>()[0];
-        if (owner.on)
+        if (!owner.on)
         {
-            
             tileSr.sprite = getSprite(t.type);
         }
         else
         {
+            Debug.Log("hit");
             tileSr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[3];
         }
 
@@ -57,7 +57,7 @@ public class SwitchModel : MonoBehaviour {
             case 1:
                 return sprites[1];
             case 2:
-                return sprites[4];
+                return sprites[5];
             default:
                 return null;
 

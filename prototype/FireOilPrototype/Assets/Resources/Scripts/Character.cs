@@ -44,7 +44,7 @@ public class Character : MonoBehaviour {
         if (other.gameObject.tag == "Pit")
         {
             //Debug.Log("hit2");
-            if (other.gameObject.GetComponent<Pit>().on == 1 && speeding == false)
+            if (other.gameObject.GetComponent<Pit>().on == true && speeding == false)
             {
                 //Debug.Log("hit3");
                 fallingInto = other;
