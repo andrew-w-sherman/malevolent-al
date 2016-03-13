@@ -397,7 +397,8 @@ public class GameController : MonoBehaviour {
                 menuShowing = !menuShowing;
                 Time.timeScale = 1f;
             }
-            GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle);
+            if(GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
+                retartLevel();
             GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle);
         }
     }
@@ -430,6 +431,17 @@ public class GameController : MonoBehaviour {
         {
             changeBoard();
         }
+    }
+
+    private void retartLevel()
+    {
+        board.annihilate();
+        Destroy(boardGO);
+        boardGO = new GameObject();
+        board = boardGO.AddComponent<Board>();
+        board.init(LEVELS[levelIndex], this);
+        fire.gameObject.SetActive(true);
+        oil.gameObject.SetActive(true);
     }
 
     private void changeBoard()
