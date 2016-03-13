@@ -51,6 +51,7 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
+
         
     }
 
@@ -362,7 +363,7 @@ public class GameController : MonoBehaviour {
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 25, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
                 {
                     levelIndex = 0;
-                    loadLevelFromMenu();
+                    loadLevel();
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 25, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
                 {
@@ -401,7 +402,7 @@ public class GameController : MonoBehaviour {
                     if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Level " + (i + 1), buttonStyle))
                     {
                         levelIndex = i;
-                        loadLevelFromMenu();
+                        loadLevel();
                     }
 
                     buttonHeight += 50;
@@ -428,7 +429,10 @@ public class GameController : MonoBehaviour {
                     Time.timeScale = 1f;
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
-                    changeBoard();
+                {
+                    destroyEverything();
+                    loadLevel();
+                }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
                 {
                     destroyEverything();
@@ -447,7 +451,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void loadLevelFromMenu()
+    private void loadLevel()
     {
         startMenu = false;
         levelMenu = false;
@@ -459,9 +463,20 @@ public class GameController : MonoBehaviour {
     private void destroyEverything()
     {
         board.annihilate();
+        Destroy(fire.gameObject); Destroy(oil.gameObject);
+        Destroy(fire); Destroy(oil); fire = null; oil = null;
         Destroy(boardGO);
-        Destroy(fire.gameObject);
-        Destroy(oil.gameObject);
+    }
+
+    private void changeBoard()
+    {
+        board.annihilate();
+        Destroy(fire.gameObject); Destroy(oil.gameObject);
+        Destroy(fire); Destroy(oil); fire = null; oil = null;
+        Destroy(boardGO);
+        boardGO = new GameObject();
+        board = boardGO.AddComponent<Board>();
+        board.init(LEVELS[levelIndex], this);
     }
 
     public void goal(int type)
@@ -492,18 +507,6 @@ public class GameController : MonoBehaviour {
         {
             changeBoard();
         }
-    }
-
-
-    private void changeBoard()
-    {
-        board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire);Destroy(oil); fire = null; oil = null;
-        Destroy(boardGO);
-        boardGO = new GameObject();
-        board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
     }
 
     public void winScreen()

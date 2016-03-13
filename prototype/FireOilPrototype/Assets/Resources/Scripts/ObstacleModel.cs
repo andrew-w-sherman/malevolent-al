@@ -13,9 +13,7 @@ public class ObstacleModel : MonoBehaviour {
         this.wallType = wallType;
         this.owner = owner;
         controller = gc;
-
-        DestroyImmediate(GetComponent<MeshFilter>());
-        DestroyImmediate(GetComponent<MeshRenderer>());
+        
         sr= gameObject.AddComponent<SpriteRenderer>();       
         sr.sortingOrder = 2;     
         

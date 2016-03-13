@@ -20,14 +20,6 @@ public class Pit : Tile {
         gameObject.tag = "Pit";
         on = true;
 
-        GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        var filter = gameObject.AddComponent<MeshFilter>();
-        filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
-        Destroy(uselessQuad);
-
-        var renderer = gameObject.AddComponent<MeshRenderer>();
-        renderer.enabled = true;
-
         coll = gameObject.AddComponent<CircleCollider2D>();
         coll.radius = (float).4;
         coll.isTrigger = true;
