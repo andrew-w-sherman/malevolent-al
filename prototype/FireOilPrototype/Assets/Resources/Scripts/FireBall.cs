@@ -11,7 +11,8 @@ public class FireBall : Character
 
     public float maxSpeed = 10f;
     public float minSpeed = 3f;
-    public float speedChange = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
+    public float speedUp = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
+    public float slowDown = 0.1f;
     public float speed;
     public bool onOil = false;
     public int charge = 0; //counter to keep track of how many times oil has shot fire
@@ -57,6 +58,11 @@ public class FireBall : Character
 
     void OnTriggerStay2D(Collider2D collider)
     {
+        if (!falling)
+        {
+            pitHit(collider);
+        }
+
         if (collider.gameObject.tag == "OilPatch" ||
             collider.gameObject.tag == "OilPatch_Spreading" ||
             collider.gameObject.tag == "OilPatch_OnFire")
@@ -70,8 +76,11 @@ public class FireBall : Character
     {
         if (other.gameObject.tag == "OilBall")
         {
-            //print("Fireball registered a collide with oilball");
-            speed = minSpeed;
+            if (speed >= other.gameObject.GetComponent<OilBall>().speedingThreshold)
+            {
+                //print("Fireball registered a collide with oilball");
+                speed = minSpeed;
+            }
         }
 
         pitHit(other);
@@ -106,7 +115,7 @@ public class FireBall : Character
         }
 
 
-        if (falling == 1)
+        if (falling)
         {
             fallSequence();
         }
@@ -141,10 +150,10 @@ public class FireBall : Character
 
             if (onOil && moving)
             {
-                if (speed < maxSpeed) { speed += speedChange; }
+                if (speed < maxSpeed) { speed += speedUp; }
             }
             else {
-                if (speed > minSpeed) { speed -= speedChange; }
+                if (speed > minSpeed) { speed -= slowDown; }
             }
 
             if (direction != Vector3.zero)

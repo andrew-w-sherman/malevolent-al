@@ -6,7 +6,7 @@ public class Pit : Tile {
 
     public GameController demo;
     public PitModel model;
-    public int on;
+    public bool on;
     public float collDimensions = 1f;
     public CircleCollider2D coll;
     
@@ -18,7 +18,7 @@ public class Pit : Tile {
         linkTag = LINK_PIT;
         this.demo = demo;
         gameObject.tag = "Pit";
-        on = 1;
+        on = true;
 
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
@@ -29,7 +29,7 @@ public class Pit : Tile {
         renderer.enabled = true;
 
         coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).5;
+        coll.radius = (float).4;
         coll.isTrigger = true;
 
         var modelObject = new GameObject();
@@ -41,9 +41,9 @@ public class Pit : Tile {
 
     public void turnOff()
     {
-        if (on == 1)
+        if (on == true)
         {
-            on = 0;
+            on = false;
             model.sr.enabled = false;
             coll.enabled = false;
         }
@@ -51,9 +51,9 @@ public class Pit : Tile {
 
     public void turnOn()
     {
-        if (on == 0)
+        if (on == false)
         {
-            on = 1;
+            on = true;
             model.sr.enabled = true;
             coll.enabled = true;
         }
@@ -61,7 +61,7 @@ public class Pit : Tile {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (on == 1 && coll.gameObject.tag == "OilPatch_Spreading" || coll.gameObject.tag == "OilPatch")
+        if (on == true && coll.gameObject.tag == "OilPatch_Spreading" || coll.gameObject.tag == "OilPatch")
         {
             Destroy(coll.gameObject);
         }

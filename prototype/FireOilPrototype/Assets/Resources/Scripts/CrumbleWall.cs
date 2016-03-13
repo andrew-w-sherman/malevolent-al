@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class CrumbleWall : Tile {
-
-    GameController controller;
+    
     BoxCollider2D myCollider;
     Rigidbody2D body;
     CrumbleWallModel model;
@@ -32,6 +31,7 @@ public class CrumbleWall : Tile {
     {
         if (destroyNextFrame)
         {
+            replaceWithTile();
             Destroy(gameObject);
         }
     }
@@ -48,10 +48,10 @@ public class CrumbleWall : Tile {
                 destroyNextFrame = true;
             }
         }
-        if (coll.gameObject.tag == "CrumbleWallImpact")
-        {
-            Destroy(gameObject);
-        }
+        //if (coll.gameObject.tag == "CrumbleWallImpact")
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
 }

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class Turret : MonoBehaviour
 {
     
-   public  int curDir;
-    bool rotate;
+    public int curDir;
+    bool isRotating;
     GameController demo;
     public Dictionary<int, Vector3> vectorDic;
     float timer;
@@ -15,9 +15,9 @@ public class Turret : MonoBehaviour
     bool fire;
 
     // Use this for initialization
-    public void init(int orientation, bool rotate, GameController gc)
+    public void init(int orientation, bool isRotating, GameController gc)
     {
-        this.rotate = rotate;
+        this.isRotating = isRotating;
         curDir = orientation;
         buildVectorMap();
         demo = gc;
@@ -26,7 +26,7 @@ public class Turret : MonoBehaviour
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<TurretModel>();
         //modelObject.AddComponent<Rigidbody>();
-        model.init(this, demo, rotate);
+        model.init(this, demo, isRotating);
         
     }
 
@@ -35,15 +35,16 @@ public class Turret : MonoBehaviour
     { 
                
         // shoot every 4 seconds or so
-        if (!rotate)
+        if (!isRotating)
         {
             if(timer > speed)
             {
                 timer = Time.deltaTime;
                 Vector3 vDir = Vector3.up;
                 vectorDic.TryGetValue(curDir, out vDir);
-                //print(vDir);
-                demo.addProjectile(transform.position, vDir, Projectile.ENEMY);
+                print(curDir + " " + vDir);
+
+                demo.addProjectile(transform.position, vDir.normalized, Projectile.ENEMY);
             }
         }
         else

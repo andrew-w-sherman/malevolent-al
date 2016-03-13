@@ -25,7 +25,7 @@ public class OilBall : Character
 
     float speedingTime = 3f; //how long we speed for
     float timeBeenSpeeding = 0f;
-    float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
+    public float speedingThreshold = 8f; //how fast fireball needs to be going to activate speeding attack
     Vector3 speedDirection;
     Rigidbody2D body;
 
@@ -161,6 +161,11 @@ public class OilBall : Character
 
     void OnTriggerStay2D(Collider2D coll)
     {
+        if (!falling)
+        {
+            pitHit(coll);
+        }
+
         if (coll.gameObject.tag == "OilPatch_OnFire" ||
             coll.gameObject.tag == "OilPatch_Spreading")
         {
@@ -201,7 +206,7 @@ public class OilBall : Character
     {
 
 
-        if (falling == 1)
+        if (falling)
         {
             fallSequence();
         }

@@ -49,11 +49,6 @@ public class Board : MonoBehaviour {
             // two at a time along x
             for (int j = 0; j < characters[0].Length; j+=2)
             {
-                while (characters[i][j] == ' ') {
-                    j++;
-                    // make sure there's still two chars left in the line
-                    if (j + 1 >= characters[0].Length) break;
-                }
                 char c1 = characters[i][j];
                 char c2 = characters[i][j + 1];
                 Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
@@ -91,6 +86,11 @@ public class Board : MonoBehaviour {
                         break;
                     case 'O':
                         if (c2 != 'O') print("syntax err");
+                        tile = obj.AddComponent<Tile>();
+                        tile.init(gc);
+                        break;
+                    case ' ':
+                        if (c2 != ' ') print("syntax err");
                         tile = obj.AddComponent<Tile>();
                         tile.init(gc);
                         break;
@@ -163,8 +163,10 @@ public class Board : MonoBehaviour {
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
                         GameObject turretGO = new GameObject();
                         Turret tr = turretGO.AddComponent<Turret>();
-                        if (c2 == 'f') tr.init(0, false, gc);
-                        else if (c2 == 'o') tr.init(0, false, gc);
+                        if (c2 == '0' || c2 == '1' || c2 == '2' ||
+                            c2 == '3' || c2 == '4' || c2 == '5' ||
+                            c2 == '6' || c2 == '7') tr.init((int)Char.GetNumericValue(c2), false, gc);
+                        else print("bad syntax");
                         tr.transform.position = pos;
                         turrets.Add(turretGO);
                         break;

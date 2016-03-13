@@ -6,6 +6,7 @@ public class WallModel : MonoBehaviour {
     public GameController demo;
     public Wall owner;
     private Material mat;
+    public SpriteRenderer sr;
 
     public void init(Wall owner, GameController demo)
     {
@@ -18,7 +19,7 @@ public class WallModel : MonoBehaviour {
 
         DestroyImmediate(GetComponent<MeshFilter>());
         DestroyImmediate(GetComponent<MeshRenderer>());
-        SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
+        sr = gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 2;
         sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[1];

@@ -114,6 +114,11 @@ public class EnemyModel : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D coll)
     {
+        if (!owner.falling)
+        {
+            owner.pitHit(coll);
+        }
+
         if (coll.gameObject.tag == "OilPatch")
         {
             onOilSpeedChange = 0.5f;
@@ -129,7 +134,7 @@ public class EnemyModel : MonoBehaviour
     void Update()
     {
 
-        if (owner.falling == 1)
+        if (owner.falling)
         {
             owner.fallSequence();
         }
