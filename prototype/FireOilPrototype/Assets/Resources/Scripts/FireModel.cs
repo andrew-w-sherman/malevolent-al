@@ -25,9 +25,7 @@ public class FireModel : MonoBehaviour
         transform.parent = owner.transform;
         transform.localPosition = new Vector3(0, 0, 0);
         name = "fire model";
-
-        DestroyImmediate(owner.GetComponent<MeshFilter>());
-        DestroyImmediate(owner.GetComponent<MeshRenderer>());
+        
         owner.gameObject.AddComponent<SpriteRenderer>();
         sr = owner.GetComponent<SpriteRenderer>();
         sr.sprite = charSp[0];

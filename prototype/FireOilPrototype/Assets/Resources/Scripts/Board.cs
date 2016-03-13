@@ -149,15 +149,11 @@ public class Board : MonoBehaviour {
                         
                         if (c2 == 'f')
                         {
-                            fb.transform.position = pos;
-                            fb.startPosition = pos;
-                            print("reset fire to " + pos);
+                            fb = gc.addFire(pos.x, pos.y);
                         }
                         else if (c2 == 'o')
                         {
-                            ob.transform.position = pos;
-                            ob.startPosition = pos;
-                            print("reset oil to " + pos);
+                            ob = gc.addOil(pos.x, pos.y);
                         }
                         else print("bad syntax");
                         break;
@@ -197,8 +193,6 @@ public class Board : MonoBehaviour {
         }
         foreach (GameObject en in enemies) if (en != null) Destroy(en);
         foreach (GameObject tr in turrets) if (tr != null) Destroy(tr);
-        fb.transform.position = Vector2.left;
-        ob.transform.position = Vector2.right;
         Destroy(tileFolder);
     }
 	

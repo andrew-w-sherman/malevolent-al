@@ -29,8 +29,6 @@ public class OilModel : MonoBehaviour
 
         if (isCharacter)
         {
-            DestroyImmediate(b.GetComponent<MeshFilter>());
-            DestroyImmediate(b.GetComponent<MeshRenderer>());
             b.gameObject.AddComponent<SpriteRenderer>();
             sr = b.GetComponent<SpriteRenderer>();
             transform.parent = b.transform;

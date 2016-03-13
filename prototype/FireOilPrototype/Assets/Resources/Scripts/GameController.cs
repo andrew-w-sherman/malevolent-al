@@ -39,13 +39,10 @@ public class GameController : MonoBehaviour {
         whenAddEnemy = 0;
         whichAddEnemy = 0;
 
-        addFire(0, 3);
-        addOil(0, 1);
-        cam = Camera.main;
-        minCamSize = cam.orthographicSize;
-
         if (DEBUG_LVL)
         {
+            addFire(0, 3);
+            addOil(0, 1);
             enemies = new List<Enemy>();
             walls = new List<Wall>();
             pits = new List<Pit>();
@@ -89,7 +86,8 @@ public class GameController : MonoBehaviour {
             board.init(LEVELS[levelIndex], this);
         }
 
-        
+        cam = Camera.main;
+        minCamSize = cam.orthographicSize;
     }
 
     public void pitSwitch()
@@ -139,18 +137,19 @@ public class GameController : MonoBehaviour {
         t.init(this);
     }
 
-    private void addFire(float x, float y)
+    public FireBall addFire(float x, float y)
     {
         GameObject playerObject = new GameObject();            // Create a new empty game object that will hold a gem.
 
-        fire = playerObject.AddComponent<FireBall>();         
+        fire = playerObject.AddComponent<FireBall>();
         fire.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
         fire.name = "Fire Ball";
 
         fire.init(this);
+        return fire;
     }
 
-    private void addOil(float x, float y)
+    public OilBall addOil(float x, float y)
     {
         GameObject playerObject = new GameObject();            
 
@@ -159,6 +158,7 @@ public class GameController : MonoBehaviour {
         oil.name = "Oil Ball";
 
         oil.init(this);
+        return oil;
     }
 
     private void addEnemy(float x, float y, string type)
@@ -383,8 +383,8 @@ public class GameController : MonoBehaviour {
         buttonStyle.padding.left = -10;
         buttonStyle.padding.right = -10;
 
-        GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
-        GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
+        if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
+        if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
 
         if (menuShowing)
@@ -435,12 +435,12 @@ public class GameController : MonoBehaviour {
     private void changeBoard()
     {
         board.annihilate();
+        Destroy(fire.gameObject); Destroy(oil.gameObject);
+        Destroy(fire);Destroy(oil); fire = null; oil = null;
         Destroy(boardGO);
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
         board.init(LEVELS[levelIndex], this);
-        fire.gameObject.SetActive(true);
-        oil.gameObject.SetActive(true);
     }
 
     public void winScreen()

@@ -45,6 +45,7 @@ public class OilBall : Character
 
         gameObject.tag = "OilBall";
 
+        /*
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
         filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
@@ -52,6 +53,7 @@ public class OilBall : Character
 
         var renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.enabled = true;
+        */
 
         body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
@@ -330,5 +332,13 @@ public class OilBall : Character
     {
         gameObject.SetActive(false);
         controller.goal(2);
+    }
+
+    void OnDestroy()
+    {
+        foreach (OilPatch patch in oilList)
+        {
+            if (patch != null) Destroy(patch.gameObject);
+        }
     }
 }

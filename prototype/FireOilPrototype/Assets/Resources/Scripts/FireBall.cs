@@ -26,6 +26,7 @@ public class FireBall : Character
 
         gameObject.tag = "FireBall";
 
+        /*
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         var filter = gameObject.AddComponent<MeshFilter>();
         filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
@@ -33,6 +34,7 @@ public class FireBall : Character
 
         var renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.enabled = true;
+        */
 
         var body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
