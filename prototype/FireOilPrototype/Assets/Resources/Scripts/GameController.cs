@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL;
-    readonly string[] LEVELS = { "test", "test2" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial1" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour {
     public List<Wall> walls;
     public List<Pit> pits;
     public List<Projectile> projectiles;
+    public List<Tile> tiles;
     public int projectileCount;
     public float clock;
     public int addEnemyInterval = 5;
@@ -41,7 +42,9 @@ public class GameController : MonoBehaviour {
         startMenu = true;
         levelMenu = false;
         escapeMenu = false;
+        projectiles = new List<Projectile>();
         projectileCount = 0;
+        tiles = new List<Tile>();
         clock = 0f;
         whenAddEnemy = 0;
         whichAddEnemy = 0;
@@ -96,6 +99,7 @@ public class GameController : MonoBehaviour {
         t.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
 
         t.init(this);
+        tiles.Add(t);
     }
 
     public FireBall addFire(float x, float y)
@@ -367,26 +371,54 @@ public class GameController : MonoBehaviour {
             }
             else
             {
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, startButtonWidth, startButtonHeight), "Level 1", buttonStyle))
+                int buttonHeight = 0;
+                int numButtons = LEVELS.Length + 1;
+                int i = 0;
+
+                if (numButtons % 2 == 0 && numButtons > 0)
                 {
-                    levelIndex = 0;
-                    loadLevelFromMenu();
+                    buttonHeight = -25;
+                    while(i < numButtons / 2 - 1)
+                    {
+                        buttonHeight -= 50;
+                        i++;
+                    }
+
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 0, startButtonWidth, startButtonHeight), "Level 2", buttonStyle))
+                else if(numButtons % 2 == 1 && numButtons > 0)
                 {
-                    levelIndex = 1;
-                    loadLevelFromMenu();
+                    buttonHeight = 0;
+                    while (i < numButtons / 2)
+                    {
+                        buttonHeight -= 50;
+                        i++;
+                    }
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+
+                i = 0;
+                while(i < numButtons - 1)
+                {
+                    if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Level " + (i + 1), buttonStyle))
+                    {
+                        levelIndex = i;
+                        loadLevelFromMenu();
+                    }
+
+                    buttonHeight += 50;
+                    i++;
+                }
+
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
                 {
                     levelMenu = false;
                 }
+
             }
         }
         else {
 
-            GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
-            GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
+            if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
+            if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
             if (escapeMenu)
             {
