@@ -204,4 +204,10 @@ public class FireBall : Character
             onOil = false;
         }
     }
+
+    public override void hitGoal()
+    {
+        gameObject.SetActive(false);
+        controller.goal(1);
+    }
 }

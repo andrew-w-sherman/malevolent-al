@@ -80,6 +80,7 @@ public class OilBall : Character
 		audioS.spatialBlend = 0.0f;
     }
 
+    /* don't use probably
     public void destroyTrail()
     {
         foreach (OilPatch patch in oilList)
@@ -87,6 +88,7 @@ public class OilBall : Character
             Destroy(patch.gameObject);
         }
     }
+    */
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -334,4 +336,9 @@ public class OilBall : Character
         }
     }
 
+    public override void hitGoal()
+    {
+        gameObject.SetActive(false);
+        controller.goal(2);
+    }
 }

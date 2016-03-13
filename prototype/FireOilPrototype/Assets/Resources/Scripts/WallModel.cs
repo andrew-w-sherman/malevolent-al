@@ -16,9 +16,7 @@ public class WallModel : MonoBehaviour {
         transform.parent = owner.transform;                 // Set the model's parent to the gem.
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
         name = "wall-model";
-
-        DestroyImmediate(GetComponent<MeshFilter>());
-        DestroyImmediate(GetComponent<MeshRenderer>());
+        
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 2;
