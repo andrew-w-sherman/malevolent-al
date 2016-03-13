@@ -53,6 +53,13 @@ public class Character : MonoBehaviour {
                 falling = true;
             }
         }
+        else if (other.gameObject.tag == "Goal")
+        {
+            if (!speeding)
+            {
+                this.hitGoal();
+            }
+        }
     }
 
     public void fallSequence()
@@ -111,4 +118,6 @@ public class Character : MonoBehaviour {
 			lastRegen = clock;
 		}
     }
+
+    public virtual void hitGoal() { }
 }

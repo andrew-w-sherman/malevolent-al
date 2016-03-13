@@ -16,7 +16,7 @@ public class Wall : Tile {
         this.demo = demo;
         gameObject.tag = "wall";
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<WallModel>();
         model.init(this, demo);
 

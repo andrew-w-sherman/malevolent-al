@@ -111,7 +111,7 @@ public class Board : MonoBehaviour {
                         break;
                     case 'G':
                         if (c2 != 'G') print("syntax err");
-                        tile = obj.AddComponent<Spikes>(); tile.init(gc);
+                        tile = obj.AddComponent<Goal>(); tile.init(gc);
                         break;
                     case 'P':
                         if (c2 == 'P') tile = obj.AddComponent<Pit>();
@@ -151,11 +151,13 @@ public class Board : MonoBehaviour {
                         {
                             fb.transform.position = pos;
                             fb.startPosition = pos;
+                            print("reset fire to " + pos);
                         }
                         else if (c2 == 'o')
                         {
                             ob.transform.position = pos;
                             ob.startPosition = pos;
+                            print("reset oil to " + pos);
                         }
                         else print("bad syntax");
                         break;
@@ -193,9 +195,8 @@ public class Board : MonoBehaviour {
                 Destroy(tile.gameObject);
             }
         }
-        foreach (GameObject en in enemies) Destroy(en);
-        foreach (GameObject tr in turrets) Destroy(tr);
-        ob.destroyTrail();
+        foreach (GameObject en in enemies) if (en != null) Destroy(en);
+        foreach (GameObject tr in turrets) if (tr != null) Destroy(tr);
         fb.transform.position = Vector2.left;
         ob.transform.position = Vector2.right;
         Destroy(tileFolder);

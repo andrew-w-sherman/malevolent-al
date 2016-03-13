@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL;
-    readonly string[] LEVELS = { "dan tutorial" };
+    readonly string[] LEVELS = { "test", "test2" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour {
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
+
+    private int inGoal = 0;
 
     void Start () {
 
@@ -272,6 +274,7 @@ public class GameController : MonoBehaviour {
 
     private void updateCamera()
     {
+        if (fire == null || oil == null) return;
         float height = 2f * cam.orthographicSize;
         float width = height * cam.aspect;
         float camX = cam.transform.position.x;
@@ -399,29 +402,45 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void goal(int type)
+    {
+        if ((inGoal == 2 && type == 1) || (inGoal == 1 && type == 2))
+        {
+            inGoal = 0; nextLevel();
+        }
+        else if (inGoal == 0)
+        {
+            inGoal = type;
+        }
+    }
+
     //TODO: destroying projectiles probably
     public void nextLevel() {
-        board.annihilate();
         levelIndex++;
         if (levelIndex >= LEVELS.Length) winScreen();
         else {
-            Destroy(boardGO);
-            boardGO = new GameObject();
-            board = boardGO.AddComponent<Board>();
-            board.init(LEVELS[levelIndex], this);
+            changeBoard();
         }
     }
 
     public void levelSelect(int lvlNum) {
-        board.annihilate();
         levelIndex = lvlNum;
         if (levelIndex >= LEVELS.Length || levelIndex < 0) print("what is even happening");
         else
         {
-            Destroy(boardGO);
-            board = boardGO.AddComponent<Board>();
-            board.init(LEVELS[levelIndex], this);
+            changeBoard();
         }
+    }
+
+    private void changeBoard()
+    {
+        board.annihilate();
+        Destroy(boardGO);
+        boardGO = new GameObject();
+        board = boardGO.AddComponent<Board>();
+        board.init(LEVELS[levelIndex], this);
+        fire.gameObject.SetActive(true);
+        oil.gameObject.SetActive(true);
     }
 
     public void winScreen()
