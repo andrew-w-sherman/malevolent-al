@@ -34,16 +34,6 @@ public class Switch : Tile {
 	
 	}
     
-    void OnTriggerEnter2D(Collision2D coll)
-    {
-        //Right now it switches after hitting shoot button
-        
-        ////if(coll.gameObject.tag=="FireBall" || coll.gameObject.tag=="OilBall" )
-        //{
-        //    //print("switch hit");
-        //    switchTime();
-        //}        
-    }
 
     public void switchTime()
     {
