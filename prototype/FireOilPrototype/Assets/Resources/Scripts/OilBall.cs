@@ -161,6 +161,11 @@ public class OilBall : Character
 
     void OnTriggerStay2D(Collider2D coll)
     {
+        if (!falling)
+        {
+            pitHit(coll);
+        }
+
         if (coll.gameObject.tag == "OilPatch_OnFire" ||
             coll.gameObject.tag == "OilPatch_Spreading")
         {
@@ -201,7 +206,7 @@ public class OilBall : Character
     {
 
 
-        if (falling == 1)
+        if (falling)
         {
             fallSequence();
         }

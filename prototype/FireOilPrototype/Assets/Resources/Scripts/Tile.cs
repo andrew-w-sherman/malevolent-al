@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour {
     public Tile[] neighbors = new Tile[4];
     public int linkTag = 0;
 
-    GameController controller;
+    public GameController controller;
     SpriteRenderer sr;
 
     public const int NO_TOGGLE = 0;
@@ -34,6 +34,13 @@ public class Tile : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public void replaceWithTile()
+    {
+        Vector3 pos = transform.position;
+        Debug.Log(controller);
+        controller.addTile(pos.x, pos.y);
+    }
 
     // links tiles to neighbors, usually does nothing
     public virtual void link() { }

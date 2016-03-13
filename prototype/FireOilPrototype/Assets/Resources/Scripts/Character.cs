@@ -8,7 +8,7 @@ public class Character : MonoBehaviour {
 
     public bool speeding = false;
     
-    public int falling;
+    public bool falling;
     public Collider2D fallingInto;
     public float initialDistance;
     public float whenFell = 0;
@@ -24,7 +24,7 @@ public class Character : MonoBehaviour {
 	public float damageCooldown = 1.5f; //how long we wait in between taking damage (so things like spikes don't kill in a couple frames)
 
     void Start () {
-        falling = 0;
+        falling = false;
 		lastDamage = -5;
 		lastRegen = 0;
 		health = maxHealth;
@@ -50,7 +50,7 @@ public class Character : MonoBehaviour {
                 fallingInto = other;
                 initialDistance = Vector2.Distance(transform.position, other.transform.position);
                 whenFell = clock;
-                falling = 1;
+                falling = true;
             }
         }
     }
@@ -70,10 +70,11 @@ public class Character : MonoBehaviour {
         {
             if (tag != "enemy")
             {
+                speeding = false;
+                falling = false;
                 currentScale = 1f;
                 transform.localScale = new Vector3(currentScale, currentScale, currentScale);
                 transform.position = startPosition;
-                falling = 0;
             }
             else
             {

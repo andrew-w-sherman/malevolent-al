@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class BurnWall : Tile {
-
-    GameController controller;
+    
     BoxCollider2D myCollider;
     Rigidbody2D body;
     BurnWallModel model;
@@ -47,12 +46,6 @@ public class BurnWall : Tile {
                 myCollider.size = new Vector2(myCollider.size.x * 1.2f, myCollider.size.y * 1.2f);
             }
         }
-    }
-
-    public void replaceWithTile()
-    {
-        Vector3 pos = transform.position;
-        controller.addTile(pos.x, pos.y);
     }
     
    

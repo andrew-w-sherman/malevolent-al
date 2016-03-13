@@ -58,6 +58,11 @@ public class FireBall : Character
 
     void OnTriggerStay2D(Collider2D collider)
     {
+        if (!falling)
+        {
+            pitHit(collider);
+        }
+
         if (collider.gameObject.tag == "OilPatch" ||
             collider.gameObject.tag == "OilPatch_Spreading" ||
             collider.gameObject.tag == "OilPatch_OnFire")
@@ -110,7 +115,7 @@ public class FireBall : Character
         }
 
 
-        if (falling == 1)
+        if (falling)
         {
             fallSequence();
         }
