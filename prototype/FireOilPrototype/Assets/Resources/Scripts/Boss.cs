@@ -12,6 +12,8 @@ public class Boss : MonoBehaviour {
 	public static int SINKING = 3;     // during phase 2, after its been down for the appropriate time, the boss sinks into the ground before emerging again.
 	public static int ATTACK_SHOOT = 4;   // during phase 2, the boss' normal attacking phase.
 	public static int ATTACK_CHARGE = 5;
+	public static int ATTACK_CHARGE_END = 6;
+	public static Vector3 center = new Vector3 (0, 0, 0);
 	CircleCollider2D collider;
 	GameController controller;
 
@@ -25,6 +27,9 @@ public class Boss : MonoBehaviour {
 	public Character target; //wether or not the boss is targeting oil (if false, the boss will target fire)
 	public bool alreadySwitched;
 	public bool alreadyShot;
+	public Vector3 chargeDirection;
+	public float chargeSpeed = 2f;
+	public float chargeEndSpeed = 0.5f;
 
 	public float direction; //direction boss is pointing at (in radians) 
 
@@ -58,29 +63,53 @@ public class Boss : MonoBehaviour {
 		target = controller.oil;
 	}
 
+	public void switchTargets(){
+		if (target == controller.oil) {
+			target = controller.fire;
+		} else {
+			target = controller.oil;
+		}
+	}
+
 	void OnCollisionEnter2D (Collision2D coll){
 		
-			if (coll.gameObject.tag != "OilBall" && 
-				coll.gameObject.tag != "FireBall" &&
-				coll.gameObject.tag != "projectile-enemy") {  
+		if (state == ATTACK_SHOOT) {
+			if (coll.gameObject.tag != "OilBall" &&
+			    coll.gameObject.tag != "FireBall" &&
+			    coll.gameObject.tag != "projectile-enemy") {
 
-			if (state == ATTACK_SHOOT) {
 					Vector3 otherPosition = coll.gameObject.transform.position;
 					Vector3 helmetMotionDirection = (transform.position - otherPosition).normalized;
-
+			
 					if (coll.gameObject.tag == "OilBall_Speeding") {
 						//animate helmet getting knocked off in helmetMotionDirection
-						print("my helmet has been knocked off and i am temporarily down for the count!");
+						print ("my helmet has been knocked off and i am temporarily down for the count!");
 						state = DOWN;
 						timeInCurrentState = 0f;
 					} else {
 						//animate helmet wiggling in accordance with helmetMotionDirection
 					}
 				}
+			}
 
-			if (state == DOWN) {
-				health--;
-				print ("health is " + health);
+		if (state == DOWN) {
+			if (coll.gameObject.tag != "OilBall" &&
+			    coll.gameObject.tag != "FireBall" &&
+			    coll.gameObject.tag != "projectile-enemy") {
+					health--;
+					print ("health is " + health);
+			}
+		}
+
+		if (state == ATTACK_CHARGE) {
+			if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "OilBall_Speeding") {
+				coll.gameObject.GetComponent<OilBall> ().damage (4);
+			}
+			if (coll.gameObject.tag == "FireBall") {
+				coll.gameObject.GetComponent<FireBall> ().damage (4);
+			}
+			if (coll.gameObject.tag == "wall") {
+				state = ATTACK_CHARGE_END;
 			}
 		}
 	}
@@ -88,6 +117,10 @@ public class Boss : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		clock += Time.deltaTime;
+
+		if (target == null) {
+			print ("target not initialized");
+		} else 
 
 		if (state == DOWN) {
 			timeInCurrentState += Time.deltaTime;
@@ -98,8 +131,8 @@ public class Boss : MonoBehaviour {
 				print ("now my helmet is back on and I am raring to go!");
 			}
 		} else if (state == ATTACK_SHOOT) {
+			
 			timeInCurrentState += Time.deltaTime;
-
 			//shoot at current target
 			if ((int)timeInCurrentState % 2 == 0) {
 				if ((int)(timeInCurrentState * 10) % 2 == 0) {
@@ -115,17 +148,35 @@ public class Boss : MonoBehaviour {
 			}
 
 			//switch targets
-			if (((int)timeInCurrentState + 1 )% 10 == 0) {
+			if (((int)timeInCurrentState + 1) % 10 == 0) {
 				if (!alreadySwitched) {
-					if (target == controller.oil) {
-						target = controller.fire;
-					} else {
-						target = controller.oil;
-					}
+					switchTargets ();
 					alreadySwitched = true;
 				}
 			} else {
 				alreadySwitched = false;
+			}
+
+			if (timeInCurrentState > 30) {
+				//prep for charge attack
+				if (Random.Range (0, 2) > 1) {
+					switchTargets ();
+				}
+				chargeDirection = (target.transform.position - transform.position).normalized;
+				state = ATTACK_CHARGE;
+				timeInCurrentState = 0f;
+			}
+
+		} else if (state == ATTACK_CHARGE) {
+			
+			transform.Translate (chargeDirection * Time.deltaTime * chargeSpeed);
+
+		} else if (state == ATTACK_CHARGE_END) {
+			
+			transform.position = Vector3.MoveTowards (transform.position, center, Time.deltaTime * chargeEndSpeed);
+			if (transform.position == center) {
+				state = ATTACK_SHOOT;
+				timeInCurrentState = 0f;
 			}
 		}
 	}

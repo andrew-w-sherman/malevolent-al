@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public bool DEBUG_LVL = true;
-	public bool DEBUG_BOSS = false; public Boss boss;
+    public bool DEBUG_LVL = false;
+	public bool DEBUG_BOSS = false;
     readonly string[] LEVELS = { "test", "test2" };
     int levelIndex;
 
@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour {
     public int whichAddEnemy;
     public Camera cam;
     public float minCamSize;
+	public Boss boss;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -40,7 +41,7 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
-        startMenu = true;
+		startMenu = !DEBUG_BOSS;
         levelMenu = false;
         escapeMenu = false;
         projectiles = new List<Projectile>();
@@ -54,16 +55,12 @@ public class GameController : MonoBehaviour {
         minCamSize = cam.orthographicSize;
 
 		if (DEBUG_BOSS) {
-			GameObject bossObject = new GameObject();            
-
-			boss = bossObject.AddComponent<Boss>();         
-			boss.transform.position = new Vector3(0, 0, 0);    								
-			boss.name = "Boss";
-
-			boss.init(this);
+			fire = addFire (4, 4);
+			oil = addOil (-4, -4);
+			boss = addBoss (0, 0);
 		}
 
-        if (DEBUG_LVL)
+        else if (DEBUG_LVL)
         {
             enemies = new List<Enemy>();
             walls = new List<Wall>();
@@ -200,6 +197,16 @@ public class GameController : MonoBehaviour {
 
         enemies.Add(e1);
     }
+
+	private Boss addBoss(float x, float y){
+		GameObject bossObject = new GameObject();            
+		bossObject.tag = "Boss";
+		boss = bossObject.AddComponent<Boss>();         
+		boss.transform.position = new Vector3(x, y, 0);    								
+		boss.name = "Boss";
+		boss.init(this);
+		return boss;
+	}
 
     private void addWall(float x, float y)
     {
