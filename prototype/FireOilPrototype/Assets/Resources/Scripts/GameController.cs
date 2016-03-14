@@ -57,48 +57,13 @@ public class GameController : MonoBehaviour {
 		print ("ok");
 		//DEBUG_BOSS = true;
 		if (DEBUG_BOSS) {
-
-			fire = addFire (4, 4);
-			oil = addOil (-4, -4);
-			boss = addBoss (0, 0);
+            loadPrototype();
+            boss = addBoss (0, 0);
 		}
 
         else if (DEBUG_LVL)
         {
-            fire = addFire(0, 3);
-            oil = addOil(0, 1);
-            enemies = new List<Enemy>();
-            walls = new List<Wall>();
-            pits = new List<Pit>();
-            
-
-            //addTurret(0, -2);
-            //addObstacle(0, -2, 0);
-
-
-            Pit pit = null;
-            for (int i = -7; i < 9; i++)
-            {
-                pit = addPit(-2, i);
-
-                //if (i == 1 || i == 2 || i == 3)
-                //{
-                //    pit.turnOff();
-                //}
-
-            }
-
-            addSpikes(0, 6);
-
-            addEnemy(-4, 1, "fire");
-            addEnemy(-4, 3, "oil");
-            //Pit pit = addPit(-2, 1);
-            //pit.turnOff();
-            //pit.turnOn();
-            addCrumbleWall(1, -3);
-            addCrumbleWall(2, -3);
-            addCrumbleWall(3, -3);
-            addCrumbleWall(4, -3);
+            loadPrototype();
             
         }
         else
@@ -110,7 +75,40 @@ public class GameController : MonoBehaviour {
 
     public void loadPrototype()
     {
+        fire = addFire(0, 3);
+        oil = addOil(0, 1);
+        enemies = new List<Enemy>();
+        walls = new List<Wall>();
+        pits = new List<Pit>();
 
+
+        //addTurret(0, -2);
+        //addObstacle(0, -2, 0);
+
+
+        Pit pit = null;
+        for (int i = -7; i < 9; i++)
+        {
+            pit = addPit(-2, i);
+
+            //if (i == 1 || i == 2 || i == 3)
+            //{
+            //    pit.turnOff();
+            //}
+
+        }
+
+        addSpikes(0, 6);
+
+        addEnemy(-4, 1, "fire");
+        addEnemy(-4, 3, "oil");
+        //Pit pit = addPit(-2, 1);
+        //pit.turnOff();
+        //pit.turnOn();
+        addCrumbleWall(1, -3);
+        addCrumbleWall(2, -3);
+        addCrumbleWall(3, -3);
+        addCrumbleWall(4, -3);
     }
 
     public void pitSwitch()
