@@ -7,7 +7,8 @@ public class Character : MonoBehaviour {
     public float clock = 0f;
 
     public bool speeding = false;
-    
+    public float speed;
+
     public bool falling;
     public Collider2D fallingInto;
     public float initialDistance;
@@ -22,6 +23,7 @@ public class Character : MonoBehaviour {
 	public float healthRegenRate = 1;     //hp gained per second while regenerating
 	public float lastRegen;
 	public float damageCooldown = 1.5f; //how long we wait in between taking damage (so things like spikes don't kill in a couple frames)
+    public Tile lastTile;
 
     void Start () {
         falling = false;
@@ -29,6 +31,14 @@ public class Character : MonoBehaviour {
 		lastRegen = 0;
 		health = maxHealth;
 	}
+
+    public void updateLastTile(Collider2D other)
+    {
+        if (other.gameObject.tag == "plain tile")
+        {
+            lastTile = other.gameObject.GetComponent<Tile>();
+        }
+    }
 
     public void switchHit(Collider2D other)
     {
@@ -78,10 +88,18 @@ public class Character : MonoBehaviour {
             if (tag != "enemy")
             {
                 speeding = false;
+                speed = FireBall.minSpeed;
                 falling = false;
                 currentScale = 1f;
                 transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-                transform.position = startPosition;
+                if (lastTile != null)
+                {
+                    transform.position = lastTile.transform.position;
+                }
+                else
+                {
+                    transform.position = startPosition;
+                }
             }
             else
             {

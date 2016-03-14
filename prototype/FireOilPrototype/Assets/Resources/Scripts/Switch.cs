@@ -11,6 +11,8 @@ public class Switch : Tile {
     List<Tile> tileList;
     SwitchModel model;
     public Collider2D coll;
+	AudioSource audioS;
+	AudioClip clickingSound;
 
 	// Use this for initialization
 	public void init(GameController gc, List<Tile> tileList) {
@@ -25,6 +27,10 @@ public class Switch : Tile {
         var modelObject = new GameObject();
         model = modelObject.AddComponent<SwitchModel>();
         model.init(controller, this);
+
+		audioS = this.gameObject.AddComponent<AudioSource> ();
+		clickingSound = Resources.Load<AudioClip>("Sound/switch");
+		audioS.spatialBlend = 0.0f;
     }
 	
 	// Update is called once per frame
@@ -60,7 +66,7 @@ public class Switch : Tile {
                 updateTag();
             }
         }
-
+		audioS.PlayOneShot (clickingSound);
     }
 
     void updateTag()

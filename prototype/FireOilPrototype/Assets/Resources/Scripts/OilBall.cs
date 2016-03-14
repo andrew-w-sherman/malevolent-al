@@ -18,10 +18,9 @@ public class OilBall : Character
     public int numPatches = 10;
     float patchDistance;
 
-    float explodeTimer = 4f;//how long we wait between explosions
+    float explodeTimer = 7f;//how long we wait between explosions
     float explosionTime = 1.2f; //how long an explosion lasts
-    float timeLastExploded = -1f; //
-
+    float timeLastExploded = -explodeTimer; //just to make sure we can explode right at the start of a level
 
     float speedingTime = 3f; //how long we speed for
     float timeBeenSpeeding = 0f;
@@ -166,6 +165,7 @@ public class OilBall : Character
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        updateLastTile(other);
         pitHit(other);
         switchHit(other);
     }
@@ -175,6 +175,7 @@ public class OilBall : Character
 
     void OnTriggerStay2D(Collider2D coll)
     {
+
         if (!falling)
         {
             pitHit(coll);

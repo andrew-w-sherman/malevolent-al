@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public bool DEBUG_LVL;
-	public bool DEBUG_BOSS = false; public Boss boss;
-    readonly string[] LEVELS = { "test", "test2" };
+    public bool DEBUG_LVL = false;
+    public bool DEBUG_BOSS = false; public Boss boss;
+
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1", "dan level" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour {
     public int whichAddEnemy;
     public Camera cam;
     public float minCamSize;
+	public Boss boss;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -40,7 +42,7 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
-        startMenu = true;
+		startMenu = false;
         levelMenu = false;
         escapeMenu = false;
         projectiles = new List<Projectile>();
@@ -52,63 +54,61 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-
+		print ("ok");
+		//DEBUG_BOSS = true;
 		if (DEBUG_BOSS) {
-			GameObject bossObject = new GameObject();            
-
-			boss = bossObject.AddComponent<Boss>();         
-			boss.transform.position = new Vector3(0, 0, 0);    								
-			boss.name = "Boss";
-
-			boss.init(this);
+            loadPrototype();
+            boss = addBoss (0, 0);
 		}
 
-        if (DEBUG_LVL)
+        else if (DEBUG_LVL)
         {
-            enemies = new List<Enemy>();
-            walls = new List<Wall>();
-            pits = new List<Pit>();
-            
-
-            //addTurret(0, -2);
-            //addObstacle(0, -2, 0);
-
-
-            Pit pit = null;
-            for (int i = -7; i < 9; i++)
-            {
-                pit = addPit(-2, i);
-
-                //if (i == 1 || i == 2 || i == 3)
-                //{
-                //    pit.turnOff();
-                //}
-
-            }
-
-            addSpikes(0, 6);
-
-            addEnemy(-4, 1, "fire");
-            addEnemy(-4, 3, "oil");
-            //Pit pit = addPit(-2, 1);
-            //pit.turnOff();
-            //pit.turnOn();
-            addCrumbleWall(1, -3);
-            addCrumbleWall(2, -3);
-            addCrumbleWall(3, -3);
-            addCrumbleWall(4, -3);
+            loadPrototype();
             
         }
         else
         {
-            // we assume we're working from 
-            levelIndex = 0;
-            boardGO = new GameObject();
-            board = boardGO.AddComponent<Board>();
-            board.init(LEVELS[levelIndex], this);
+            startMenu = true;
         }
-        
+    }
 
+
+    public void loadPrototype()
+    {
+        fire = addFire(0, 3);
+        oil = addOil(0, 1);
+        enemies = new List<Enemy>();
+        walls = new List<Wall>();
+        pits = new List<Pit>();
+
+
+        //addTurret(0, -2);
+        //addObstacle(0, -2, 0);
+
+
+        Pit pit = null;
+        for (int i = -7; i < 9; i++)
+        {
+            pit = addPit(-2, i);
+
+            //if (i == 1 || i == 2 || i == 3)
+            //{
+            //    pit.turnOff();
+            //}
+
+        }
+
+        addSpikes(0, 6);
+
+        addEnemy(-4, 1, "fire");
+        addEnemy(-4, 3, "oil");
+        //Pit pit = addPit(-2, 1);
+        //pit.turnOff();
+        //pit.turnOn();
+        addCrumbleWall(1, -3);
+        addCrumbleWall(2, -3);
+        addCrumbleWall(3, -3);
+        addCrumbleWall(4, -3);
     }
 
     public void pitSwitch()
@@ -200,6 +200,16 @@ public class GameController : MonoBehaviour {
 
         enemies.Add(e1);
     }
+
+	private Boss addBoss(float x, float y){
+		GameObject bossObject = new GameObject();            
+		bossObject.tag = "Boss";
+		boss = bossObject.AddComponent<Boss>();         
+		boss.transform.position = new Vector3(x, y, 0);    								
+		boss.name = "Boss";
+		boss.init(this);
+		return boss;
+	}
 
     private void addWall(float x, float y)
     {
