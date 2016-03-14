@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public bool DEBUG_LVL;
+    public bool DEBUG_LVL = true;
+	public bool DEBUG_BOSS = false; public Boss boss;
     readonly string[] LEVELS = { "test", "test2" };
     int levelIndex;
 
@@ -44,6 +45,16 @@ public class GameController : MonoBehaviour {
         addOil(0, 1);
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
+
+		if (DEBUG_BOSS) {
+			GameObject bossObject = new GameObject();            
+
+			boss = bossObject.AddComponent<Boss>();         
+			boss.transform.position = new Vector3(0, 0, 0);    								
+			boss.name = "Boss";
+
+			boss.init(this);
+		}
 
         if (DEBUG_LVL)
         {
@@ -89,6 +100,7 @@ public class GameController : MonoBehaviour {
             board = boardGO.AddComponent<Board>();
             board.init(LEVELS[levelIndex], this);
         }
+        
 
         
     }

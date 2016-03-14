@@ -107,7 +107,6 @@ public class OilBall : Character
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 gameObject.tag = "OilBall_Speeding";
 				audioS.PlayOneShot (explodeSound);
-
             }
         }
         else if (other.gameObject.tag == "wall")
@@ -158,6 +157,9 @@ public class OilBall : Character
             }
             */
         }
+		if (other.gameObject.tag == "projectile-enemy") {
+			damage (1);
+		}
     }
 
     void OnTriggerEnter2D(Collider2D other)
