@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL = false;
-	public bool DEBUG_BOSS = true;
+	public bool DEBUG_BOSS = false;
     readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1" };
     int levelIndex;
 
@@ -53,8 +53,10 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-
+		print ("ok");
+		DEBUG_BOSS = true;
 		if (DEBUG_BOSS) {
+
 			fire = addFire (4, 4);
 			oil = addOil (-4, -4);
 			boss = addBoss (0, 0);
@@ -102,8 +104,6 @@ public class GameController : MonoBehaviour {
         {
             startMenu = true;
         }
-        
-
     }
 
 

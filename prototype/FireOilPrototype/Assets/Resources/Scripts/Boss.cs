@@ -135,13 +135,24 @@ public class Boss : MonoBehaviour {
 						Vector3 projectileStart = shootDir * collider.radius * 1.6f;
 						controller.addProjectile (transform.position + projectileStart, shootDir, Projectile.ENEMY);
 						alreadyShot = true;
+						if (health < maxHealth / 3) {
+							switchTargets ();
+							Vector3 shootDir2 = (target.transform.position - transform.position).normalized;
+							Vector3 projectileStart2 = shootDir2 * collider.radius * 1.6f;
+							controller.addProjectile (transform.position + projectileStart2, shootDir2a, Projectile.ENEMY);
+						}
 					}
 				} else {
 					alreadyShot = false;
 				}
+				alreadySwitched = false;
+			} else if (!alreadySwitched) {
+				switchTargets ();
+				alreadySwitched = true;
 			}
 
 			//switch targets
+			/*
 			if (((int)timeInCurrentState + 1) % 10 == 0) {
 				if (!alreadySwitched) {
 					switchTargets ();
@@ -150,8 +161,9 @@ public class Boss : MonoBehaviour {
 			} else {
 				alreadySwitched = false;
 			}
+			*/
 
-			if (timeInCurrentState > 30 || (timeInCurrentState > 15 && health < maxHealth / 3)) {
+			if (timeInCurrentState > 20 || (timeInCurrentState > 10 && health < maxHealth / 3)) {
 				//prep for charge attack
 				if (Random.Range (0, 2) > 1) {
 					switchTargets ();
