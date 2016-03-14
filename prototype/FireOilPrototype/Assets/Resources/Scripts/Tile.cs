@@ -5,7 +5,7 @@ public class Tile : MonoBehaviour {
 
     // LINKING JUNK
     //neighbors (north, east, south, west)
-    public Tile[] neighbors = new Tile[4];
+    public Tile north, south, east, west;
     public int linkTag = 0;
 
     public GameController controller;
