@@ -139,7 +139,7 @@ public class Boss : MonoBehaviour {
 							switchTargets ();
 							Vector3 shootDir2 = (target.transform.position - transform.position).normalized;
 							Vector3 projectileStart2 = shootDir2 * collider.radius * 1.6f;
-							controller.addProjectile (transform.position + projectileStart2, shootDir2a, Projectile.ENEMY);
+							//controller.addProjectile (transform.position + projectileStart2, shootDir2a, Projectile.ENEMY);
 						}
 					}
 				} else {
