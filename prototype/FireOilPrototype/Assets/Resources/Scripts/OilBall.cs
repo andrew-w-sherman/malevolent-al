@@ -20,7 +20,7 @@ public class OilBall : Character
 
     float explodeTimer = 7f;//how long we wait between explosions
     float explosionTime = 1.2f; //how long an explosion lasts
-    float timeLastExploded = -explodeTimer; //just to make sure we can explode right at the start of a level
+    float timeLastExploded; //just to make sure we can explode right at the start of a level
 
     float speedingTime = 3f; //how long we speed for
     float timeBeenSpeeding = 0f;
@@ -36,6 +36,8 @@ public class OilBall : Character
 
     public void init(GameController demo)
     {
+
+        timeLastExploded = -explodeTimer;
         this.controller = demo;
         startPosition = transform.position;
         lastDirection = Vector3.up;
