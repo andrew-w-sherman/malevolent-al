@@ -35,8 +35,6 @@ public class EnemyModel : MonoBehaviour
         lostTimer = 0f;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
-        
-
         var body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
         body.isKinematic = false;
@@ -177,7 +175,7 @@ public class EnemyModel : MonoBehaviour
 
                 foreach (RaycastHit2D hit in hitList.ToArray())
                 {
-                    //Debug.Log(hit.collider);
+                    Debug.Log(hit.collider);
                     if (hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit" || 
                         hit.collider.gameObject.tag == "Explosion")
                     {

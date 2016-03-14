@@ -1,11 +1,14 @@
-                          XX    XX
-                          XXBBBBXX
-                          XX    XX
-XXXXXXXXXXXXXXXXXXXXXXXXXXXX    XXXXXXXX
-XX  sf              PPPPPPPP    CC    XX
-XX                  PPPPPPPP    CC    XX
-XX  so              PPPPPPPP    CC    XX
-XXXXXXXXXXXXXXXXXFXFXXXXXXXXXXXXXX    XX
-              XX                      XX
-              XX                      XX
-              XXXXXXXXXXXXXXXXXXXXXXXXXX		
+                          XXXXXXXX        
+                          XXGGGGXX        
+                          XX    XX        
+                          XX    XX        
+                          XX    XX        
+                          XX    XX        
+XXXXXXXXXXXXXXXXXXXXXXXXXXXX    XXXXXXXXXX
+XX  sf              PPPPPP  CCCC    BB  XX
+XX                  PPPPPP  CCCC    BBS1XX
+XX  so              PPPPPP  CCCC    BB  XX
+XXXXXXXXXXXXXXXXXFXXXXXXXXXXX1X1XXXXBBXXXX
+              XX                XXBBXX    
+              XX                BBXX      
+              XXXXXXXXXXXXXXXXXXXXXX      

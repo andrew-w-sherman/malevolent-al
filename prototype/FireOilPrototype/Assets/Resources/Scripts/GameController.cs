@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public bool DEBUG_LVL;
-    readonly string[] LEVELS = { "test", "test2", "test3"};
+
+    public bool DEBUG_LVL = false;
+
+    public bool DEBUG_BOSS = true;
+    readonly string[] LEVELS = { "test", "test2", "test3","dan tutorial2","dan tutorial3", "dan tutorial1", "dan level" };
+
     int levelIndex;
 
     public GameObject boardGO;
@@ -23,6 +27,7 @@ public class GameController : MonoBehaviour {
     public List<Wall> walls;
     public List<Pit> pits;
     public List<Projectile> projectiles;
+    public List<Tile> tiles;
     public int projectileCount;
     public float clock;
     public int addEnemyInterval = 5;
@@ -30,6 +35,7 @@ public class GameController : MonoBehaviour {
     public int whichAddEnemy;
     public Camera cam;
     public float minCamSize;
+	public Boss boss;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -38,17 +44,75 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
-        startMenu = true;
+		startMenu = false;
         levelMenu = false;
         escapeMenu = false;
+        projectiles = new List<Projectile>();
         projectileCount = 0;
+        tiles = new List<Tile>();
         clock = 0f;
         whenAddEnemy = 0;
         whichAddEnemy = 0;
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-        
+		print ("ok");
+		DEBUG_BOSS = true;
+		if (DEBUG_BOSS) {
+
+			fire = addFire (4, 4);
+			oil = addOil (-4, -4);
+			boss = addBoss (0, 0);
+		}
+
+        else if (DEBUG_LVL)
+        {
+            fire = addFire(0, 3);
+            oil = addOil(0, 1);
+            enemies = new List<Enemy>();
+            walls = new List<Wall>();
+            pits = new List<Pit>();
+            
+
+            //addTurret(0, -2);
+            //addObstacle(0, -2, 0);
+
+
+            Pit pit = null;
+            for (int i = -7; i < 9; i++)
+            {
+                pit = addPit(-2, i);
+
+                //if (i == 1 || i == 2 || i == 3)
+                //{
+                //    pit.turnOff();
+                //}
+
+            }
+
+            addSpikes(0, 6);
+
+            addEnemy(-4, 1, "fire");
+            addEnemy(-4, 3, "oil");
+            //Pit pit = addPit(-2, 1);
+            //pit.turnOff();
+            //pit.turnOn();
+            addCrumbleWall(1, -3);
+            addCrumbleWall(2, -3);
+            addCrumbleWall(3, -3);
+            addCrumbleWall(4, -3);
+            
+        }
+        else
+        {
+            startMenu = true;
+        }
+    }
+
+
+    public void loadPrototype()
+    {
+
     }
 
     public void pitSwitch()
@@ -96,6 +160,7 @@ public class GameController : MonoBehaviour {
         t.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
 
         t.init(this);
+        tiles.Add(t);
     }
 
     public FireBall addFire(float x, float y)
@@ -139,6 +204,16 @@ public class GameController : MonoBehaviour {
 
         enemies.Add(e1);
     }
+
+	private Boss addBoss(float x, float y){
+		GameObject bossObject = new GameObject();            
+		bossObject.tag = "Boss";
+		boss = bossObject.AddComponent<Boss>();         
+		boss.transform.position = new Vector3(x, y, 0);    								
+		boss.name = "Boss";
+		boss.init(this);
+		return boss;
+	}
 
     private void addWall(float x, float y)
     {
@@ -358,7 +433,7 @@ public class GameController : MonoBehaviour {
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 25, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
                 {
                     levelIndex = 0;
-                    loadLevelFromMenu();
+                    loadLevel();
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 25, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
                 {
@@ -367,26 +442,54 @@ public class GameController : MonoBehaviour {
             }
             else
             {
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, startButtonWidth, startButtonHeight), "Level 1", buttonStyle))
+                int buttonHeight = 0;
+                int numButtons = LEVELS.Length + 1;
+                int i = 0;
+
+                if (numButtons % 2 == 0 && numButtons > 0)
                 {
-                    levelIndex = 0;
-                    loadLevelFromMenu();
+                    buttonHeight = -25;
+                    while(i < numButtons / 2 - 1)
+                    {
+                        buttonHeight -= 50;
+                        i++;
+                    }
+
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 0, startButtonWidth, startButtonHeight), "Level 2", buttonStyle))
+                else if(numButtons % 2 == 1 && numButtons > 0)
                 {
-                    levelIndex = 1;
-                    loadLevelFromMenu();
+                    buttonHeight = 0;
+                    while (i < numButtons / 2)
+                    {
+                        buttonHeight -= 50;
+                        i++;
+                    }
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+
+                i = 0;
+                while(i < numButtons - 1)
+                {
+                    if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Level " + (i + 1), buttonStyle))
+                    {
+                        levelIndex = i;
+                        loadLevel();
+                    }
+
+                    buttonHeight += 50;
+                    i++;
+                }
+
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
                 {
                     levelMenu = false;
                 }
+
             }
         }
         else {
 
-            GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
-            GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
+            if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
+            if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
             if (escapeMenu)
             {
@@ -396,7 +499,10 @@ public class GameController : MonoBehaviour {
                     Time.timeScale = 1f;
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
-                    changeBoard();
+                {
+                    destroyEverything();
+                    loadLevel();
+                }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
                 {
                     destroyEverything();
@@ -415,7 +521,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void loadLevelFromMenu()
+    private void loadLevel()
     {
         startMenu = false;
         levelMenu = false;
@@ -427,9 +533,20 @@ public class GameController : MonoBehaviour {
     private void destroyEverything()
     {
         board.annihilate();
+        Destroy(fire.gameObject); Destroy(oil.gameObject);
+        Destroy(fire); Destroy(oil); fire = null; oil = null;
         Destroy(boardGO);
-        Destroy(fire.gameObject);
-        Destroy(oil.gameObject);
+    }
+
+    private void changeBoard()
+    {
+        board.annihilate();
+        Destroy(fire.gameObject); Destroy(oil.gameObject);
+        Destroy(fire); Destroy(oil); fire = null; oil = null;
+        Destroy(boardGO);
+        boardGO = new GameObject();
+        board = boardGO.AddComponent<Board>();
+        board.init(LEVELS[levelIndex], this);
     }
 
     public void goal(int type)
@@ -460,18 +577,6 @@ public class GameController : MonoBehaviour {
         {
             changeBoard();
         }
-    }
-
-
-    private void changeBoard()
-    {
-        board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire);Destroy(oil); fire = null; oil = null;
-        Destroy(boardGO);
-        boardGO = new GameObject();
-        board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
     }
 
     public void winScreen()

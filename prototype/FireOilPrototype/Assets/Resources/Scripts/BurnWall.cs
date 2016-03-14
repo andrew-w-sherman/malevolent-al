@@ -19,7 +19,7 @@ public class BurnWall : Tile {
 
         gameObject.tag = "BurnWall";        
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<BurnWallModel>();
         model.init(this, controller);
     }

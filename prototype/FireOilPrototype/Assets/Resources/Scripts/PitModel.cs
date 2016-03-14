@@ -20,7 +20,7 @@ public class PitModel : MonoBehaviour {
         transform.parent = owner.transform;                 // Set the model's parent to the gem.
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
         name = "pit-model";
-        
+
         owner.gameObject.AddComponent<SpriteRenderer>();
         sr = owner.GetComponent<SpriteRenderer>();
         sr.sprite = tileSp[5];

@@ -5,11 +5,12 @@ public class Tile : MonoBehaviour {
 
     // LINKING JUNK
     //neighbors (north, east, south, west)
-    public Tile[] neighbors = new Tile[4];
+    public Tile north, south, east, west;
     public int linkTag = 0;
 
     public GameController controller;
     SpriteRenderer sr;
+    BoxCollider2D coll;
 
     public const int NO_TOGGLE = 0;
     public const int WALL = 1;
@@ -20,6 +21,11 @@ public class Tile : MonoBehaviour {
     // Use this for initialization
     public virtual void init(GameController gc) {
         controller = gc;
+        tag = "plain tile";
+
+        coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.isTrigger = true;
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile");
         DestroyImmediate(GetComponent<MeshFilter>());
@@ -38,7 +44,6 @@ public class Tile : MonoBehaviour {
     public void replaceWithTile()
     {
         Vector3 pos = transform.position;
-        Debug.Log(controller);
         controller.addTile(pos.x, pos.y);
     }
 
