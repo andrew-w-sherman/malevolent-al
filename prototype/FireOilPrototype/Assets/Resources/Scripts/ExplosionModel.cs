@@ -26,7 +26,7 @@ public class ExplosionModel : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         clock = clock + Time.deltaTime;
-        transform.localScale = new Vector3(clock * 5f, clock * 5f, 1);
+        transform.localScale = new Vector3(clock * 3f, clock * 3f, 1);
         if(clock > maxTime)
         {
             Destroy(this.gameObject);
