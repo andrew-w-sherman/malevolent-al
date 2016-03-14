@@ -35,10 +35,7 @@ public class EnemyModel : MonoBehaviour
         lostTimer = 0f;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
-        GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        var filter = gameObject.AddComponent<MeshFilter>();
-        filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
-        Destroy(uselessQuad);
+        
 
         var body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
@@ -53,8 +50,6 @@ public class EnemyModel : MonoBehaviour
         transform.localPosition = new Vector3(0, 0, 0);
         name = "enemy-model";
 
-        DestroyImmediate(GetComponent<MeshFilter>());
-        DestroyImmediate(GetComponent<MeshRenderer>());
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 2;

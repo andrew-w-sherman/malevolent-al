@@ -8,7 +8,8 @@ public class SpikesModel : MonoBehaviour {
 	public Material mat;
 	public SpriteRenderer sr;
 
-	public void init(Spikes owner, GameController demo)
+
+    public void init(Spikes owner, GameController demo)
 	{
 		this.owner = owner;
 		this.demo = demo;
@@ -16,10 +17,8 @@ public class SpikesModel : MonoBehaviour {
 		transform.parent = owner.transform;
 		transform.localPosition = new Vector3(0, 0, 0);    
 		name = "spikes-model";
-
-		DestroyImmediate(GetComponent<MeshFilter>());
-		DestroyImmediate(GetComponent<MeshRenderer>());
-		gameObject.AddComponent<SpriteRenderer>();
+        
+        gameObject.AddComponent<SpriteRenderer>();
 		sr = GetComponent<SpriteRenderer>();
 		sr.sortingOrder = 1;
 		sr.sprite = Resources.LoadAll<Sprite> ("Sprite Sheets/env-tile") [12];

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL;
-    readonly string[] LEVELS = { "test", "test2" };
+    readonly string[] LEVELS = { "test", "test2", "test3"};
     int levelIndex;
 
     public GameObject boardGO;

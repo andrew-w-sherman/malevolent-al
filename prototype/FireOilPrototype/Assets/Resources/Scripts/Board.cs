@@ -49,8 +49,10 @@ public class Board : MonoBehaviour {
             // two at a time along x
             for (int j = 0; j < characters[0].Length; j+=2)
             {
-                char c1 = characters[i][j];
+               
+                char c1 = characters[i][j];                
                 char c2 = characters[i][j + 1];
+                print("i " + i + " j " + j + " chars: " +c1+"..."+c2 );
                 Vector3 pos = tileFolder.transform.position + new Vector3(j / 2, characters.Length - i - 1, 0);
                 GameObject obj = new GameObject();
                 Tile tile = null;

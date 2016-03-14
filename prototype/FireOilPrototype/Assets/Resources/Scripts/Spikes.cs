@@ -26,7 +26,7 @@ public class Spikes : Tile {
 		damagingOil = false;
 		gameObject.tag = "Spikes";
 
-		var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		var modelObject = new GameObject();
 		model = modelObject.AddComponent<SpikesModel>();
 		model.init(this, demo);
 
