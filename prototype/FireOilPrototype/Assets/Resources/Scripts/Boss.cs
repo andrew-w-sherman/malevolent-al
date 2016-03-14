@@ -10,7 +10,8 @@ public class Boss : MonoBehaviour {
 	public static int EMERGING = 1;    // the boss emerges at the start of phase 2, and after its helmet gets knocked off and it sinks down
 	public static int DOWN = 2;        // during phase 2, the boss' helmet has been knocked off and it can be attacked
 	public static int SINKING = 3;     // during phase 2, after its been down for the appropriate time, the boss sinks into the ground before emerging again.
-	public static int ATTACKING = 4;   // during phase 2, the boss' normal attacking phase.
+	public static int ATTACK_SHOOT = 4;   // during phase 2, the boss' normal attacking phase.
+	public static int ATTACK_CHARGE = 5;
 	CircleCollider2D collider;
 	GameController controller;
 
@@ -32,7 +33,7 @@ public class Boss : MonoBehaviour {
 		clock = 0f;
 		timeInCurrentState = 0f;
 		direction = Mathf.PI; //boss starts pointing straight down
-		state = ATTACKING;
+		state = ATTACK_SHOOT;
 		health = maxHealth;
 		alreadySwitched = false;
 		alreadyShot = false;
@@ -63,7 +64,7 @@ public class Boss : MonoBehaviour {
 				coll.gameObject.tag != "FireBall" &&
 				coll.gameObject.tag != "projectile-enemy") {  
 
-			if (state == ATTACKING) {
+			if (state == ATTACK_SHOOT) {
 					Vector3 otherPosition = coll.gameObject.transform.position;
 					Vector3 helmetMotionDirection = (transform.position - otherPosition).normalized;
 
@@ -91,12 +92,12 @@ public class Boss : MonoBehaviour {
 		if (state == DOWN) {
 			timeInCurrentState += Time.deltaTime;
 			if (timeInCurrentState > timeToStayDownFor) {
-				state = ATTACKING;
+				state = ATTACK_SHOOT;
 				timeInCurrentState = 0f;
 				alreadySwitched = false;
 				print ("now my helmet is back on and I am raring to go!");
 			}
-		} else if (state == ATTACKING) {
+		} else if (state == ATTACK_SHOOT) {
 			timeInCurrentState += Time.deltaTime;
 
 			//shoot at current target
