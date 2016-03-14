@@ -24,7 +24,7 @@ public class BurnWallModel : MonoBehaviour {
         transform.parent = owner.transform;
         transform.localPosition = new Vector3(0, 0, 0);
         name = "BurnWall Model";
-        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[2];
+        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[16];
     }
 	
 	// Update is called once per frame
@@ -46,7 +46,7 @@ public class BurnWallModel : MonoBehaviour {
     public void burn()
     {
         //switch to fire sprite and set a timer, when time is up in update change it to a ground sprite and remove collider
-        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/char-front")[11];
+        sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[17];
         timer = 0f;
 
     }

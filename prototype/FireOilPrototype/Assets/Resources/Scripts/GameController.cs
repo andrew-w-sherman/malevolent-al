@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public bool DEBUG_LVL = true;
+    public bool DEBUG_LVL;
 	public bool DEBUG_BOSS = false; public Boss boss;
     readonly string[] LEVELS = { "test", "test2" };
     int levelIndex;
