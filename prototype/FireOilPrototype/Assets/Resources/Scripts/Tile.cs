@@ -38,7 +38,6 @@ public class Tile : MonoBehaviour {
     public void replaceWithTile()
     {
         Vector3 pos = transform.position;
-        Debug.Log(controller);
         controller.addTile(pos.x, pos.y);
     }
 

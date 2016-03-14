@@ -15,9 +15,7 @@ public class BurnWallModel : MonoBehaviour {
         this.owner = owner;
         controller = gc;
         timer = 0f;
-
-        DestroyImmediate(GetComponent<MeshFilter>());
-        DestroyImmediate(GetComponent<MeshRenderer>());
+        
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 2;
 

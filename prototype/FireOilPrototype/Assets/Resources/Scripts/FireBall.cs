@@ -104,6 +104,9 @@ public class FireBall : Character
             charge++;
             print("charge is " + charge);
         }
+		if (coll.gameObject.tag == "projectile-enemy") {
+			damage (1);
+		}
     }
     /*
 	void Start()
@@ -123,8 +126,7 @@ public class FireBall : Character
         else {
             model.flicker = false;
         }
-
-
+			
         if (falling)
         {
             fallSequence();

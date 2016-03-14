@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour {
         {
             Physics2D.IgnoreCollision(circleCollider, demo.fire.coll);
             Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
-        } else
+		} else if (type == OIL)
         {
             Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
         }
@@ -119,6 +119,14 @@ public class Projectile : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D coll)
     {
         string tagOther = coll.gameObject.tag;
+		/*
+		if (tagOther == "OilBall" || tagOther == "OilBall_Speeding") {
+			gameObject.GetComponent<OilBall> ().damage (1);
+		}
+		if (tagOther == "FireBall") {
+			gameObject.GetComponent<FireBall> ().damage (1);
+		}
+		*/
 
         if (tagOther != "projectile-friendly" && tagOther != "projectile-enemy")
         {

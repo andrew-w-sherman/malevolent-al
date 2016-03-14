@@ -189,11 +189,14 @@ public class Board : MonoBehaviour {
             for (int j = 0; j < tiles.GetLength(1); j++)
             {
                 Tile tile = tiles[i, j];
-                Destroy(tile.gameObject);
+                if (tile != null) Destroy(tile.gameObject);
             }
         }
         foreach (GameObject en in enemies) if (en != null) Destroy(en);
         foreach (GameObject tr in turrets) if (tr != null) Destroy(tr);
+        foreach (Tile t in gc.tiles) if (t != null) Destroy(t.gameObject);
+        foreach (Projectile pr in gc.projectiles) if (pr != null) Destroy(pr.gameObject);
+        if (gc.expl != null) Destroy(gc.expl.gameObject);
         Destroy(tileFolder);
     }
 	
