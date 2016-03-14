@@ -9,11 +9,10 @@ public class FireBall : Character
     public CircleCollider2D coll;
     public Vector3 lastDirection;
 
-    public float maxSpeed = 10f;
-    public float minSpeed = 3f;
-    public float speedUp = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
-    public float slowDown = 0.1f;
-    public float speed;
+    public const float maxSpeed = 10f;
+    public const float minSpeed = 3f;
+    public const float speedUp = 0.3f; //the change in speed per frame if fireball is on/off an oil patch
+    public const float slowDown = 0.1f;
     public bool onOil = false;
     public int charge = 0; //counter to keep track of how many times oil has shot fire
 

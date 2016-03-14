@@ -7,7 +7,8 @@ public class Character : MonoBehaviour {
     public float clock = 0f;
 
     public bool speeding = false;
-    
+    public float speed;
+
     public bool falling;
     public Collider2D fallingInto;
     public float initialDistance;
@@ -87,6 +88,7 @@ public class Character : MonoBehaviour {
             if (tag != "enemy")
             {
                 speeding = false;
+                speed = FireBall.minSpeed;
                 falling = false;
                 currentScale = 1f;
                 transform.localScale = new Vector3(currentScale, currentScale, currentScale);
