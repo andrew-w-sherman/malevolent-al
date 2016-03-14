@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour {
 
         coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = true;
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile");
         DestroyImmediate(GetComponent<MeshFilter>());
