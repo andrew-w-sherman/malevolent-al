@@ -15,7 +15,7 @@ public class SwitchModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
 
         sr = gameObject.AddComponent<SpriteRenderer>();
-        sr.sortingOrder = 2;
+        sr.sortingOrder = 1;
 
         sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[13];
 

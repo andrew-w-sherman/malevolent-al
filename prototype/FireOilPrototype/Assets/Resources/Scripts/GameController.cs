@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
     public bool startMenu;
     public bool levelMenu;
     public bool escapeMenu;
+    public bool beatGame;
 
     public FireBall fire;
     public OilBall oil;
@@ -45,6 +46,8 @@ public class GameController : MonoBehaviour {
 		startMenu = false;
         levelMenu = false;
         escapeMenu = false;
+        beatGame = false;
+
         projectiles = new List<Projectile>();
         projectileCount = 0;
         tiles = new List<Tile>();
@@ -532,6 +535,7 @@ public class GameController : MonoBehaviour {
         Destroy(fire.gameObject); Destroy(oil.gameObject);
         Destroy(fire); Destroy(oil); fire = null; oil = null;
         Destroy(boardGO);
+        inGoal = 0;
     }
 
     private void changeBoard()
@@ -560,7 +564,7 @@ public class GameController : MonoBehaviour {
     //TODO: destroying projectiles probably
     public void nextLevel() {
         levelIndex++;
-        if (levelIndex >= LEVELS.Length) winScreen();
+        if (levelIndex >= LEVELS.Length) beatGame = true;
         else {
             changeBoard();
         }
