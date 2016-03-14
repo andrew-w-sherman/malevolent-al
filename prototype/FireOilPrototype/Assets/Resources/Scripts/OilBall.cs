@@ -166,6 +166,7 @@ public class OilBall : Character
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        updateLastTile(other);
         pitHit(other);
         switchHit(other);
     }
@@ -175,6 +176,7 @@ public class OilBall : Character
 
     void OnTriggerStay2D(Collider2D coll)
     {
+
         if (!falling)
         {
             pitHit(coll);

@@ -68,6 +68,7 @@ public class FireBall : Character
 
     void OnTriggerStay2D(Collider2D collider)
     {
+
         if (!falling)
         {
             pitHit(collider);
@@ -84,6 +85,10 @@ public class FireBall : Character
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        updateLastTile(other);
+        pitHit(other);
+        switchHit(other);
+
         if (other.gameObject.tag == "OilBall")
         {
             if (speed >= other.gameObject.GetComponent<OilBall>().speedingThreshold)
@@ -91,10 +96,7 @@ public class FireBall : Character
                 //print("Fireball registered a collide with oilball");
                 speed = minSpeed;
             }
-        }
-
-        pitHit(other);
-        switchHit(other);
+        } 
     }
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
@@ -108,6 +110,7 @@ public class FireBall : Character
 			damage (1);
 		}
     }
+
     /*
 	void Start()
 	{

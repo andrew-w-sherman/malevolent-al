@@ -62,6 +62,8 @@ public class GameController : MonoBehaviour {
 
         else if (DEBUG_LVL)
         {
+            fire = addFire(0, 3);
+            oil = addOil(0, 1);
             enemies = new List<Enemy>();
             walls = new List<Wall>();
             pits = new List<Pit>();
