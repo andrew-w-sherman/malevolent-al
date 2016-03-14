@@ -24,6 +24,7 @@ public class PitModel : MonoBehaviour {
         //DestroyImmediate(owner.GetComponent<MeshRenderer>());
         owner.gameObject.AddComponent<SpriteRenderer>();
         sr = owner.GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 1;
         sr.sprite = tileSp[5];
     }
 

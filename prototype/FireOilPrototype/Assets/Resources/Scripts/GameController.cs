@@ -523,7 +523,7 @@ public class GameController : MonoBehaviour {
         levelMenu = false;
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
+        board.init(LEVELS[levelIndex], 100, this);
     }
 
     private void destroyEverything()
@@ -542,7 +542,7 @@ public class GameController : MonoBehaviour {
         Destroy(boardGO);
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
+        board.init(LEVELS[levelIndex], 100, this);
     }
 
     public void goal(int type)

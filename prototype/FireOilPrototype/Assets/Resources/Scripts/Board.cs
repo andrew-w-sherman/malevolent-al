@@ -14,6 +14,7 @@ public class Board : MonoBehaviour {
     char[][] characters;
     Tile[,] tiles;
     GameObject tileFolder;
+    List<BackgroundTile> backgroundTiles;
     List<GameObject> enemies = new List<GameObject>();
     List<GameObject> turrets = new List<GameObject>();
 
@@ -21,14 +22,12 @@ public class Board : MonoBehaviour {
     List<Tile>[] switchingTiles = new List<Tile>[10];
     
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-
-    public void init(string filename, GameController gc)
+    public void init(string filename, int x, GameController gc)
     {
         tileFolder = new GameObject();
+        backgroundTiles = new List<BackgroundTile>();
+        addTileBackground(x);
+
         this.gc = gc;
         fb = gc.fire;
         ob = gc.oil;
@@ -180,6 +179,22 @@ public class Board : MonoBehaviour {
         }
         linkSwitches();
         linkTiles();
+    }
+
+    public void addTileBackground(int x)
+    {
+        for(int i = 0; i < x; i++)
+        {
+            for(int j = 0; j < x; j++)
+            {
+                GameObject obj = new GameObject();
+                BackgroundTile t = obj.AddComponent<BackgroundTile>();
+                t.transform.parent = tileFolder.transform;
+                t.transform.localPosition = new Vector3(i - 25, j - 25, 0);
+                t.init(gc);
+                backgroundTiles.Add(t);
+            }
+        }
     }
 
     public void annihilate()
