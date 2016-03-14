@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour {
 
     void Start () {
 
-		startMenu = !DEBUG_BOSS;
+		startMenu = false;
         levelMenu = false;
         escapeMenu = false;
         projectiles = new List<Projectile>();
@@ -98,13 +98,15 @@ public class GameController : MonoBehaviour {
         }
         else
         {
-            // we assume we're working from 
-            levelIndex = 0;
-            boardGO = new GameObject();
-            board = boardGO.AddComponent<Board>();
-            board.init(LEVELS[levelIndex], this);
+            startMenu = true;
         }
         
+
+    }
+
+
+    public void loadPrototype()
+    {
 
     }
 
