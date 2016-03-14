@@ -17,7 +17,7 @@ public class Obstacle : Tile {
        
         wallType = t;
         
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<ObstacleModel>();
         model.init(this, controller, wallType);
     }

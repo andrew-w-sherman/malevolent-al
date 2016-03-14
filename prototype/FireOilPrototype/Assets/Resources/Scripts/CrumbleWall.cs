@@ -19,7 +19,7 @@ public class CrumbleWall : Tile {
 
         gameObject.tag = "CrumbleWall";
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<CrumbleWallModel>();
         model.init(this, controller);
 
