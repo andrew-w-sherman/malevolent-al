@@ -210,13 +210,14 @@ public class GameController : MonoBehaviour {
         enemies.Add(e1);
     }
 
-	private Boss addBoss(float x, float y){
+	public Boss addBoss(float x, float y){
 		GameObject bossObject = new GameObject();            
 		bossObject.tag = "Boss";
 		boss = bossObject.AddComponent<Boss>();         
 		boss.transform.position = new Vector3(x, y, 0);    								
 		boss.name = "Boss";
 		boss.init(this);
+		this.boss = boss;
 		return boss;
 	}
 

@@ -135,14 +135,21 @@ public class Board : MonoBehaviour {
                             tile = sw;
                         }
                         break;
-                    case 'e':
-                        tile = obj.AddComponent<Tile>(); tile.init(gc);
-                        GameObject enemyGO = new GameObject();
-                        Enemy en = enemyGO.AddComponent<Enemy>();
-                        if (c2 == 'f') en.init(gc, "fire", true);
-                        else if (c2 == 'o') en.init(gc, "oil", true);
-                        en.transform.position = pos;
-                        enemies.Add(enemyGO);
+				case 'e':
+					tile = obj.AddComponent<Tile> ();
+					tile.init (gc);
+					if (c2 == 'b') {
+						gc.addBoss (pos.x, pos.y);
+					} else {
+						GameObject enemyGO = new GameObject ();
+						Enemy en = enemyGO.AddComponent<Enemy> ();
+						if (c2 == 'f')
+							en.init (gc, "fire", true);
+						else if (c2 == 'o')
+							en.init (gc, "oil", true);
+						en.transform.position = pos;
+						enemies.Add (enemyGO);
+					}
                         break;
                     case 'E':
                         tile = obj.AddComponent<Tile>(); tile.init(gc);
@@ -222,6 +229,8 @@ public class Board : MonoBehaviour {
         foreach (Tile t in gc.tiles) if (t != null) Destroy(t.gameObject);
         foreach (Projectile pr in gc.projectiles) if (pr != null) Destroy(pr.gameObject);
         if (gc.expl != null) Destroy(gc.expl.gameObject);
+		if (gc.boss != null)
+			Destroy (gc.boss.gameObject);
         Destroy(tileFolder);
     }
 	
