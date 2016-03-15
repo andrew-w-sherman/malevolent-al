@@ -469,7 +469,7 @@ public class GameController : MonoBehaviour {
 
         if (startMenu)
         {
-            ts.rend.enabled = true;
+            setMainMenu();
 
             if (!levelMenu)
             {
@@ -531,6 +531,7 @@ public class GameController : MonoBehaviour {
         }
         else if (beatGame == true)
         {
+            ts.rend.enabled = false;
             destroyEverything();
             GUI.Button(new Rect(screenWidth / 2 - 250, screenHeight / 2 - 50 - 50, 500, 100), "Congratultions! You beat the game!");
             if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
@@ -541,7 +542,7 @@ public class GameController : MonoBehaviour {
         }
         else
         {
-
+            ts.rend.enabled = false;
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
@@ -572,6 +573,13 @@ public class GameController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void setMainMenu()
+    {
+        ts.rend.enabled = true;
+        cam.transform.position = new Vector3(0, 0, -10);
+        cam.transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void loadLevel()
