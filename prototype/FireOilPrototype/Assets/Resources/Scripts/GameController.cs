@@ -94,30 +94,30 @@ public class GameController : MonoBehaviour {
         //addTurret(0, -2);
         //addObstacle(0, -2, 0);
 
+		if (!DEBUG_BOSS) {
+			Pit pit = null;
+			for (int i = -7; i < 9; i++) {
+				pit = addPit (-2, i);
 
-        Pit pit = null;
-        for (int i = -7; i < 9; i++)
-        {
-            pit = addPit(-2, i);
+				//if (i == 1 || i == 2 || i == 3)
+				//{
+				//    pit.turnOff();
+				//}
 
-            //if (i == 1 || i == 2 || i == 3)
-            //{
-            //    pit.turnOff();
-            //}
+			}
 
-        }
+			addSpikes (0, 6);
 
-        addSpikes(0, 6);
-
-        addEnemy(-4, 1, "fire");
-        addEnemy(-4, 3, "oil");
-        //Pit pit = addPit(-2, 1);
-        //pit.turnOff();
-        //pit.turnOn();
-        addCrumbleWall(1, -3);
-        addCrumbleWall(2, -3);
-        addCrumbleWall(3, -3);
-        addCrumbleWall(4, -3);
+			addEnemy (-4, 1, "fire");
+			addEnemy (-4, 3, "oil");
+			//Pit pit = addPit(-2, 1);
+			//pit.turnOff();
+			//pit.turnOn();
+			addCrumbleWall (1, -3);
+			addCrumbleWall (2, -3);
+			addCrumbleWall (3, -3);
+			addCrumbleWall (4, -3);
+		}
     }
 
     public void pitSwitch()
