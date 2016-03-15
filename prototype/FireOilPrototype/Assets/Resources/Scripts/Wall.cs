@@ -46,6 +46,6 @@ public class Wall : Tile {
         float y = 1f;
         if (north != null && south != null) x = 1.1f;
         if (east != null && west != null) y = 1.1f;
-        boxColl.size = new Vector2(x, y);
+        //boxColl.size = new Vector2(x, y);
     }
 }
