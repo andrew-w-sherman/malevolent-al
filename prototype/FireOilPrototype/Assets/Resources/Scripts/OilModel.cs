@@ -34,7 +34,7 @@ public class OilModel : MonoBehaviour
             transform.parent = b.transform;
             transform.localPosition = new Vector3(0, 0, 0);
             name = "Oil Ball Model";
-            sr.sortingOrder = 3;
+            sr.sortingOrder = 5;
             sr.sprite = charSp[4];
         }
         else

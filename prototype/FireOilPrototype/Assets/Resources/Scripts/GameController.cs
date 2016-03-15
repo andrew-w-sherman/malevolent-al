@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level", "bossLevel" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -39,6 +39,10 @@ public class GameController : MonoBehaviour {
     public Camera cam;
     public float minCamSize;
 	public Boss boss;
+	public BossHelmet helmet;
+
+	bool aboutToWin;
+	float timeUntilWin;
 
     public const int NaN = 10 ^ 30;
     public static Vector3 NULL = new Vector3(NaN, NaN, NaN);
@@ -83,6 +87,9 @@ public class GameController : MonoBehaviour {
         {
             startMenu = true;
         }
+
+		aboutToWin = false;
+		timeUntilWin = 0f;
     }
 
     public void addTitleScreen()
@@ -239,7 +246,20 @@ public class GameController : MonoBehaviour {
 		boss.name = "Boss";
 		boss.init(this);
 		this.boss = boss;
+		/*
+		GameObject bossHelmetObject = new GameObject();
+		helmet = bossHelmetObject.AddComponent<BossHelmet> ();
+		helmet.init (boss);
+*/
 		return boss;
+	}
+
+	public void createExplosion(float x, float y){
+		GameObject explModel = new GameObject();
+		Explosion explosion = explModel.AddComponent<Explosion>();
+		explosion.transform.position = new Vector3 (x, y, 0);
+		explosion.init(null, 3f);
+		aboutToWin = true;
 	}
 
     private void addWall(float x, float y)
@@ -440,6 +460,13 @@ public class GameController : MonoBehaviour {
 
         //pitSwitch();
         //addEnemyPeriodically();
+
+		if (aboutToWin) {
+			timeUntilWin += Time.deltaTime;
+			if (timeUntilWin >= 3f) {
+				beatGame = true;
+			}
+		}
     }
 
 
@@ -560,7 +587,8 @@ public class GameController : MonoBehaviour {
 
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
-
+			if (boss != null)
+				GUI.Label (new Rect (390, 10, 100, 30), "Boss health: " + boss.health);
             if (escapeMenu)
             {
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
