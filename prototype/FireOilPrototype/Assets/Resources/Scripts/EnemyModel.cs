@@ -105,15 +105,15 @@ public class EnemyModel : MonoBehaviour
             owner.health -= 10;
         }
 
-        owner.pitHit(coll);
+        //owner.pitHit(coll);
     }
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (!owner.falling)
-        {
-            owner.pitHit(coll);
-        }
+        //if (!owner.falling)
+        //{
+        //    owner.pitHit(coll);
+        //}
 
         if (coll.gameObject.tag == "OilPatch")
         {
