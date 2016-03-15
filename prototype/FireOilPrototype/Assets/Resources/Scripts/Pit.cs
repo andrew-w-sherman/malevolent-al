@@ -6,9 +6,8 @@ public class Pit : Tile {
 
     public GameController demo;
     public PitModel model;
-    public bool on;
     public float collDimensions = 1f;
-    public CircleCollider2D coll;
+    public CircleCollider2D cirColl;
     
 
     // Use this for initialization
@@ -20,9 +19,10 @@ public class Pit : Tile {
         gameObject.tag = "Pit";
         on = true;
 
-        coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).4;
-        coll.isTrigger = true;
+        cirColl = gameObject.AddComponent<CircleCollider2D>();
+        cirColl.radius = (float).4;
+        cirColl.isTrigger = true;
+        coll = cirColl;
 
         var modelObject = new GameObject();
         model = modelObject.AddComponent<PitModel>();
@@ -31,37 +31,15 @@ public class Pit : Tile {
 
     }
 
-    public void turnOff()
-    {
-        if (on == true)
-        {
-            on = false;
-            model.sr.enabled = false;
-            coll.enabled = false;
-        }
-    }
-
-    public void turnOn()
-    {
-        if (on == false)
-        {
-            on = true;
-            model.sr.enabled = true;
-            coll.enabled = true;
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (on == true && coll.gameObject.tag == "OilPatch_Spreading" || coll.gameObject.tag == "OilPatch")
+        if (turningOn == true)
         {
-            Destroy(coll.gameObject);
+            destroyOilPatches(coll);
         }
+
+        stopTurningOn = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 }

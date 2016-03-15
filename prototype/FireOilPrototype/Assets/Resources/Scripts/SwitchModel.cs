@@ -38,11 +38,12 @@ public class SwitchModel : MonoBehaviour {
         tileSr = t.gameObject.GetComponentsInChildren<SpriteRenderer>()[0];
         if (!owner.on)
         {
+            tileSr.sortingOrder = 2;
             tileSr.sprite = getSprite(t.type);
         }
         else
         {
-            Debug.Log("hit");
+            tileSr.sortingOrder = 0;
             tileSr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[3];
         }
 

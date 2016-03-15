@@ -103,6 +103,12 @@ public class OilBall : Character
             if (other.gameObject.GetComponent<FireBall>().speed > speedingThreshold)
             {
                 //print("Time to speed!");
+
+                if (controller.expl != null)
+                {
+                    Destroy(controller.expl.gameObject);
+                }
+
                 speeding = true;
                 timeBeenSpeeding = 0f;
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection;
@@ -167,7 +173,10 @@ public class OilBall : Character
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        updateLastTile(other);
+        if (!speeding)
+        {
+            updateLastTile(other);
+        }
         pitHit(other);
         switchHit(other);
     }
@@ -188,6 +197,7 @@ public class OilBall : Character
         {
             if (clock - timeLastExploded > explodeTimer && !speeding)
             {
+
                 timeLastExploded = clock;
                 GameObject explModel = new GameObject();
                 explModel.tag = "Explosion";

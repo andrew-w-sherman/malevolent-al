@@ -41,7 +41,7 @@ public class OilModel : MonoBehaviour
         {
             p.gameObject.AddComponent<SpriteRenderer>();
             sr = p.GetComponent<SpriteRenderer>();
-            sr.sortingOrder = 2;
+            sr.sortingOrder = 1;
             transform.parent = p.transform;
             transform.localPosition = new Vector3(0, 0, 0);
             name = "Oil Patch Model";

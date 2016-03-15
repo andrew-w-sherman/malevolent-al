@@ -7,10 +7,8 @@ public class Switch : Tile {
     //Check Tile class for the different types of walls we have
 
     public bool on; //false for off, true for on (default)
-    GameController controller;
     List<Tile> tileList;
     SwitchModel model;
-    public Collider2D coll;
 	AudioSource audioS;
 	AudioClip clickingSound;
 
@@ -50,20 +48,16 @@ public class Switch : Tile {
             //add back the box collider
             foreach(Tile t in tileList)
             {
-       
-                t.gameObject.GetComponent<Collider2D>().enabled = true;
-                model.switchSprite(t);
-                updateTag();    
-                                
+                Debug.Log(t.on);
+                t.turnOn();                
             }
         }
         else
         {
             foreach (Tile t in tileList)
             {
-                t.gameObject.GetComponent<Collider2D>().enabled = false;
-                model.switchSprite(t);
-                updateTag();
+                Debug.Log(t.on);
+                t.turnOff();
             }
         }
 		audioS.PlayOneShot (clickingSound);

@@ -6,7 +6,6 @@ public class CrumbleWall : Tile {
     BoxCollider2D myCollider;
     Rigidbody2D body;
     CrumbleWallModel model;
-    public bool destroyNextFrame;
     
 
     // Use this for initialization
@@ -22,18 +21,13 @@ public class CrumbleWall : Tile {
         var modelObject = new GameObject();
         model = modelObject.AddComponent<CrumbleWallModel>();
         model.init(this, controller);
-
-        destroyNextFrame = false;
+        
     }
     
 
     void Update()
     {
-        if (destroyNextFrame)
-        {
-            replaceWithTile();
-            Destroy(gameObject);
-        }
+       
     }
 
 
@@ -42,16 +36,8 @@ public class CrumbleWall : Tile {
 
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
-            if(controller.oil.speeding)
-            {
-                tag = "CrumbleWallImpact";
-                destroyNextFrame = true;
-            }
+            Destroy(gameObject);
         }
-        //if (coll.gameObject.tag == "CrumbleWallImpact")
-        //{
-        //    Destroy(gameObject);
-        //}
     }
 
 }

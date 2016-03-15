@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1", "dan level" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -448,14 +448,14 @@ public class GameController : MonoBehaviour {
                 if (numButtons % 2 == 0 && numButtons > 0)
                 {
                     buttonHeight = -25;
-                    while(i < numButtons / 2 - 1)
+                    while (i < numButtons / 2 - 1)
                     {
                         buttonHeight -= 50;
                         i++;
                     }
 
                 }
-                else if(numButtons % 2 == 1 && numButtons > 0)
+                else if (numButtons % 2 == 1 && numButtons > 0)
                 {
                     buttonHeight = 0;
                     while (i < numButtons / 2)
@@ -466,7 +466,7 @@ public class GameController : MonoBehaviour {
                 }
 
                 i = 0;
-                while(i < numButtons - 1)
+                while (i < numButtons - 1)
                 {
                     if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Level " + (i + 1), buttonStyle))
                     {
@@ -485,7 +485,18 @@ public class GameController : MonoBehaviour {
 
             }
         }
-        else {
+        else if (beatGame == true)
+        {
+            destroyEverything();
+            GUI.Button(new Rect(screenWidth / 2 - 250, screenHeight / 2 - 50 - 50, 500, 100), "Congratultions! You beat the game!");
+            if( GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+            {
+                startMenu = true;
+                beatGame = false;
+            }
+        }
+        else
+        {
 
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
@@ -499,8 +510,7 @@ public class GameController : MonoBehaviour {
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
                 {
-                    destroyEverything();
-                    loadLevel();
+                    changeBoard();
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
                 {
@@ -532,21 +542,25 @@ public class GameController : MonoBehaviour {
     private void destroyEverything()
     {
         board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire); Destroy(oil); fire = null; oil = null;
+        if (fire != null)
+        {
+            Destroy(fire.gameObject);
+            Destroy(fire);
+        }
+        if (oil != null)
+        {
+            Destroy(oil.gameObject);
+            Destroy(oil);
+        }
+        fire = null; oil = null;
         Destroy(boardGO);
         inGoal = 0;
     }
 
     private void changeBoard()
     {
-        board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire); Destroy(oil); fire = null; oil = null;
-        Destroy(boardGO);
-        boardGO = new GameObject();
-        board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], 100, this);
+        destroyEverything();
+        loadLevel();
     }
 
     public void goal(int type)
