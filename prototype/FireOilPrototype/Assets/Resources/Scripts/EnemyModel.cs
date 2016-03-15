@@ -69,17 +69,21 @@ public class EnemyModel : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "projectile-friendly")
+		if (coll.gameObject.tag == "projectile-fire" && type.Equals("oil"))
         {
             owner.health -= 5;
         }
+		if (coll.gameObject.tag == "projectile-oil" && type.Equals("fire"))
+		{
+			owner.health -= 5;
+		}
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
             owner.health -= 10;
         }
         if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
 
             if (coll.gameObject.tag == "OilBall")
             {
@@ -93,7 +97,7 @@ public class EnemyModel : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Explosion")
+		if (coll.gameObject.tag == "Explosion" && type.Equals("fire"))
         {
             owner.health -= 10;
         }
