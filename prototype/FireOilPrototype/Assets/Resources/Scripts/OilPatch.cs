@@ -27,18 +27,14 @@ public class OilPatch : MonoBehaviour {
         model = modelObject.AddComponent<OilModel>();
         model.init(false, null, this, controller);
 
-        clock = 0f; onFireTimer = 0f;
+        clock = 0f;
+        onFireTimer = 0f;
         onFire = false; spreading = false;
-        spreadLimit = 0.7f;
+        spreadLimit = 0.2f;
         fireLimit = 2f;
 
         gameObject.tag = "OilPatch";
     }
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -66,7 +62,7 @@ public class OilPatch : MonoBehaviour {
         }
         if (spreading && coll.gameObject.tag == "OilBall")
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -79,12 +75,17 @@ public class OilPatch : MonoBehaviour {
             if (onFireTimer > spreadLimit)
             {
                 spreading = true;
-                this.tag = "OilPatch_Spreading";
+                tag = "OilPatch_Spreading";
                 if (onFireTimer > fireLimit + spreadLimit)
                 {
-                    Destroy(this.gameObject);
+                    Destroy(gameObject);
                 }
             }
         }
+        else if(clock > 5)
+        {
+            Destroy(gameObject);
+        }
+        
 	}
 }
