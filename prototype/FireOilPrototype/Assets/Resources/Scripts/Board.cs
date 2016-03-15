@@ -196,7 +196,7 @@ public class Board : MonoBehaviour {
             }
         }
         linkSwitches();
-        linkTiles();
+        //linkTiles();
     }
 
     public void addTileBackground(int x)
