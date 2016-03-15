@@ -8,11 +8,7 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-<<<<<<< HEAD
     readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level", "bossLevel" };
-=======
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3" };
->>>>>>> ecd16b0ac5408bbaaeab9b6384dfcff153bf0119
     int levelIndex;
 
     public GameObject boardGO;
