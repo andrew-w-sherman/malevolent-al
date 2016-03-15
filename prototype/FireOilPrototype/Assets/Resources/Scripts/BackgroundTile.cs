@@ -27,6 +27,7 @@ public class BackgroundTile : MonoBehaviour {
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 0;
+        this.transform.localScale = new Vector2(1.01f, 1.01f);
         sr.sprite = tileSp[3];
     }
 	

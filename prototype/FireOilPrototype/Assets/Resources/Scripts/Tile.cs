@@ -84,6 +84,11 @@ public class Tile : MonoBehaviour {
             }
         }
     }
+
+    public void makeSlightlyBigger()
+    {
+        this.transform.localScale = new Vector2(1.01f, 1.01f);
+    }
  
 
     // links tiles to neighbors, usually does nothing
