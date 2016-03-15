@@ -29,7 +29,7 @@ public class FireModel : MonoBehaviour
         owner.gameObject.AddComponent<SpriteRenderer>();
         sr = owner.GetComponent<SpriteRenderer>();
         sr.sprite = charSp[0];
-        sr.sortingOrder = 3;
+        sr.sortingOrder = 5;
         idle = new Sprite[] { charSp[0], charSp[1] };
         run = new Sprite[] { charSp[1], charSp[2], charSp[1], charSp[3] };
         flicker = false;

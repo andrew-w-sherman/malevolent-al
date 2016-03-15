@@ -17,13 +17,12 @@ public class BossModel : MonoBehaviour {
 		transform.parent = b.transform;	
 		transform.localPosition = new Vector3 (0, 0, 0);
 
-		b.gameObject.AddComponent<SpriteRenderer>();
-		spr = b.GetComponent<SpriteRenderer>();
+		spr = GetComponent<SpriteRenderer>();
 
 
 		faces = Resources.LoadAll<Sprite> ("Sprite Sheets/boss");
 		spr.sprite = faces [NORMAL];
-		spr.sortingOrder = -1;
+		spr.sortingOrder = 3;
 		//spr.sortingLayerName = "boss";
 
 		this.gameObject.name = "BOSS MODEL";
@@ -32,11 +31,9 @@ public class BossModel : MonoBehaviour {
 
 	public void changeFace(int index){
 		spr.sprite = faces [index];
-
 	}
 
 	void Update(){
 		c += Time.deltaTime;
-
 	}
 }

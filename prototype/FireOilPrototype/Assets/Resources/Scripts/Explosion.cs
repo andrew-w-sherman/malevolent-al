@@ -11,10 +11,13 @@ public class Explosion : MonoBehaviour {
 
     public void init(OilBall b, float explosionTime)
     {
-        transform.parent = b.controller.transform;
 
+		if (b != null) {
+			transform.parent = b.controller.transform;
+			this.b = b;
+		}
         this.explosionTime = explosionTime;
-        this.b = b;
+
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         tag = "Explosion";
         ExplosionModel model = modelObject.AddComponent<ExplosionModel>();
@@ -34,7 +37,9 @@ public class Explosion : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        transform.position = b.transform.position;
+		if (b != null) {
+			transform.position = b.transform.position;
+		}
         clock = clock + Time.deltaTime;
         coll.radius = 1.5f * clock;
         if (clock > explosionTime)

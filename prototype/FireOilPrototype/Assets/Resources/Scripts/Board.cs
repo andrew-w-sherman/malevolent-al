@@ -231,6 +231,9 @@ public class Board : MonoBehaviour {
         if (gc.expl != null) Destroy(gc.expl.gameObject);
 		if (gc.boss != null)
 			Destroy (gc.boss.gameObject);
+		if (gc.helmet != null) {
+			Destroy (gc.helmet.gameObject);
+		}
         Destroy(tileFolder);
     }
 	

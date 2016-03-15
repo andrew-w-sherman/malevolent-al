@@ -20,15 +20,15 @@ public class Boss : MonoBehaviour {
 	public float shootTimer = 5; //time in between shots in stage 2
 	public float rotateSpeed = 0.8f; // variable to affect how quickly boss rotates
 	public int health;
-	public int maxHealth = 80;
+	public int maxHealth = 100;
 	public float timeInCurrentState;
-	public float timeToStayDownFor = 7f;
+	public float timeToStayDownFor = 9f;
 	public Character target; //wether or not the boss is targeting oil (if false, the boss will target fire)
 	public bool alreadySwitched;
 	public bool alreadyShot;
 	public Vector3 chargeDirection;
 	public float chargeSpeed = 7f;
-	public float chargeEndSpeed = 2f;
+	public float chargeEndSpeed = 4f;
 
 	public float direction; //direction boss is pointing at (in radians) 
 
@@ -52,12 +52,14 @@ public class Boss : MonoBehaviour {
 		coll.isTrigger = false;
 
 
-
-		GameObject bossModelObject = new GameObject();//.CreatePrimitive(PrimitiveType.Quad);
+		GameObject bossModelObject = new GameObject();
+		bossModelObject.AddComponent<SpriteRenderer> ();
 		model = bossModelObject.AddComponent<BossModel> ();
 		model.init (this);
 
-		var bossHelmetObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+		var bossHelmetObject = new GameObject();
+		bossHelmetObject.AddComponent<SpriteRenderer> ();
 		helmet = bossHelmetObject.AddComponent<BossHelmet> ();
 		helmet.init (this);
 
@@ -77,23 +79,22 @@ public class Boss : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D (Collision2D coll){
+		
+		Vector3 otherPosition = coll.gameObject.transform.position;
+		Vector3 helmetMotionDirection = (transform.position - otherPosition).normalized;
 
 		if (state == ATTACK_SHOOT || state == PAUSE_BEFORE_CHARGE) {
 			if (coll.gameObject.tag != "OilBall" &&
 				coll.gameObject.tag != "FireBall" &&
 				coll.gameObject.tag != "projectile-enemy") {
 
-				Vector3 otherPosition = coll.gameObject.transform.position;
-				Vector3 helmetMotionDirection = (transform.position - otherPosition).normalized;
-
 				if (coll.gameObject.tag == "OilBall_Speeding") {
-					//animate helmet getting knocked off in helmetMotionDirection
-					print ("my helmet has been knocked off and i am temporarily down for the count!");
+					helmet.setOff (helmetMotionDirection);
 					state = DOWN;
 					model.changeFace (BossModel.DAZED);
 					timeInCurrentState = 0f;
 				} else {
-					//animate helmet wiggling in accordance with helmetMotionDirection
+					helmet.setWiggle (helmetMotionDirection);
 				}
 			}
 		}
@@ -103,7 +104,7 @@ public class Boss : MonoBehaviour {
 				coll.gameObject.tag != "FireBall" &&
 				coll.gameObject.tag != "projectile-enemy") {
 				health--;
-				print ("health is " + health);
+				//print ("health is " + health);
 			}
 		}
 
@@ -119,11 +120,20 @@ public class Boss : MonoBehaviour {
 				model.changeFace (BossModel.NORMAL);
 			}
 		}
+		if (state == ATTACK_CHARGE_END && coll.gameObject.tag != "OilBall" &&
+		    coll.gameObject.tag != "FireBall" &&
+		    coll.gameObject.tag != "projectile-enemy") {
+			helmet.setWiggle (helmetMotionDirection);
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
 		clock += Time.deltaTime;
+		if (health <= 0) {
+			controller.createExplosion (transform.position.x, transform.position.y);
+			Destroy (this.gameObject);
+		}
 
 		if (state == DOWN) {
 			timeInCurrentState += Time.deltaTime;
@@ -131,7 +141,7 @@ public class Boss : MonoBehaviour {
 				state = ATTACK_SHOOT;
 				timeInCurrentState = 0f;
 				alreadySwitched = false;
-				print ("now my helmet is back on and I am raring to go!");
+				//print ("now my helmet is back on and I am raring to go!");
 				model.changeFace (BossModel.NORMAL);
 			}
 		} else if (state == ATTACK_SHOOT) {

@@ -9,40 +9,81 @@ public class BossHelmet : MonoBehaviour {
 	Material mat;
 	float c;
 
+	Boss b;
+
+	bool wiggling;
+	float wigTime;
+	float maxWiggle = 0.5f;
+	Vector3 wiggleDirection;
+	Vector3 offDirection;
+
+	bool off;
+	float offTime;
+
 	public void init (Boss b){
+		this.b = b;
+		transform.parent = b.transform;	
+		transform.localPosition = new Vector3 (0, 0, 0);
 
-		//transform.parent = b.transform;	
-		transform.position = new Vector3 (0, 0, 0);
-
-		b.gameObject.AddComponent<SpriteRenderer> ();
-		sr = b.GetComponent<SpriteRenderer> ();
+		sr = GetComponent<SpriteRenderer> ();
 
 		the_helmet = Resources.Load<Sprite> ("Sprite Sheets/helmet");
 		sr.sprite = the_helmet;
-		sr.sortingOrder = 5;
+		sr.sortingOrder = 4;
 		//sr.sortingLayerName = "helmet";
 
 		this.gameObject.name = "BOSS HEMLET";
 		c = 0;
-		/*
-		mat = GetComponent<Renderer>().material;
-		mat.shader = Shader.Find("Transparent/Diffuse");
-		mat.mainTexture = Resources.Load<Texture2D>("Sprite Sheets/helmet");
-		mat.color = new Color(1, 1, 1);
-		mat.renderQueue = 1000000;*/
+		wiggling = false;
+		off = false;
 	}
-
-
-	/*
-	public bool moveTowards(Vector3 goal){
 		
+	public void setWiggle(Vector3 w){
+		if (!wiggling){
+			wigTime = 0f;
+		wiggleDirection = w;
+		wiggling = true;
+	}
 	}
 
+	public void setOff(Vector3 o){
+		if (!off) {
+			offTime = 0f;
+			offDirection = o;
+			off = true;
+			wiggling = false;
+		}
+	}
 
 	void Update(){
-		c += Time.deltaTime;
-		sr.sprite = the_helmet;
-		transform.localPosition = new Vector3(c * 2, 0, 0);
+		if (off) {
+			offTime += Time.deltaTime;
+			if (offTime <= 1.5f) {
+				transform.localPosition += (offDirection * Time.deltaTime);
+			}
+			if (offTime > b.timeToStayDownFor - 1.5) {
+				transform.localPosition += (-offDirection * Time.deltaTime);
+			}
+			if (offTime >= b.timeToStayDownFor) {
+				transform.position = b.transform.position;
+				wiggling = false;
+				off = false;
+
+			}
+		}
+		if (wiggling) {
+			wigTime += Time.deltaTime;
+			//transform.Translate (wiggleDirection * Time.deltaTime);
+			if (wigTime > 0.25f) {
+				//transform.position = Vector3.MoveTowards (transform.position, b.transform.position, 5 * Time.deltaTime);
+				transform.localPosition += (-wiggleDirection * Time.deltaTime);
+			} else {
+				transform.localPosition += (wiggleDirection * Time.deltaTime);
+			}
+			if (wigTime > maxWiggle) {
+				transform.position = b.transform.position;
+				wiggling = false;
+			}
+		}
 	}
-	*/
 }
