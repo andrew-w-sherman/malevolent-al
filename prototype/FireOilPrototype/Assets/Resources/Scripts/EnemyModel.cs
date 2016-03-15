@@ -13,6 +13,7 @@ public class EnemyModel : MonoBehaviour
     private Vector3 lastDirection;
     private float lostTimer;
     private int lost;
+    private int speed = 2;
 
     public float height;
     public float width;
@@ -69,17 +70,21 @@ public class EnemyModel : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "projectile-friendly")
+		if (coll.gameObject.tag == "projectile-fire" && type.Equals("oil"))
         {
             owner.health -= 5;
         }
+		if (coll.gameObject.tag == "projectile-oil" && type.Equals("fire"))
+		{
+			owner.health -= 5;
+		}
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
             owner.health -= 10;
         }
         if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
 
             if (coll.gameObject.tag == "OilBall")
             {
@@ -93,7 +98,7 @@ public class EnemyModel : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Explosion")
+		if (coll.gameObject.tag == "Explosion" && type.Equals("fire"))
         {
             owner.health -= 10;
         }
@@ -134,6 +139,7 @@ public class EnemyModel : MonoBehaviour
         else {
             Vector2 start = new Vector2(transform.position.x, transform.position.y);
             Vector3 direction3D = GameController.NULL;
+            float calculatedSpeed = speed * Time.deltaTime;
 
             if (type.Equals("fire"))
             {
@@ -198,7 +204,7 @@ public class EnemyModel : MonoBehaviour
                     }
 
                     lastDirection = direction3D;
-                    transform.Translate(lastDirection.normalized * onOilSpeedChange * Time.deltaTime);
+                    transform.Translate(lastDirection.normalized * calculatedSpeed);
                 }
                 else
                 {
@@ -208,7 +214,7 @@ public class EnemyModel : MonoBehaviour
                         {
                             if (transform.position != lastSeen)
                             {
-                                transform.position = Vector2.MoveTowards(start, lastSeen, Time.deltaTime);
+                                transform.position = Vector2.MoveTowards(start, lastSeen, calculatedSpeed);
                             }
                             else
                             {
@@ -218,7 +224,7 @@ public class EnemyModel : MonoBehaviour
                         if (lost == 1 && lostTimer < 3)
                         {
                             lostTimer += Time.deltaTime;
-                            transform.Translate(lastDirection.normalized * Time.deltaTime);
+                            transform.Translate(lastDirection.normalized * calculatedSpeed);
                         }
                     }
                 }

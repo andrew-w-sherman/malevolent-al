@@ -7,15 +7,19 @@ public class Switch : Tile {
     //Check Tile class for the different types of walls we have
 
     public bool on; //false for off, true for on (default)
-    GameController controller;
     List<Tile> tileList;
     SwitchModel model;
+
     public Collider2D coll;
     bool isTimed = false; //this gets set to true in overloaded init method
     bool canSwitch;
     float duration;
     float timer;
     
+
+	AudioSource audioS;
+	AudioClip clickingSound;
+
 
 	// Use this for initialization
 	public void init(GameController gc, List<Tile> tileList ) {
@@ -33,6 +37,10 @@ public class Switch : Tile {
         var modelObject = new GameObject();
         model = modelObject.AddComponent<SwitchModel>();
         model.init(controller, this);
+
+		audioS = this.gameObject.AddComponent<AudioSource> ();
+		clickingSound = Resources.Load<AudioClip>("Sound/switch");
+		audioS.spatialBlend = 0.0f;
     }
 
     public void init(GameController gc, List<Tile> tileList, float duration)
@@ -83,9 +91,7 @@ public class Switch : Tile {
             foreach (Tile t in tileList)
             {
 
-                t.gameObject.GetComponent<Collider2D>().enabled = true;
-                model.switchSprite(t);
-                updateTag();
+                t.turnOn();                
 
             }
         }
@@ -93,11 +99,12 @@ public class Switch : Tile {
         {
             foreach (Tile t in tileList)
             {
-                t.gameObject.GetComponent<Collider2D>().enabled = false;
-                model.switchSprite(t);
-                updateTag();
+                t.turnOff();
             }
         }
+
+		audioS.PlayOneShot (clickingSound);
+
     }
 
     void updateTag()

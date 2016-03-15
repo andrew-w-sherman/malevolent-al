@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 46e7b1cd370531345bf1f1af0eed679e
-timeCreated: 1456809583
+timeCreated: 1457927519
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,9 @@ TextureImporter:
     21300018: char-front_9
     21300020: char-front_10
     21300022: char-front_11
+    21300024: char-front_12
+    21300026: char-front_13
+    21300028: char-front_14
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -319,15 +322,14 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -23, y: 30}
-        - {x: -30, y: 20}
-        - {x: -30, y: -20}
-        - {x: -20, y: -30}
-        - {x: 14, y: -30}
-        - {x: 24, y: -29}
-        - {x: 30, y: -23}
-        - {x: 30, y: 24}
-        - {x: 27, y: 30}
+      - - {x: -23, y: 28}
+        - {x: -30, y: 18}
+        - {x: -30, y: -22}
+        - {x: -21, y: -32}
+        - {x: 11, y: -32}
+        - {x: 30, y: -29}
+        - {x: 30, y: 22}
+        - {x: 23, y: 28}
     - name: char-front_11
       rect:
         serializedVersion: 2
@@ -339,15 +341,102 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -20, y: 32}
-        - {x: -30, y: 28}
-        - {x: -30, y: -19}
-        - {x: -28, y: -23}
-        - {x: -20, y: -30}
-        - {x: 25, y: -30}
-        - {x: 30, y: -24}
+      - - {x: -26, y: 30}
+        - {x: -30, y: 24}
+        - {x: -30, y: -32}
+        - {x: 27, y: -32}
+        - {x: 30, y: -21}
         - {x: 30, y: 30}
-        - {x: 28, y: 32}
+    - name: char-front_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 17, y: 32}
+        - {x: -18, y: 32}
+        - {x: -22, y: 31}
+        - {x: -22, y: -31}
+        - {x: -21, y: -32}
+        - {x: 24, y: -32}
+        - {x: 24, y: 27}
+    - name: char-front_13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 32}
+        - {x: -11, y: 30}
+        - {x: -30, y: -7}
+        - {x: -30, y: -24}
+        - {x: -24, y: -32}
+        - {x: 22, y: -32}
+        - {x: 30, y: -24}
+        - {x: 30, y: -4}
+        - {x: 19, y: 32}
+      - - {x: -28, y: 4}
+        - {x: -27, y: 2}
+        - {x: -22, y: 2}
+        - {x: -20, y: 3}
+        - {x: -20, y: 6}
+        - {x: -22, y: 10}
+        - {x: -26, y: 10}
+        - {x: -28, y: 9}
+      - - {x: 22, y: 12}
+        - {x: 20, y: 11}
+        - {x: 20, y: 6}
+        - {x: 24, y: 2}
+        - {x: 28, y: 2}
+        - {x: 30, y: 6}
+        - {x: 30, y: 11}
+        - {x: 28, y: 12}
+      - - {x: 18, y: 24}
+        - {x: 14, y: 20}
+        - {x: 14, y: 18}
+        - {x: 18, y: 14}
+        - {x: 20, y: 14}
+        - {x: 24, y: 18}
+        - {x: 24, y: 20}
+        - {x: 20, y: 24}
+      - - {x: -21, y: 32}
+        - {x: -30, y: 22}
+        - {x: -30, y: 16}
+        - {x: -12, y: 16}
+        - {x: -10, y: 17}
+        - {x: -10, y: 32}
+    - name: char-front_14
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 32}
+        - {x: -4, y: 30}
+        - {x: -4, y: 18}
+        - {x: -13, y: 17}
+        - {x: -20, y: 15}
+        - {x: -22, y: -3}
+        - {x: -22, y: -28}
+        - {x: -20, y: -32}
+        - {x: 24, y: -32}
+        - {x: 24, y: 23}
+        - {x: 6, y: 32}
     outline: []
   spritePackingTag: 
   userData: 

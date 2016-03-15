@@ -21,8 +21,11 @@ public class PitModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
         name = "pit-model";
 
-        owner.gameObject.AddComponent<SpriteRenderer>();
+
+        owner.sr = owner.gameObject.AddComponent<SpriteRenderer>();
+
         sr = owner.GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 1;
         sr.sprite = tileSp[5];
     }
 

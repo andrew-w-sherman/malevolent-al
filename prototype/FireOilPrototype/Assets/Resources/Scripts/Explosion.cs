@@ -36,7 +36,7 @@ public class Explosion : MonoBehaviour {
 	void Update () {
         transform.position = b.transform.position;
         clock = clock + Time.deltaTime;
-        coll.radius = 2.5f * clock;
+        coll.radius = 1.5f * clock;
         if (clock > explosionTime)
         {
             Destroy(gameObject);
