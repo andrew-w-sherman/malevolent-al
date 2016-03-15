@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour {
 
     public bool DEBUG_LVL = false;
 
-    public bool DEBUG_BOSS = true;
-    readonly string[] LEVELS = { "test", "test2", "test3","dan tutorial2","dan tutorial3", "dan tutorial1", "dan level" };
+    public bool DEBUG_BOSS = false;
+    readonly string[] LEVELS = { "test", "test2","dan tutorial2","dan tutorial3", "dan tutorial1", "dan level", "test3" };
 
     int levelIndex;
 
@@ -56,8 +56,8 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-		print ("ok");
-		DEBUG_BOSS = true;
+		//print ("ok");
+		
 		if (DEBUG_BOSS) {
 
 			fire = addFire (4, 4);
@@ -277,8 +277,7 @@ public class GameController : MonoBehaviour {
         projectileCount++;
         projectiles.Add(p);
 
-        p.init(start, velocity, type, this);
-       
+        p.init(start, velocity, type, this);       
     }
 
 
