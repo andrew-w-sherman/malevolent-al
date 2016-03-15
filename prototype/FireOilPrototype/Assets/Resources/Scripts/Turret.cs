@@ -42,7 +42,7 @@ public class Turret : MonoBehaviour
                 timer = Time.deltaTime;
                 Vector3 vDir = Vector3.up;
                 vectorDic.TryGetValue(curDir, out vDir);
-                print(curDir + " " + vDir);
+                //print(curDir + " " + vDir);
 
                 demo.addProjectile(transform.position, vDir.normalized, Projectile.ENEMY);
             }
