@@ -20,7 +20,7 @@ public class Goal : Tile {
         Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile"); 
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 1;
-        sr.sprite = tileSp[14];
+        sr.sprite = tileSp[15];
     }
 
     // Update is called once per frame
