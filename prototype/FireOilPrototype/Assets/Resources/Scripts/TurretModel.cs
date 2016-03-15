@@ -102,7 +102,7 @@ public class TurretModel : MonoBehaviour {
 
         
            if (!f) {
-               if ((transform.rotation.eulerAngles.z - magnitude) <= 360-(owner.mod((owner.curDir + 1), 8) * 45)) ;
+               if ((transform.rotation.eulerAngles.z - magnitude) <= 360-(owner.mod((owner.curDir + 1), 8) * 45))
                {
                    return true;
                }

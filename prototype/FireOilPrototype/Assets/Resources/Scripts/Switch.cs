@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class Switch : Tile {
     //Switches between a regular wall and the desired special wall type
     //Check Tile class for the different types of walls we have
-
-    public bool on; //false for off, true for on (default)
+    
     List<Tile> tileList;
     SwitchModel model;
 	AudioSource audioS;

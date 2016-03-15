@@ -11,7 +11,6 @@ public class Turret : Character
     GameController demo;
     public Dictionary<int, Vector3> vectorDic;
     float timer;
-    public new float speed;
     TurretModel model;
     bool fire;
 
@@ -23,7 +22,7 @@ public class Turret : Character
         buildVectorMap();
         demo = gc;
         timer = 0;
-        base.speed = .5f;    //firing rate in seconds
+        base.speed = .6f;    //firing rate in seconds
 
         coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = false;

@@ -7,7 +7,7 @@ public class Spikes : Tile {
 	public GameController demo;
 	public SpikesModel model;
 	public float collDimensions = 1f;
-	public BoxCollider2D coll;
+	public BoxCollider2D boxColl;
 	public List<Collider2D> charsToDamage;
 
 	public FireBall f;
@@ -32,10 +32,11 @@ public class Spikes : Tile {
 
 		gameObject.tag = "Spikes";
 
-		coll = gameObject.AddComponent<BoxCollider2D>();
-		coll.isTrigger = true;
-		coll.enabled = true;
-		coll.size = new Vector2(collDimensions, collDimensions);
+		boxColl = gameObject.AddComponent<BoxCollider2D>();
+		boxColl.isTrigger = true;
+		boxColl.enabled = true;
+		boxColl.size = new Vector2(collDimensions, collDimensions);
+        coll = boxColl;
 
 		var body = gameObject.AddComponent<Rigidbody2D>();
 		body.gravityScale = 0;

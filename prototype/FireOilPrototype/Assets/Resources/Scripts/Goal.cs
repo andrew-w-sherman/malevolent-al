@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Goal : Tile {
     
-    SpriteRenderer sr;
-    public CircleCollider2D coll;
+    public CircleCollider2D cirColl;
     public float collDimensions = 0.3f;
 
     // Use this for initialization
@@ -13,15 +12,13 @@ public class Goal : Tile {
         controller = gc;
 
         gameObject.tag = "Goal";
-        coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = collDimensions;
-        coll.isTrigger = true;
+        cirColl = gameObject.AddComponent<CircleCollider2D>();
+        cirColl.radius = collDimensions;
+        cirColl.isTrigger = true;
+        coll = cirColl;
 
-        Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile");
-        DestroyImmediate(GetComponent<MeshFilter>());
-        DestroyImmediate(GetComponent<MeshRenderer>());
-        gameObject.AddComponent<SpriteRenderer>();
-        sr = GetComponent<SpriteRenderer>();
+        Sprite[] tileSp = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile"); 
+        sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 1;
         sr.sprite = tileSp[14];
     }

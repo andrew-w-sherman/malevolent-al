@@ -8,7 +8,6 @@ public class OilBall : Character
     public GameController controller;
     public CircleCollider2D coll;
     public OilModel model;
-    public float speed;
     public float maxSpeed = 10f;
     public float minSpeed = 1.5f;
     Vector3 lastDirection;
