@@ -153,7 +153,7 @@ public class OilBall : Character
             */
         }
 		if (other.gameObject.tag == "projectile-enemy") {
-			damage (1);
+			damage (3);
 		}
     }
 

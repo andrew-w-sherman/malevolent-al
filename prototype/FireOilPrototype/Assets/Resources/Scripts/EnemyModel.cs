@@ -72,11 +72,11 @@ public class EnemyModel : MonoBehaviour
     {
 		if (coll.gameObject.tag == "projectile-fire" && type.Equals("oil"))
         {
-            owner.health -= 5;
+            owner.health -= 10;
         }
 		if (coll.gameObject.tag == "projectile-oil" && type.Equals("fire"))
 		{
-			owner.health -= 5;
+			owner.health -= 10;
 		}
         if (coll.gameObject.tag == "OilBall_Speeding")
         {
@@ -102,10 +102,6 @@ public class EnemyModel : MonoBehaviour
         {
             owner.health -= 10;
         }
-        //if (coll.gameObject.tag == "Spikes") 
-        //{
-        //	owner.health--;
-        //}
 
         owner.pitHit(coll);
     }
@@ -124,7 +120,7 @@ public class EnemyModel : MonoBehaviour
         if (coll.gameObject.tag == "OilPatch_OnFire" ||
             coll.gameObject.tag == "OilPatch_Spreading")
         {
-            owner.health--;
+            //owner.health--;
         }
     }
 

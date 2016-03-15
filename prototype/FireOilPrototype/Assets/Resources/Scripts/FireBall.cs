@@ -106,7 +106,7 @@ public class FireBall : Character
             print("charge is " + charge);
         }
 		if (coll.gameObject.tag == "projectile-enemy") {
-			damage (1);
+			damage (3);
 		}
     }
 

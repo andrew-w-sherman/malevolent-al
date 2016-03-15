@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Turret : MonoBehaviour
+public class Turret : Character
 {
     
     public int curDir;
@@ -28,6 +28,38 @@ public class Turret : MonoBehaviour
         //modelObject.AddComponent<Rigidbody>();
         model.init(this, demo, isRotating);
         
+    }
+
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "projectile-fire" || 
+            coll.gameObject.tag == "projectile-oil" ||
+            coll.gameObject.tag == "OilBall_Speeding")
+        {
+            health -= 10;
+        }
+        if (coll.gameObject.tag == "OilBall" || coll.gameObject.tag == "FireBall")
+        {
+            //Destroy(gameObject);
+
+            if (coll.gameObject.tag == "OilBall")
+            {
+                coll.gameObject.GetComponent<OilBall>().damage(5);
+            }
+            else {
+                coll.gameObject.GetComponent<FireBall>().damage(5);
+            }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Explosion")
+        {
+            health -= 10;
+        }
+
     }
 
     // Update is called once per frame
