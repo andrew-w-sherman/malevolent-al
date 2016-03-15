@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour {
     public OilBall oil;
     public Explosion expl;
     public List<Enemy> enemies;
+    public List<Turret> turrets;
     public List<Wall> walls;
     public List<Pit> pits;
     public List<Projectile> projectiles;
@@ -272,7 +273,7 @@ public class GameController : MonoBehaviour {
 		spikes.init (this);
 	}
 
-    public void addProjectile(Vector3 start, Vector3 velocity, int type)
+    public void addProjectile(Vector3 start, Vector3 velocity, int type, Collider2D shooter)
     {
         GameObject projectileObject = new GameObject();            
         Projectile p = projectileObject.AddComponent<Projectile>();            
@@ -282,7 +283,32 @@ public class GameController : MonoBehaviour {
         projectileCount++;
         projectiles.Add(p);
 
-        p.init(start, velocity, type, this);
+        p.init(start, velocity, type, this, shooter);
+
+        //foreach (Projectile p2 in projectiles)
+        //{
+        //    if(p2.coll != null)
+        //    Physics2D.IgnoreCollision(p.coll, p2.coll);
+        //}
+
+        //if (type == Projectile.ENEMY)
+        //{
+        //    foreach(Enemy e in enemies)
+        //    {
+        //        if (e.model.coll != null)
+        //            Physics2D.IgnoreCollision(p.coll, e.model.coll);
+        //    }
+        //    foreach (Turret t in turrets)
+        //    {
+        //        if (t.coll != null)
+        //            Physics2D.IgnoreCollision(p.coll, t.coll);
+        //    }
+        //}
+        //else
+        //{
+        //    Physics2D.IgnoreCollision(p.coll, fire.coll);
+        //    Physics2D.IgnoreCollision(p.coll, oil.coll);
+        //}
        
     }
 
@@ -295,6 +321,8 @@ public class GameController : MonoBehaviour {
         turret.transform.position = new Vector3(x, y, 0);      // Position the gem at x,y.								
         turret.name = "turret";
         turret.init(dir, isRotating, this);
+
+        turrets.Add(turret);
     }
 
     void addObstacle(float x, float y, int type)

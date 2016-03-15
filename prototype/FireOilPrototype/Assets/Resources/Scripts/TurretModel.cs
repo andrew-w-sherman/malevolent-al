@@ -26,7 +26,7 @@ public class TurretModel : MonoBehaviour {
         
         this.rotate = rotate;
         
-        float angle=0;
+        float angle = 0;
         
         forwards = true;
         speed = 3;//??? idk what this should be

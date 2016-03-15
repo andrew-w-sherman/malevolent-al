@@ -13,7 +13,7 @@ public class Boss : MonoBehaviour {
 	public static int PAUSE_BEGINNING = 4; // 3 second pause at the beginning of the level
 	public static int PAUSE_BEFORE_CHARGE = 5; // 1.5 second pause before charge
 	public static Vector3 center = new Vector3 (0, 0, 0);
-	CircleCollider2D collider;
+	CircleCollider2D coll;
 	GameController controller;
 
 	public float shootTimer = 5; //time in between shots in stage 2
@@ -46,9 +46,9 @@ public class Boss : MonoBehaviour {
 		body.mass = 1000;
 		body.isKinematic = false;
 
-		collider = gameObject.AddComponent<CircleCollider2D>();
-		collider.radius = 0.3f;
-		collider.isTrigger = false;
+		coll = gameObject.AddComponent<CircleCollider2D>();
+		coll.radius = 0.3f;
+		coll.isTrigger = false;
 
 		var bossModelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		BossModel bossModel = bossModelObject.AddComponent<BossModel> ();
@@ -132,13 +132,13 @@ public class Boss : MonoBehaviour {
 				if ((int)(timeInCurrentState * 10) % 2 == 0) {
 					if (!alreadyShot || health < maxHealth / 3) {
 						Vector3 shootDir = (target.transform.position - transform.position).normalized;
-						Vector3 projectileStart = shootDir * collider.radius * 1.6f;
-						controller.addProjectile (transform.position + projectileStart, shootDir, Projectile.ENEMY);
+						Vector3 projectileStart = shootDir * coll.radius * 1.6f;
+						controller.addProjectile (transform.position + projectileStart, shootDir, Projectile.ENEMY, coll);
 						alreadyShot = true;
 						if (health < maxHealth / 3) {
 							switchTargets ();
 							Vector3 shootDir2 = (target.transform.position - transform.position).normalized;
-							Vector3 projectileStart2 = shootDir2 * collider.radius * 1.6f;
+							Vector3 projectileStart2 = shootDir2 * coll.radius * 1.6f;
 							//controller.addProjectile (transform.position + projectileStart2, shootDir2a, Projectile.ENEMY);
 						}
 					}
