@@ -15,7 +15,7 @@ public class ObstacleModel : MonoBehaviour {
         controller = gc;
         
         sr= gameObject.AddComponent<SpriteRenderer>();       
-        sr.sortingOrder = 2;     
+        sr.sortingOrder = 1;     
         
        // Material mat = GetComponent<Renderer>().material;
         //mat.shader = Shader.Find("Transparent/Diffuse");

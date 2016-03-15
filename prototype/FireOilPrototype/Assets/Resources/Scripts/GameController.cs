@@ -13,10 +13,12 @@ public class GameController : MonoBehaviour {
 
     public GameObject boardGO;
     public Board board;
+	public MusicController musicController;
 
     public bool startMenu;
     public bool levelMenu;
     public bool escapeMenu;
+    public bool beatGame;
 
     public FireBall fire;
     public OilBall oil;
@@ -45,6 +47,13 @@ public class GameController : MonoBehaviour {
 		startMenu = false;
         levelMenu = false;
         escapeMenu = false;
+        beatGame = false;
+
+		GameObject musicControllerObject = new GameObject ();
+		musicControllerObject.name = "music controller";
+		musicController = musicControllerObject.AddComponent<MusicController>();
+		musicController.init (this);
+
         projectiles = new List<Projectile>();
         projectileCount = 0;
         tiles = new List<Tile>();
@@ -445,14 +454,14 @@ public class GameController : MonoBehaviour {
                 if (numButtons % 2 == 0 && numButtons > 0)
                 {
                     buttonHeight = -25;
-                    while(i < numButtons / 2 - 1)
+                    while (i < numButtons / 2 - 1)
                     {
                         buttonHeight -= 50;
                         i++;
                     }
 
                 }
-                else if(numButtons % 2 == 1 && numButtons > 0)
+                else if (numButtons % 2 == 1 && numButtons > 0)
                 {
                     buttonHeight = 0;
                     while (i < numButtons / 2)
@@ -463,7 +472,7 @@ public class GameController : MonoBehaviour {
                 }
 
                 i = 0;
-                while(i < numButtons - 1)
+                while (i < numButtons - 1)
                 {
                     if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + buttonHeight, startButtonWidth, startButtonHeight), "Level " + (i + 1), buttonStyle))
                     {
@@ -482,7 +491,18 @@ public class GameController : MonoBehaviour {
 
             }
         }
-        else {
+        else if (beatGame == true)
+        {
+            destroyEverything();
+            GUI.Button(new Rect(screenWidth / 2 - 250, screenHeight / 2 - 50 - 50, 500, 100), "Congratultions! You beat the game!");
+            if( GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+            {
+                startMenu = true;
+                beatGame = false;
+            }
+        }
+        else
+        {
 
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
@@ -496,8 +516,7 @@ public class GameController : MonoBehaviour {
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
                 {
-                    destroyEverything();
-                    loadLevel();
+                    changeBoard();
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
                 {
@@ -523,26 +542,41 @@ public class GameController : MonoBehaviour {
         levelMenu = false;
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
+        board.init(LEVELS[levelIndex], 100, this);
+		if (levelIndex < (LEVELS.Length - 2) / 3) {
+			musicController.changeMusic (MusicController.EASY_MUSIC);
+		} else if (levelIndex < (LEVELS.Length - 2) * 2 / 3) {
+			musicController.changeMusic (MusicController.MID_MUSIC);
+		} else if (levelIndex < (LEVELS.Length - 2)) {
+			musicController.changeMusic (MusicController.HARD_MUSIC);
+		} else {
+			//levelIndex == Levels.Length - 1 , i.e. we're at the last level (the boss level)
+			musicController.changeMusic (MusicController.BOSS_MUSIC);
+		}
     }
 
     private void destroyEverything()
     {
         board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire); Destroy(oil); fire = null; oil = null;
+        if (fire != null)
+        {
+            Destroy(fire.gameObject);
+            Destroy(fire);
+        }
+        if (oil != null)
+        {
+            Destroy(oil.gameObject);
+            Destroy(oil);
+        }
+        fire = null; oil = null;
         Destroy(boardGO);
+        inGoal = 0;
     }
 
     private void changeBoard()
     {
-        board.annihilate();
-        Destroy(fire.gameObject); Destroy(oil.gameObject);
-        Destroy(fire); Destroy(oil); fire = null; oil = null;
-        Destroy(boardGO);
-        boardGO = new GameObject();
-        board = boardGO.AddComponent<Board>();
-        board.init(LEVELS[levelIndex], this);
+        destroyEverything();
+        loadLevel();
     }
 
     public void goal(int type)
@@ -560,7 +594,7 @@ public class GameController : MonoBehaviour {
     //TODO: destroying projectiles probably
     public void nextLevel() {
         levelIndex++;
-        if (levelIndex >= LEVELS.Length) winScreen();
+        if (levelIndex >= LEVELS.Length) beatGame = true;
         else {
             changeBoard();
         }

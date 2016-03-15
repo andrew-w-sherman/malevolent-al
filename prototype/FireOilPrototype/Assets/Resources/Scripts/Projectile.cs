@@ -27,7 +27,13 @@ public class Projectile : MonoBehaviour {
         transform.position = startPos;
         this.velocity = velocity;
         if (type == 2) this.tag = "projectile-enemy";
-        else tag = "projectile-friendly";
+		if (type == 0) {
+			this.tag = "projectile-fire";
+		}
+		if (type == 1){
+			this.tag = "projectile-oil";
+		}
+		
         setSpriteOrientation();
 
         GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -128,7 +134,7 @@ public class Projectile : MonoBehaviour {
 		}
 		*/
 
-        if (tagOther != "projectile-friendly" && tagOther != "projectile-enemy")
+		if (tagOther != "projectile-fire" && tagOther != "projectile-oil" && tagOther != "projectile-enemy")
         {
             Destroy(this);
             Destroy(gameObject);

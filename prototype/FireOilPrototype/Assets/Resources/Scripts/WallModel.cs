@@ -17,8 +17,8 @@ public class WallModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
         name = "wall-model";
         
-        sr = gameObject.AddComponent<SpriteRenderer>();
-        sr = GetComponent<SpriteRenderer>();
+        owner.sr = gameObject.AddComponent<SpriteRenderer>();
+        sr = owner.sr;
         sr.sortingOrder = 2;
         sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[1];
         /*

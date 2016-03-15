@@ -100,7 +100,7 @@ public class FireBall : Character
 
     void OnCollisionEnter2D(Collision2D coll) //this should handle charging up for the radius attack
     {
-        if (coll.gameObject.tag == "projectile-friendly")
+        if (coll.gameObject.tag == "projectile-oil")
         {
             charge++;
             print("charge is " + charge);

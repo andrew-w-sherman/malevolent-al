@@ -31,8 +31,4 @@ public class CrumbleWallModel : MonoBehaviour {
 
     }
 
-    public void burn()
-    {
-
-    }
 }

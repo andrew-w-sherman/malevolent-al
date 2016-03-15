@@ -70,7 +70,6 @@ public class BurnWall : Tile {
 
     public void startBurn()
     {
-        replaceWithTile();
         model.burn();
         burning = true;
         myCollider.isTrigger = true;

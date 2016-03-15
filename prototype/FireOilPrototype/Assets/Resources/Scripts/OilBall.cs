@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class OilBall : Character
 {
@@ -14,7 +15,7 @@ public class OilBall : Character
 
     float movementCounter = 0f;
     float movementCheck = 2f;
-    public OilPatch[] oilList;
+    public List<OilPatch> oilList;
     public int numPatches = 10;
     float patchDistance;
 
@@ -38,26 +39,15 @@ public class OilBall : Character
     {
 
         timeLastExploded = -explodeTimer;
-        this.controller = demo;
+        controller = demo;
         startPosition = transform.position;
         lastDirection = Vector3.up;
-        oilList = new OilPatch[numPatches];
+        oilList = new List<OilPatch>();
         shootButtonDown = false;
 
         speed = 3;
 
-
         gameObject.tag = "OilBall";
-
-        /*
-        GameObject uselessQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        var filter = gameObject.AddComponent<MeshFilter>();
-        filter.mesh = uselessQuad.GetComponent<MeshFilter>().mesh;
-        Destroy(uselessQuad);
-
-        var renderer = gameObject.AddComponent<MeshRenderer>();
-        renderer.enabled = true;
-        */
 
         body = gameObject.AddComponent<Rigidbody2D>();
         body.gravityScale = 0;
@@ -72,10 +62,6 @@ public class OilBall : Character
         var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
         model.init(true, this, null, controller);
-
-        oilList = new OilPatch[numPatches];
-
-        createPatch(0);
 
 		audioS = this.gameObject.AddComponent<AudioSource> ();
 		shootSound = Resources.Load<AudioClip>("Sound/oil_shoot");
@@ -103,6 +89,12 @@ public class OilBall : Character
             if (other.gameObject.GetComponent<FireBall>().speed > speedingThreshold)
             {
                 //print("Time to speed!");
+
+                if (controller.expl != null)
+                {
+                    Destroy(controller.expl.gameObject);
+                }
+
                 speeding = true;
                 timeBeenSpeeding = 0f;
                 speedDirection = other.gameObject.GetComponent<FireBall>().lastDirection;
@@ -167,13 +159,13 @@ public class OilBall : Character
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        updateLastTile(other);
+        if (!speeding)
+        {
+            updateLastTile(other);
+        }
         pitHit(other);
         switchHit(other);
     }
-
-
-
 
     void OnTriggerStay2D(Collider2D coll)
     {
@@ -188,6 +180,7 @@ public class OilBall : Character
         {
             if (clock - timeLastExploded > explodeTimer && !speeding)
             {
+
                 timeLastExploded = clock;
                 GameObject explModel = new GameObject();
                 explModel.tag = "Explosion";
@@ -204,11 +197,27 @@ public class OilBall : Character
     }
 
 
-    void createPatch(int i)
+    //void createPatch(int i)
+    //{
+    //    GameObject oilPatchObject = new GameObject();
+    //    oilPatchObject.tag = "OilPatch";
+    //    oilList[i] = oilPatchObject.AddComponent<OilPatch>();
+    //    CircleCollider2D coll2 = oilPatchObject.AddComponent<CircleCollider2D>();
+    //    Rigidbody2D rig = oilPatchObject.AddComponent<Rigidbody2D>();
+    //    oilPatchObject.SetActive(true);
+    //    rig.mass = 10;
+    //    rig.gravityScale = 0f;
+    //    rig.isKinematic = true;
+    //    coll2.isTrigger = true;
+    //    oilList[i].transform.position = transform.position;
+    //    oilList[i].init(this, controller);
+    //}
+
+    void createPatch()
     {
         GameObject oilPatchObject = new GameObject();
         oilPatchObject.tag = "OilPatch";
-        oilList[i] = oilPatchObject.AddComponent<OilPatch>();
+        OilPatch op = oilPatchObject.AddComponent<OilPatch>();
         CircleCollider2D coll2 = oilPatchObject.AddComponent<CircleCollider2D>();
         Rigidbody2D rig = oilPatchObject.AddComponent<Rigidbody2D>();
         oilPatchObject.SetActive(true);
@@ -216,8 +225,11 @@ public class OilBall : Character
         rig.gravityScale = 0f;
         rig.isKinematic = true;
         coll2.isTrigger = true;
-        oilList[i].transform.position = transform.position;
-        oilList[i].init(this, controller);
+        op.transform.position = transform.position;
+        op.init(this, controller);
+
+        oilList.Add(op);
+      
     }
 
     // Update is called once per frame
@@ -309,36 +321,37 @@ public class OilBall : Character
                 if (clock - timeLastExploded > 1.2f)
                 {
                     movementCounter = 0f;
-                    int x = 0;
-                    bool patchMade = false;
-                    for (int i = 0; i < numPatches; i++)
-                    {
-                        if (!patchMade && oilList[i] == null)
-                        {
-                            createPatch(i);
-                            patchMade = true;
-                        }
-                        else { x++; }
-                    }
-                    if (x == numPatches)
-                    {
-                        float oldestClock = -1f;
-                        int oldestIndex = -1;
-                        for (int i = 0; i < numPatches; i++)
-                        {
-                            if (oilList[i].clock > oldestClock)
-                            {
-                                oldestClock = oilList[i].clock;
-                                oldestIndex = i;
-                            }
-                        }
-                        if (oldestIndex != -1)
-                        {
-                            Destroy(oilList[oldestIndex].gameObject);
-                            createPatch(oldestIndex);
-                        }
-                        else { print("oldestIndex set incorrectly"); }
-                    }
+                    createPatch();
+                    //int x = 0;
+                    //bool patchMade = false;
+                    //for (int i = 0; i < numPatches; i++)
+                    //{
+                    //    if (!patchMade && oilList[i] == null)
+                    //    {
+                    //        createPatch(i);
+                    //        patchMade = true;
+                    //    }
+                    //    else { x++; }
+                    //}
+                    //if (x == numPatches)
+                    //{
+                    //    float oldestClock = -1f;
+                    //    int oldestIndex = -1;
+                    //    for (int i = 0; i < numPatches; i++)
+                    //    {
+                    //        if (oilList[i].clock > oldestClock)
+                    //        {
+                    //            oldestClock = oilList[i].clock;
+                    //            oldestIndex = i;
+                    //        }
+                    //    }
+                    //    if (oldestIndex != -1)
+                    //    {
+                    //        Destroy(oilList[oldestIndex].gameObject);
+                    //        createPatch(oldestIndex);
+                    //    }
+                    //    else { print("oldestIndex set incorrectly"); }
+                    //}
                 }
             }
         }
@@ -352,7 +365,7 @@ public class OilBall : Character
 
     void OnDestroy()
     {
-        foreach (OilPatch patch in oilList)
+        foreach (OilPatch patch in oilList.ToArray())
         {
             if (patch != null) Destroy(patch.gameObject);
         }

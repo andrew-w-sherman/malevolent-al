@@ -35,10 +35,7 @@ public class BurnWallModel : MonoBehaviour {
         }
         if (timer > 2)
         {
-            timer = 0f;
-            owner.notBurning();
-            
-            sr.sprite = Resources.LoadAll<Sprite>("Sprite Sheets/env-tile")[3];
+            Destroy(owner.gameObject);
         }
 	
 	}

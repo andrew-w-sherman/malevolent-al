@@ -22,6 +22,7 @@ public class Goal : Tile {
         DestroyImmediate(GetComponent<MeshRenderer>());
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 1;
         sr.sprite = tileSp[14];
     }
 
