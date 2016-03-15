@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 
     public GameObject boardGO;
     public Board board;
+	public MusicController musicController;
 
     public bool startMenu;
     public bool levelMenu;
@@ -47,6 +48,11 @@ public class GameController : MonoBehaviour {
         levelMenu = false;
         escapeMenu = false;
         beatGame = false;
+
+		GameObject musicControllerObject = new GameObject ();
+		musicControllerObject.name = "music controller";
+		musicController = musicControllerObject.AddComponent<MusicController>();
+		musicController.init (this);
 
         projectiles = new List<Projectile>();
         projectileCount = 0;
@@ -537,6 +543,16 @@ public class GameController : MonoBehaviour {
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
         board.init(LEVELS[levelIndex], 100, this);
+		if (levelIndex < (LEVELS.Length - 2) / 3) {
+			musicController.changeMusic (MusicController.EASY_MUSIC);
+		} else if (levelIndex < (LEVELS.Length - 2) * 2 / 3) {
+			musicController.changeMusic (MusicController.MID_MUSIC);
+		} else if (levelIndex < (LEVELS.Length - 2)) {
+			musicController.changeMusic (MusicController.HARD_MUSIC);
+		} else {
+			//levelIndex == Levels.Length - 1 , i.e. we're at the last level (the boss level)
+			musicController.changeMusic (MusicController.BOSS_MUSIC);
+		}
     }
 
     private void destroyEverything()

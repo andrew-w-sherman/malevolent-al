@@ -46,7 +46,6 @@ public class OilBall : Character
 
         speed = 3;
 
-
         gameObject.tag = "OilBall";
 
         /*
