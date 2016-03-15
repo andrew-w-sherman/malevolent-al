@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class OilBall : Character
 {
@@ -14,7 +15,7 @@ public class OilBall : Character
 
     float movementCounter = 0f;
     float movementCheck = 2f;
-    public OilPatch[] oilList;
+    public List<OilPatch> oilList;
     public int numPatches = 10;
     float patchDistance;
 
@@ -38,10 +39,10 @@ public class OilBall : Character
     {
 
         timeLastExploded = -explodeTimer;
-        this.controller = demo;
+        controller = demo;
         startPosition = transform.position;
         lastDirection = Vector3.up;
-        oilList = new OilPatch[numPatches];
+        oilList = new List<OilPatch>();
         shootButtonDown = false;
 
         speed = 3;
@@ -62,8 +63,6 @@ public class OilBall : Character
         var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();
         model.init(true, this, null, controller);
-
-        oilList = new OilPatch[numPatches];
 
 		audioS = this.gameObject.AddComponent<AudioSource> ();
 		shootSound = Resources.Load<AudioClip>("Sound/oil_shoot");
@@ -229,6 +228,8 @@ public class OilBall : Character
         coll2.isTrigger = true;
         op.transform.position = transform.position;
         op.init(this, controller);
+
+        oilList.Add(op);
       
     }
 
@@ -365,7 +366,7 @@ public class OilBall : Character
 
     void OnDestroy()
     {
-        foreach (OilPatch patch in oilList)
+        foreach (OilPatch patch in oilList.ToArray())
         {
             if (patch != null) Destroy(patch.gameObject);
         }
