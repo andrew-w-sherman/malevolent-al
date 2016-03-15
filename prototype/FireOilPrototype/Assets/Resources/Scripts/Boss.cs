@@ -48,7 +48,7 @@ public class Boss : MonoBehaviour {
 		body.isKinematic = false;
 
 		coll = gameObject.AddComponent<CircleCollider2D>();
-		coll.radius = 0.75f * 4f / 3f;
+		coll.radius = 0.80f;
 		coll.isTrigger = false;
 
 
