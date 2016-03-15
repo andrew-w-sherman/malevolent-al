@@ -135,21 +135,23 @@ public class Board : MonoBehaviour {
                             tile = sw;
                         }
                         break;
-				case 'e':
-					tile = obj.AddComponent<Tile> ();
-					tile.init (gc);
-					if (c2 == 'b') {
-						gc.addBoss (pos.x, pos.y);
-					} else {
-						GameObject enemyGO = new GameObject ();
-						Enemy en = enemyGO.AddComponent<Enemy> ();
-						if (c2 == 'f')
-							en.init (gc, "fire");
-						else if (c2 == 'o')
-							en.init (gc, "oil");
-						en.transform.position = pos;
-						enemies.Add (enemyGO);
-					}
+                    case 'e':
+                        tile = obj.AddComponent<Tile>(); tile.init(gc);
+                        GameObject enemyGO = new GameObject();
+                        Enemy en = enemyGO.AddComponent<Enemy>();
+                        if (c2 == 'f') en.init(gc, "fire", true);
+                        else if (c2 == 'o') en.init(gc, "oil", true);
+                        en.transform.position = pos;
+                        enemies.Add(enemyGO);
+                        break;
+                    case 'E':
+                        tile = obj.AddComponent<Tile>(); tile.init(gc);
+                        GameObject dummyGO = new GameObject();
+                        Enemy dum = dummyGO.AddComponent<Enemy>();
+                        if (c2 == 'f') dum.init(gc, "fire", false);
+                        else if (c2 == 'o') dum.init(gc, "oil", false);
+                        dum.transform.position = pos;
+                        enemies.Add(dummyGO);
                         break;
                     case 's':
                         tile = obj.AddComponent<Tile>(); tile.init(gc);

@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1", "dan level", "bossLevel" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -94,30 +94,30 @@ public class GameController : MonoBehaviour {
         //addTurret(0, -2);
         //addObstacle(0, -2, 0);
 
-		if (!DEBUG_BOSS) {
-			Pit pit = null;
-			for (int i = -7; i < 9; i++) {
-				pit = addPit (-2, i);
 
-				//if (i == 1 || i == 2 || i == 3)
-				//{
-				//    pit.turnOff();
-				//}
+        Pit pit = null;
+        for (int i = -7; i < 9; i++)
+        {
+            pit = addPit(-2, i);
 
-			}
+            //if (i == 1 || i == 2 || i == 3)
+            //{
+            //    pit.turnOff();
+            //}
 
-			addSpikes (0, 6);
+        }
 
-			addEnemy (-4, 1, "fire");
-			addEnemy (-4, 3, "oil");
-			//Pit pit = addPit(-2, 1);
-			//pit.turnOff();
-			//pit.turnOn();
-			addCrumbleWall (1, -3);
-			addCrumbleWall (2, -3);
-			addCrumbleWall (3, -3);
-			addCrumbleWall (4, -3);
-		}
+        addSpikes(0, 6);
+
+        addEnemy(-4, 1, "fire", true);
+        addEnemy(-4, 3, "oil", true);
+        //Pit pit = addPit(-2, 1);
+        //pit.turnOff();
+        //pit.turnOn();
+        addCrumbleWall(1, -3);
+        addCrumbleWall(2, -3);
+        addCrumbleWall(3, -3);
+        addCrumbleWall(4, -3);
     }
 
     public void pitSwitch()
@@ -138,24 +138,24 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void addEnemyPeriodically()
-    {
-        if (clock > whenAddEnemy)
-        {
-            if (whichAddEnemy == 0)
-            {
-                addEnemy(10, 3, "fire");
-                whenAddEnemy += addEnemyInterval;
-                whichAddEnemy = 1;
-            }
-            else if (whichAddEnemy == 1)
-            {
-                addEnemy(10, 3, "oil");
-                whenAddEnemy += addEnemyInterval;
-                whichAddEnemy = 0;
-            }
-        }
-    }
+    //private void addEnemyPeriodically()
+    //{
+    //    if (clock > whenAddEnemy)
+    //    {
+    //        if (whichAddEnemy == 0)
+    //        {
+    //            addEnemy(10, 3, "fire");
+    //            whenAddEnemy += addEnemyInterval;
+    //            whichAddEnemy = 1;
+    //        }
+    //        else if (whichAddEnemy == 1)
+    //        {
+    //            addEnemy(10, 3, "oil");
+    //            whenAddEnemy += addEnemyInterval;
+    //            whichAddEnemy = 0;
+    //        }
+    //    }
+    //}
 
     public void addTile(float x, float y)
     {
@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour {
         return oil;
     }
 
-    private void addEnemy(float x, float y, string type)
+    private void addEnemy(float x, float y, string type, bool moves)
     {
         GameObject enemyObject = new GameObject();            
         Enemy e1 = enemyObject.AddComponent<Enemy>();           
@@ -200,7 +200,7 @@ public class GameController : MonoBehaviour {
         e1.transform.position = new Vector3(x, y, 0);      								
         e1.name = "enemy-" + (enemies.Count + 1);
 
-        e1.init(this, type);
+        e1.init(this, type, moves);
 
         foreach(Enemy e2 in enemies)
         {
@@ -210,7 +210,7 @@ public class GameController : MonoBehaviour {
         enemies.Add(e1);
     }
 
-	public Boss addBoss(float x, float y){
+	private Boss addBoss(float x, float y){
 		GameObject bossObject = new GameObject();            
 		bossObject.tag = "Boss";
 		boss = bossObject.AddComponent<Boss>();         
@@ -570,7 +570,6 @@ public class GameController : MonoBehaviour {
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
         board.init(LEVELS[levelIndex], 100, this);
-
 		if (levelIndex < (LEVELS.Length - 2) / 3) {
 			musicController.changeMusic (MusicController.EASY_MUSIC);
 		} else if (levelIndex < (LEVELS.Length - 2) * 2 / 3) {
