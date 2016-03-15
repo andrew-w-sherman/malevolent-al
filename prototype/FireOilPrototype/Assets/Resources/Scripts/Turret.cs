@@ -7,10 +7,11 @@ public class Turret : Character
     
     public int curDir;
     bool isRotating;
+    public BoxCollider2D coll;
     GameController demo;
     public Dictionary<int, Vector3> vectorDic;
     float timer;
-    public float speed;
+    public new float speed;
     TurretModel model;
     bool fire;
 
@@ -22,10 +23,13 @@ public class Turret : Character
         buildVectorMap();
         demo = gc;
         timer = 0;
-        speed = .5f;    //firing rate in seconds
+        base.speed = .75f;    //firing rate in seconds
+
+        coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.isTrigger = false;
+
         var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         model = modelObject.AddComponent<TurretModel>();
-        //modelObject.AddComponent<Rigidbody>();
         model.init(this, demo, isRotating);
         
     }
@@ -64,19 +68,22 @@ public class Turret : Character
 
     // Update is called once per frame
     void FixedUpdate()
-    { 
-               
+    {
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+
         // shoot every 4 seconds or so
         if (!isRotating)
         {
-            if(timer > speed)
+            if(timer > base.speed)
             {
                 timer = Time.deltaTime;
                 Vector3 vDir = Vector3.up;
                 vectorDic.TryGetValue(curDir, out vDir);
                 //print(curDir + " " + vDir);
-
-                demo.addProjectile(transform.position, vDir.normalized, Projectile.ENEMY);
+                demo.addProjectile(transform.position, vDir.normalized, Projectile.ENEMY, coll);
             }
         }
         else
@@ -88,7 +95,7 @@ public class Turret : Character
                 
                 Vector3 vDir = Vector3.up;
                 vectorDic.TryGetValue(curDir, out vDir);
-                demo.addProjectile(transform.position, vDir, Projectile.ENEMY);
+                demo.addProjectile(transform.position, vDir, Projectile.ENEMY, coll);
                 fire = false;
             }
         }

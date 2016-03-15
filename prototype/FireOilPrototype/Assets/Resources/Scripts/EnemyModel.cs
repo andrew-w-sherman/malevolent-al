@@ -15,6 +15,8 @@ public class EnemyModel : MonoBehaviour
     private int lost;
     private int speed = 2;
 
+    public CircleCollider2D coll;
+
     public float height;
     public float width;
 
@@ -40,9 +42,9 @@ public class EnemyModel : MonoBehaviour
         body.gravityScale = 0;
         body.isKinematic = false;
 
-        var circleCollider = gameObject.AddComponent<CircleCollider2D>();
-        circleCollider.radius = (float).33;
-        circleCollider.isTrigger = false;
+        coll = gameObject.AddComponent<CircleCollider2D>();
+        coll.radius = (float).33;
+        coll.isTrigger = false;
 
         gameObject.tag = "enemy";
         transform.parent = owner.transform;
@@ -103,15 +105,15 @@ public class EnemyModel : MonoBehaviour
             owner.health -= 10;
         }
 
-        owner.pitHit(coll);
+        //owner.pitHit(coll);
     }
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (!owner.falling)
-        {
-            owner.pitHit(coll);
-        }
+        //if (!owner.falling)
+        //{
+        //    owner.pitHit(coll);
+        //}
 
         if (coll.gameObject.tag == "OilPatch")
         {

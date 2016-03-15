@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour {
     public GameController demo;
     public int type;
     public Vector3 velocity;
+    public CircleCollider2D coll;
     
 
     int spriteswitch = 1;
@@ -20,7 +21,7 @@ public class Projectile : MonoBehaviour {
     Material mat;
 
     // Use this for initialization
-    public void init(Vector3 startPos, Vector3 velocity, int type, GameController demo)
+    public void init(Vector3 startPos, Vector3 velocity, int type, GameController demo, Collider2D shooter)
     {
         this.demo = demo;
         this.type = type;
@@ -49,18 +50,20 @@ public class Projectile : MonoBehaviour {
         body.gravityScale = 0;
         body.isKinematic = false;
 
-        var circleCollider = gameObject.AddComponent<CircleCollider2D>();
-        circleCollider.radius = (float).1;
-        circleCollider.isTrigger = false;
+        coll = gameObject.AddComponent<CircleCollider2D>();
+        coll.radius = (float).1;
+        coll.isTrigger = false;
 
         if (type == FIRE)
         {
-            Physics2D.IgnoreCollision(circleCollider, demo.fire.coll);
-            Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
+            Physics2D.IgnoreCollision(coll, demo.fire.coll);
+            Physics2D.IgnoreCollision(coll, demo.oil.coll);
 		} else if (type == OIL)
         {
-            Physics2D.IgnoreCollision(circleCollider, demo.oil.coll);
+            Physics2D.IgnoreCollision(coll, demo.oil.coll);
         }
+
+        Physics2D.IgnoreCollision(coll, shooter);
 
         mat = GetComponent<Renderer>().material;
         mat.shader = Shader.Find("Sprites/Default");

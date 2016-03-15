@@ -186,7 +186,7 @@ public class FireBall : Character
                 {
 
                     //Debug.Log(lastDirection);
-                    controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE);
+                    controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.FIRE, coll);
 
                 }
                 else {                                 //if we're charged, do that radius attack!
@@ -201,7 +201,7 @@ public class FireBall : Character
                     {
                         float radians = (Mathf.PI * 2f / (float)charge * i) + diagonalModifier;
                         Vector3 degreeVector = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0);
-                        controller.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE);
+                        controller.addProjectile(transform.position + lastDirection.normalized / 2, degreeVector, Projectile.FIRE, coll);
 
                     }
                     charge = 0;

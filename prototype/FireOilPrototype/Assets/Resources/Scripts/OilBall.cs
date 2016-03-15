@@ -302,7 +302,7 @@ public class OilBall : Character
 
             if (Input.GetButtonDown("Oil Shoot"))
             {
-                controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL);
+                controller.addProjectile(transform.position + lastDirection.normalized / 2, lastDirection.normalized, Projectile.OIL, coll);
                 shootButtonDown = true;
 				audioS.PlayOneShot (shootSound);
             }
