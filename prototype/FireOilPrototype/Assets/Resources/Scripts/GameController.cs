@@ -8,13 +8,14 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3" };
     int levelIndex;
 
     public GameObject boardGO;
     public Board board;
 	public MusicController musicController;
     public TitleScreen ts;
+    public WinScreen ws;
 
     public bool startMenu;
     public bool levelMenu;
@@ -51,6 +52,7 @@ public class GameController : MonoBehaviour {
         escapeMenu = false;
         beatGame = false;
         addTitleScreen();
+        addWinScreen();
 
 		GameObject musicControllerObject = new GameObject ();
 		musicControllerObject.name = "music controller";
@@ -90,6 +92,15 @@ public class GameController : MonoBehaviour {
         ts.transform.position = new Vector3(0, 0, 0);
         ts.init();
         ts.rend.enabled = false;
+    }
+
+    public void addWinScreen()
+    {
+        GameObject wsObject = new GameObject();
+        ws = wsObject.AddComponent<WinScreen>();
+        ws.transform.position = new Vector3(0, 0, 0);
+        ws.init();
+        ws.rend.enabled = false;
     }
 
     public void loadPrototype()
@@ -457,6 +468,8 @@ public class GameController : MonoBehaviour {
         float escapeButtonHeight = 50;
         int startButtonWidth = 250;
         int startButtonHeight = 30;
+        int winButtonWidth = 200;
+        int winButtonHeight = 30;
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.label);
 
         buttonStyle = GUI.skin.button;
@@ -469,7 +482,7 @@ public class GameController : MonoBehaviour {
 
         if (startMenu)
         {
-            setMainMenu();
+            setTitleScreen();
 
             if (!levelMenu)
             {
@@ -531,10 +544,10 @@ public class GameController : MonoBehaviour {
         }
         else if (beatGame == true)
         {
-            ts.rend.enabled = false;
+            setWinScreen();
+
             destroyEverything();
-            GUI.Button(new Rect(screenWidth / 2 - 250, screenHeight / 2 - 50 - 50, 500, 100), "Congratultions! You beat the game!");
-            if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+            if (GUI.Button(new Rect(screenWidth / 2 - winButtonWidth / 2, screenHeight / 2 + screenHeight/4 + screenHeight / 8 - winButtonHeight / 2, winButtonWidth, winButtonHeight), "Return to Main Menu", buttonStyle))
             {
                 startMenu = true;
                 beatGame = false;
@@ -543,6 +556,8 @@ public class GameController : MonoBehaviour {
         else
         {
             ts.rend.enabled = false;
+            ws.rend.enabled = false;
+
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
 
@@ -575,9 +590,16 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void setMainMenu()
+    public void setTitleScreen()
     {
         ts.rend.enabled = true;
+        cam.transform.position = new Vector3(0, 0, -10);
+        cam.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void setWinScreen()
+    {
+        ws.rend.enabled = true;
         cam.transform.position = new Vector3(0, 0, -10);
         cam.transform.localScale = new Vector3(1, 1, 1);
     }
