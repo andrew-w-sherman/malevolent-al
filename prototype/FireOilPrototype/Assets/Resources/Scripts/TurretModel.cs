@@ -14,7 +14,10 @@ public class TurretModel : MonoBehaviour {
     float startR;
     bool forwards;
     float speed; //speed of the rotation in number of frames per full rotation
-    
+
+    SpriteRenderer sr;
+    Sprite[] charSp;
+
 
     //Making it rotatable will allow the turret to his a 180 deg radius to the right
 
@@ -41,11 +44,12 @@ public class TurretModel : MonoBehaviour {
         transform.Rotate(Vector3.forward, myZ,Space.World);
         name = "wall-model";
 
-        mat = GetComponent<Renderer>().material;
-        mat.shader = Shader.Find("Transparent/Diffuse");
-        mat.mainTexture = Resources.Load<Texture2D>("Textures/marble");
-        mat.color = new Color(1, 1, 1);
-       
+
+        charSp = Resources.LoadAll<Sprite>("Sprite Sheets/char-front");
+        gameObject.AddComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 2;
+        sr.sprite = charSp[14];
     }
 
     void FixedUpdate () {

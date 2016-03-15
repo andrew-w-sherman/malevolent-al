@@ -27,7 +27,7 @@ public class Turret : Character
         coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = false;
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<TurretModel>();
         model.init(this, demo, isRotating);
         

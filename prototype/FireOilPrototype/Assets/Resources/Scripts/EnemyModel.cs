@@ -24,6 +24,8 @@ public class EnemyModel : MonoBehaviour
 
     SpriteRenderer sr;
     Sprite[] charSp;
+    float clock;
+    private Sprite[] idle;
 
     public float onOilSpeedChange;
 
@@ -60,16 +62,20 @@ public class EnemyModel : MonoBehaviour
         if (type.Equals("fire"))
         {
             sr.sprite = charSp[8];
+            idle = new Sprite[] { charSp[8], charSp[12] };
         }
         if (type.Equals("oil"))
         {
             sr.sprite = charSp[9];
+            idle = new Sprite[] { charSp[9], charSp[13] };
         }
+        clock = 0f;
 
         width = sr.bounds.size.x;
         height = sr.bounds.size.y;
 
         onOilSpeedChange = 1;
+        
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -242,5 +248,13 @@ public class EnemyModel : MonoBehaviour
                 onOilSpeedChange = 1;
             }
         }
+    }
+
+    void LateUpdate()
+    {
+        clock += Time.deltaTime;
+        int index = (int)(Time.timeSinceLevelLoad * 2f);
+        index = index % idle.Length;
+        sr.sprite = idle[index];
     }
 }
