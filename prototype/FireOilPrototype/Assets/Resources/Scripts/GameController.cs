@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour {
     public GameObject boardGO;
     public Board board;
 	public MusicController musicController;
+    public TitleScreen ts;
 
     public bool startMenu;
     public bool levelMenu;
@@ -49,6 +50,7 @@ public class GameController : MonoBehaviour {
         levelMenu = false;
         escapeMenu = false;
         beatGame = false;
+        addTitleScreen();
 
 		GameObject musicControllerObject = new GameObject ();
 		musicControllerObject.name = "music controller";
@@ -81,6 +83,14 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void addTitleScreen()
+    {
+        GameObject tsObject = new GameObject();
+        ts = tsObject.AddComponent<TitleScreen>();
+        ts.transform.position = new Vector3(0, 0, 0);
+        ts.init();
+        ts.rend.enabled = false;
+    }
 
     public void loadPrototype()
     {
@@ -445,8 +455,8 @@ public class GameController : MonoBehaviour {
         float screenWidth = Screen.width;
         float escapeButtonWidth = 300;
         float escapeButtonHeight = 50;
-        float startButtonWidth = 300;
-        float startButtonHeight = 50;
+        int startButtonWidth = 250;
+        int startButtonHeight = 30;
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.label);
 
         buttonStyle = GUI.skin.button;
@@ -459,16 +469,16 @@ public class GameController : MonoBehaviour {
 
         if (startMenu)
         {
-
+            ts.rend.enabled = true;
 
             if (!levelMenu)
             {
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 25, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 + screenHeight / 8 - escapeButtonHeight / 2, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
                 {
                     levelIndex = 0;
                     loadLevel();
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 25, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 + screenHeight / 8 - startButtonHeight / 2 + startButtonHeight, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
                 {
                     levelMenu = true;
                 }
@@ -481,10 +491,10 @@ public class GameController : MonoBehaviour {
 
                 if (numButtons % 2 == 0 && numButtons > 0)
                 {
-                    buttonHeight = -25;
+                    buttonHeight = -startButtonHeight / 2;
                     while (i < numButtons / 2 - 1)
                     {
-                        buttonHeight -= 50;
+                        buttonHeight -= startButtonHeight;
                         i++;
                     }
 
@@ -494,7 +504,7 @@ public class GameController : MonoBehaviour {
                     buttonHeight = 0;
                     while (i < numButtons / 2)
                     {
-                        buttonHeight -= 50;
+                        buttonHeight -= startButtonHeight;
                         i++;
                     }
                 }
@@ -508,7 +518,7 @@ public class GameController : MonoBehaviour {
                         loadLevel();
                     }
 
-                    buttonHeight += 50;
+                    buttonHeight += startButtonHeight;
                     i++;
                 }
 
@@ -523,7 +533,7 @@ public class GameController : MonoBehaviour {
         {
             destroyEverything();
             GUI.Button(new Rect(screenWidth / 2 - 250, screenHeight / 2 - 50 - 50, 500, 100), "Congratultions! You beat the game!");
-            if( GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
+            if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 - startButtonHeight / 2 + 50, startButtonWidth, startButtonHeight), "Return to Main Menu", buttonStyle))
             {
                 startMenu = true;
                 beatGame = false;
