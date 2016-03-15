@@ -16,11 +16,14 @@ public class GameController : MonoBehaviour {
 	public MusicController musicController;
     public TitleScreen ts;
     public WinScreen ws;
+    public TutorialScreen tuts;
 
     public bool startMenu;
     public bool levelMenu;
+    public bool tutorial;
     public bool escapeMenu;
     public bool beatGame;
+    public bool newGame;
 
     public FireBall fire;
     public OilBall oil;
@@ -53,10 +56,13 @@ public class GameController : MonoBehaviour {
 
 		startMenu = false;
         levelMenu = false;
+        tutorial = false;
         escapeMenu = false;
         beatGame = false;
+        newGame = false;
         addTitleScreen();
         addWinScreen();
+        addTutorialScreen();
 
 		GameObject musicControllerObject = new GameObject ();
 		musicControllerObject.name = "music controller";
@@ -108,6 +114,15 @@ public class GameController : MonoBehaviour {
         ws.transform.position = new Vector3(0, 0, 0);
         ws.init();
         ws.rend.enabled = false;
+    }
+
+    public void addTutorialScreen()
+    {
+        GameObject tutsObject = new GameObject();
+        tuts = tutsObject.AddComponent<TutorialScreen>();
+        tuts.transform.position = new Vector3(0, 0, 0);
+        tuts.init();
+        tuts.rend.enabled = false;
     }
 
     public void loadPrototype()
@@ -515,8 +530,10 @@ public class GameController : MonoBehaviour {
             {
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 + screenHeight / 8 - escapeButtonHeight / 2, startButtonWidth, startButtonHeight), "New Game", buttonStyle))
                 {
-                    levelIndex = 0;
-                    loadLevel();
+                    startMenu = false;
+                    tutorial = true;
+                    newGame = true;
+                    ts.rend.enabled = false;
                 }
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 2 + screenHeight / 8 - startButtonHeight / 2 + startButtonHeight, startButtonWidth, startButtonHeight), "Load Level", buttonStyle))
                 {
@@ -569,6 +586,26 @@ public class GameController : MonoBehaviour {
 
             }
         }
+        else if (tutorial)
+        {
+            setTutorialScreen();
+            if (newGame)
+            {
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 8 - startButtonHeight / 2, startButtonWidth, startButtonHeight), "Continue", buttonStyle))
+                {
+                    tutorial = false;
+                    newGame = false;
+                    loadNewGame();
+                }
+            }
+            else
+            {
+                if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 8 - startButtonHeight / 2, startButtonWidth, startButtonHeight), "Continue", buttonStyle))
+                {
+                    tutorial = false;
+                }
+            }
+        }
         else if (beatGame == true)
         {
             setWinScreen();
@@ -618,6 +655,12 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void loadNewGame()
+    {
+        levelIndex = 0;
+        loadLevel();
+    }
+
     public void setTitleScreen()
     {
         ts.rend.enabled = true;
@@ -628,6 +671,13 @@ public class GameController : MonoBehaviour {
     public void setWinScreen()
     {
         ws.rend.enabled = true;
+        cam.transform.position = new Vector3(0, 0, -10);
+        cam.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void setTutorialScreen()
+    {
+        tuts.rend.enabled = true;
         cam.transform.position = new Vector3(0, 0, -10);
         cam.transform.localScale = new Vector3(1, 1, 1);
     }
