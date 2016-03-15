@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public bool DEBUG_LVL = false;
     public bool DEBUG_BOSS = false;
 
-    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1", "dan level" };
+    readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial1", "dan level", "bossLevel" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -210,7 +210,7 @@ public class GameController : MonoBehaviour {
         enemies.Add(e1);
     }
 
-	private Boss addBoss(float x, float y){
+	public Boss addBoss(float x, float y){
 		GameObject bossObject = new GameObject();            
 		bossObject.tag = "Boss";
 		boss = bossObject.AddComponent<Boss>();         
@@ -570,6 +570,7 @@ public class GameController : MonoBehaviour {
         boardGO = new GameObject();
         board = boardGO.AddComponent<Board>();
         board.init(LEVELS[levelIndex], 100, this);
+
 		if (levelIndex < (LEVELS.Length - 2) / 3) {
 			musicController.changeMusic (MusicController.EASY_MUSIC);
 		} else if (levelIndex < (LEVELS.Length - 2) * 2 / 3) {
