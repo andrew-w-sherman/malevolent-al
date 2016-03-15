@@ -12,7 +12,8 @@ public class SwitchModel : MonoBehaviour {
         this.owner = s;
         this.controller = controller;
         transform.parent = owner.transform;                 
-        transform.localPosition = new Vector3(0, 0, 0);     
+        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localScale = new Vector3(1, 1, 0);
 
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 1;

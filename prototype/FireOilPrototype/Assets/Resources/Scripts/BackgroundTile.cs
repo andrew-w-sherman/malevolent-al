@@ -29,7 +29,7 @@ public class BackgroundTile : MonoBehaviour {
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 0;
-        this.transform.localScale = new Vector2(1.01f, 1.01f);
+        this.transform.localScale = new Vector2(1.03f, 1.03f);
         tileSprites = new Sprite[] { tileSp[3], tileSp[7], tileSp[8], tileSp[9] };
         sr.sprite = tileSprites[Random.Range(0,tileSprites.Length)];
     }
