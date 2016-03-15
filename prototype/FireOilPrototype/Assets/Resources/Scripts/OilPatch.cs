@@ -22,6 +22,8 @@ public class OilPatch : MonoBehaviour {
 
         var coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = true;
+        coll.size = new Vector2(0.54f, 0.54f);
+        
 
         var modelObject = new GameObject();
         model = modelObject.AddComponent<OilModel>();

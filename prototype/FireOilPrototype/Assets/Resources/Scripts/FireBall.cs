@@ -43,7 +43,7 @@ public class FireBall : Character
         body.isKinematic = false;
 
         coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).33;
+        coll.radius = (float).3;
         coll.isTrigger = false;
 
         var modelObject = new GameObject();
@@ -106,7 +106,7 @@ public class FireBall : Character
             print("charge is " + charge);
         }
 		if (coll.gameObject.tag == "projectile-enemy") {
-			damage (1);
+			damage (3);
 		}
     }
 

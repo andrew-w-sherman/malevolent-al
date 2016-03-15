@@ -55,7 +55,7 @@ public class OilBall : Character
 
 
         coll = gameObject.AddComponent<CircleCollider2D>();
-        coll.radius = (float).33;
+        coll.radius = (float).31;
         coll.isTrigger = false;
 
 
@@ -104,7 +104,7 @@ public class OilBall : Character
 				audioS.PlayOneShot (explodeSound);
             }
         }
-        else if (other.gameObject.tag == "wall")
+        else if (other.gameObject.tag == "wall"||other.gameObject.tag=="BurnWall")
         {
 
             //print(other.contacts[0].normal);
@@ -153,7 +153,7 @@ public class OilBall : Character
             */
         }
 		if (other.gameObject.tag == "projectile-enemy") {
-			damage (1);
+			damage (3);
 		}
     }
 
@@ -219,6 +219,7 @@ public class OilBall : Character
         oilPatchObject.tag = "OilPatch";
         OilPatch op = oilPatchObject.AddComponent<OilPatch>();
         CircleCollider2D coll2 = oilPatchObject.AddComponent<CircleCollider2D>();
+        coll2.radius = .28f;
         Rigidbody2D rig = oilPatchObject.AddComponent<Rigidbody2D>();
         oilPatchObject.SetActive(true);
         rig.mass = 10;

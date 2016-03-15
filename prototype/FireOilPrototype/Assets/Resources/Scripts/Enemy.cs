@@ -23,7 +23,8 @@ public class Enemy : Character {
     // Update is called once per frame
     void Update()
     {
-        if (health == 0)
+        Debug.Log(health);
+        if (health <= 0)
         {
             Destroy(gameObject);
         }
