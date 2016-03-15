@@ -10,6 +10,8 @@ public class BossModel : MonoBehaviour {
 	public const int DAZED  = 1;
 	public const int NORMAL = 2;
 
+	float c;
+
 	public void init (Boss b){
 
 		transform.parent = b.transform;	
@@ -21,14 +23,20 @@ public class BossModel : MonoBehaviour {
 
 		faces = Resources.LoadAll<Sprite> ("Sprite Sheets/boss");
 		spr.sprite = faces [NORMAL];
-		spr.sortingOrder = 3;
+		spr.sortingOrder = -1;
 		//spr.sortingLayerName = "boss";
 
 		this.gameObject.name = "BOSS MODEL";
+		c = 0;
 	}
 
 	public void changeFace(int index){
 		spr.sprite = faces [index];
+
+	}
+
+	void Update(){
+		c += Time.deltaTime;
 
 	}
 }

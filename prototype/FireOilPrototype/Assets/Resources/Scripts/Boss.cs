@@ -57,7 +57,7 @@ public class Boss : MonoBehaviour {
 		model = bossModelObject.AddComponent<BossModel> ();
 		model.init (this);
 
-		GameObject bossHelmetObject = new GameObject ();//.CreatePrimitive(PrimitiveType.Quad);
+		var bossHelmetObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		helmet = bossHelmetObject.AddComponent<BossHelmet> ();
 		helmet.init (this);
 
@@ -164,7 +164,7 @@ public class Boss : MonoBehaviour {
 				model.changeFace (BossModel.NORMAL);
 			}
 
-			if (timeInCurrentState > 20 || (timeInCurrentState > 10 && health < maxHealth / 3)) {
+			if (timeInCurrentState > 5 || (timeInCurrentState > 10 && health < maxHealth / 3)) {
 				//prep for charge attack
 				if (Random.Range (0, 2) > 1) {
 					switchTargets ();
