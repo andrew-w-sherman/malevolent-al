@@ -48,7 +48,6 @@ public class Switch : Tile {
             //add back the box collider
             foreach(Tile t in tileList)
             {
-                Debug.Log(t.on);
                 t.turnOn();                
             }
         }
@@ -56,7 +55,6 @@ public class Switch : Tile {
         {
             foreach (Tile t in tileList)
             {
-                Debug.Log(t.on);
                 t.turnOff();
             }
         }
