@@ -188,10 +188,11 @@ public class Board : MonoBehaviour {
                         print("uhhhhh");
                         break;
                 }
-                tile.transform.parent = tileFolder.transform;
-                tile.transform.localPosition = new Vector3(j/2, characters.Length - i - 1, 0);
-                tile.makeSlightlyBigger();
+			    tile.transform.parent = tileFolder.transform;
+				tile.transform.localPosition = new Vector3 (j / 2, characters.Length - i - 1, 0);
+				tile.makeSlightlyBigger ();
                 tiles[j/2, characters.Length - i - 1] = tile;
+
             }
         }
         linkSwitches();
