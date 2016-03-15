@@ -11,8 +11,9 @@ public class SwitchModel : MonoBehaviour {
 	public void init (GameController controller, Switch s) {
         this.owner = s;
         this.controller = controller;
-        transform.parent = owner.transform;                 // Set the model's parent to the gem.
-        transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
+        transform.parent = owner.transform;                 
+        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localScale = new Vector3(1, 1, 0);
 
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 1;

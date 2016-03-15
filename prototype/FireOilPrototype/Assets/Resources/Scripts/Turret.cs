@@ -11,7 +11,6 @@ public class Turret : Character
     GameController demo;
     public Dictionary<int, Vector3> vectorDic;
     float timer;
-    public new float speed;
     TurretModel model;
     bool fire;
 
@@ -25,10 +24,11 @@ public class Turret : Character
         timer = 0;
         base.speed = .75f;    //firing rate in seconds
 
+
         coll = gameObject.AddComponent<BoxCollider2D>();
         coll.isTrigger = false;
 
-        var modelObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        var modelObject = new GameObject();
         model = modelObject.AddComponent<TurretModel>();
         model.init(this, demo, isRotating);
         

@@ -18,6 +18,8 @@ public class BackgroundTile : MonoBehaviour {
 
     public int type = NO_TOGGLE;
 
+    Sprite[] tileSprites;
+
     // Use this for initialization
     public virtual void init(GameController gc) {
         controller = gc;
@@ -27,7 +29,9 @@ public class BackgroundTile : MonoBehaviour {
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 0;
-        sr.sprite = tileSp[3];
+        this.transform.localScale = new Vector2(1.03f, 1.03f);
+        tileSprites = new Sprite[] { tileSp[3], tileSp[7], tileSp[8], tileSp[9] };
+        sr.sprite = tileSprites[Random.Range(0,tileSprites.Length)];
     }
 	
 	// Update is called once per frame

@@ -6,12 +6,14 @@ public class Enemy : Character {
     public GameController demo;
     public EnemyModel model;
     public string type;
+    public bool moves;
 
     // Use this for initialization
-    public void init(GameController demo, string type)
+    public void init(GameController demo, string type, bool moves)
     {
         this.demo = demo;
         this.type = type;
+        this.moves = moves;
 
         health = 1;
 

@@ -21,6 +21,8 @@ public class Tile : MonoBehaviour {
 
     public int type = NO_TOGGLE;
 
+    Sprite[] tileSprites;
+
     // Use this for initialization
     public virtual void init(GameController gc) {
         controller = gc;
@@ -38,7 +40,9 @@ public class Tile : MonoBehaviour {
         gameObject.AddComponent<SpriteRenderer>();
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 0;
-        sr.sprite = tileSp[3];
+        tileSprites = new Sprite[] { tileSp[3], tileSp[7], tileSp[8], tileSp[9] };
+        sr.sprite = tileSprites[Random.Range(0, tileSprites.Length)];
+
     }
 
     public void turnOff()
@@ -83,6 +87,11 @@ public class Tile : MonoBehaviour {
                 stopTurningOn = true;
             }
         }
+    }
+
+    public void makeSlightlyBigger()
+    {
+        this.transform.localScale = new Vector2(1.01f, 1.01f);
     }
  
 

@@ -28,7 +28,7 @@ public class Obstacle : Tile {
         {
             if (wallType == FIRE)
             {
-                Debug.Log(controller);
+                //Debug.Log(controller);
                 Physics2D.IgnoreCollision(myCollider, controller.fire.coll);
             }
             if (wallType == OIL)
@@ -41,7 +41,7 @@ public class Obstacle : Tile {
     
     void OnCollisionEnter2D(Collision2D coll)
     {
-        print("Collided");
+        //print("Collided");
         //if(wallType == FIRE)
         //{
         //    if (coll.gameObject.tag == "FireBall")

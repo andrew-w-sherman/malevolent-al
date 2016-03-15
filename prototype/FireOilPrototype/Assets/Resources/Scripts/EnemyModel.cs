@@ -14,6 +14,8 @@ public class EnemyModel : MonoBehaviour
     private float lostTimer;
     private int lost;
     private int speed = 2;
+    private float noSightTimer = 0f;
+    private bool noSight = false;
 
     public CircleCollider2D coll;
 
@@ -22,6 +24,8 @@ public class EnemyModel : MonoBehaviour
 
     SpriteRenderer sr;
     Sprite[] charSp;
+    float clock;
+    private Sprite[] idle;
 
     public float onOilSpeedChange;
 
@@ -58,16 +62,20 @@ public class EnemyModel : MonoBehaviour
         if (type.Equals("fire"))
         {
             sr.sprite = charSp[8];
+            idle = new Sprite[] { charSp[8], charSp[12] };
         }
         if (type.Equals("oil"))
         {
             sr.sprite = charSp[9];
+            idle = new Sprite[] { charSp[9], charSp[13] };
         }
+        clock = 0f;
 
         width = sr.bounds.size.x;
         height = sr.bounds.size.y;
 
         onOilSpeedChange = 1;
+        
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -129,105 +137,124 @@ public class EnemyModel : MonoBehaviour
 
     void Update()
     {
-
-        if (owner.falling)
+        if (owner.moves)
         {
-            owner.fallSequence();
-        }
-        else {
-            Vector2 start = new Vector2(transform.position.x, transform.position.y);
-            Vector3 direction3D = GameController.NULL;
-            float calculatedSpeed = speed * Time.deltaTime;
 
-            if (type.Equals("fire"))
+            if (owner.falling)
             {
-                direction3D = controller.fire.model.transform.position - transform.position;
+                owner.fallSequence();
             }
+            else {
+                Vector2 start = new Vector2(transform.position.x, transform.position.y);
+                Vector3 direction3D = GameController.NULL;
+                float calculatedSpeed = speed * Time.deltaTime;
 
-            if (type.Equals("oil"))
-            {
-                direction3D = controller.oil.model.transform.position - transform.position;
-            }
-
-            Vector2 direction = new Vector2(direction3D.x, direction3D.y).normalized;
-
-            RaycastHit2D TopLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, height / 4), direction, direction3D.magnitude);
-            RaycastHit2D TopRightHit = Physics2D.Raycast(start + new Vector2(width / 4, height / 4), direction, direction3D.magnitude);
-            RaycastHit2D BotLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, -height / 4), direction, direction3D.magnitude);
-            RaycastHit2D BotRightHit = Physics2D.Raycast(start + new Vector2(width / 4, -height / 4), direction, direction3D.magnitude);
-
-            List<RaycastHit2D> hitList = new List<RaycastHit2D>();
-            hitList.Add(TopLeftHit);
-            hitList.Add(TopRightHit);
-            hitList.Add(BotLeftHit);
-            hitList.Add(BotRightHit);
-
-            foreach (RaycastHit2D hit in hitList.ToArray())
-            {
-                if (hit.collider == null)
+                if (type.Equals("fire"))
                 {
-                    hitList.Remove(hit);
+                    direction3D = controller.fire.model.transform.position - transform.position;
                 }
-            }
 
-            if (hitList.Count > 0)
-            {
+                if (type.Equals("oil"))
+                {
+                    direction3D = controller.oil.model.transform.position - transform.position;
+                }
 
-                int obstacleHit = 0;
+                Vector2 direction = new Vector2(direction3D.x, direction3D.y).normalized;
 
-                //Debug.Log("new set");
+                RaycastHit2D TopLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, height / 4), direction, direction3D.magnitude);
+                RaycastHit2D TopRightHit = Physics2D.Raycast(start + new Vector2(width / 4, height / 4), direction, direction3D.magnitude);
+                RaycastHit2D BotLeftHit = Physics2D.Raycast(start + new Vector2(-width / 4, -height / 4), direction, direction3D.magnitude);
+                RaycastHit2D BotRightHit = Physics2D.Raycast(start + new Vector2(width / 4, -height / 4), direction, direction3D.magnitude);
+
+                List<RaycastHit2D> hitList = new List<RaycastHit2D>();
+                hitList.Add(TopLeftHit);
+                hitList.Add(TopRightHit);
+                hitList.Add(BotLeftHit);
+                hitList.Add(BotRightHit);
 
                 foreach (RaycastHit2D hit in hitList.ToArray())
                 {
-                    //Debug.Log(hit.collider);
-                    if (hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit" || 
-                        hit.collider.gameObject.tag == "Explosion")
+                    if (hit.collider == null)
                     {
-                        obstacleHit = 1;
+                        hitList.Remove(hit);
                     }
                 }
 
-                if (obstacleHit == 0)
+                if (hitList.Count > 0)
                 {
-                    lost = 0;
-                    lostTimer = 0f;
-                    if (type.Equals("fire"))
-                    {
-                        lastSeen = controller.fire.model.transform.position;
-                    }
 
-                    if (type.Equals("oil"))
-                    {
-                        lastSeen = controller.oil.model.transform.position;
-                    }
+                    int obstacleHit = 0;
 
-                    lastDirection = direction3D;
-                    transform.Translate(lastDirection.normalized * calculatedSpeed);
-                }
-                else
-                {
-                    if (lastDirection != GameController.NULL)
+                    //Debug.Log("new set");
+
+                    foreach (RaycastHit2D hit in hitList.ToArray())
                     {
-                        if (lost != 1)
+                        //Debug.Log(hit.collider);
+                        if (hit.collider.gameObject.tag == "wall" || hit.collider.gameObject.tag == "Pit" ||
+                            hit.collider.gameObject.tag == "Explosion")
                         {
-                            if (transform.position != lastSeen)
-                            {
-                                transform.position = Vector2.MoveTowards(start, lastSeen, calculatedSpeed);
-                            }
-                            else
+                            obstacleHit = 1;
+                        }
+                    }
+
+                    if (obstacleHit == 0)
+                    {
+                        lost = 0;
+                        noSight = false;
+                        lostTimer = 0f;
+                        noSightTimer = 0f;
+                        if (type.Equals("fire"))
+                        {
+                            lastSeen = controller.fire.model.transform.position;
+                        }
+
+                        if (type.Equals("oil"))
+                        {
+                            lastSeen = controller.oil.model.transform.position;
+                        }
+
+                        lastDirection = direction3D;
+                        transform.Translate(lastDirection.normalized * calculatedSpeed);
+                    }
+                    else
+                    {
+                        if (lastDirection != GameController.NULL)
+                        {
+                            noSightTimer += Time.deltaTime;
+                            if(noSightTimer > 5)
                             {
                                 lost = 1;
+                                lostTimer = 3;
                             }
-                        }
-                        if (lost == 1 && lostTimer < 3)
-                        {
-                            lostTimer += Time.deltaTime;
-                            transform.Translate(lastDirection.normalized * calculatedSpeed);
+                            if (lost != 1)
+                            {
+                                if (transform.position != lastSeen)
+                                {
+                                    transform.position = Vector2.MoveTowards(start, lastSeen, calculatedSpeed);
+                                }
+                                else
+                                {
+                                    lost = 1;
+                                }
+                            }
+                            if (lost == 1 && lostTimer < 3)
+                            {
+                                lostTimer += Time.deltaTime;
+                                transform.Translate(lastDirection.normalized * calculatedSpeed);
+                            }
                         }
                     }
                 }
+                onOilSpeedChange = 1;
             }
-            onOilSpeedChange = 1;
         }
+    }
+
+    void LateUpdate()
+    {
+        clock += Time.deltaTime;
+        int index = (int)(Time.timeSinceLevelLoad * 2f);
+        index = index % idle.Length;
+        sr.sprite = idle[index];
     }
 }
