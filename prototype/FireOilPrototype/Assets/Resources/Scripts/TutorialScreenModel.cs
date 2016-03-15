@@ -14,6 +14,7 @@ public class TutorialScreenModel : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);     // Center the model on the parent. 
 
         MeshRenderer mesh = GetComponent<MeshRenderer>();
+        mesh.sortingOrder = 10;
         mesh.material = Resources.Load("TutorialScreen", typeof(Material)) as Material;
 
         mat = GetComponent<Renderer>().material;

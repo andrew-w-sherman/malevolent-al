@@ -589,10 +589,12 @@ public class GameController : MonoBehaviour {
         else if (tutorial)
         {
             setTutorialScreen();
+
             if (newGame)
             {
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 8 - startButtonHeight / 2, startButtonWidth, startButtonHeight), "Continue", buttonStyle))
                 {
+                    tuts.rend.enabled = false;
                     tutorial = false;
                     newGame = false;
                     loadNewGame();
@@ -602,6 +604,7 @@ public class GameController : MonoBehaviour {
             {
                 if (GUI.Button(new Rect(screenWidth / 2 - startButtonWidth / 2, screenHeight / 8 - startButtonHeight / 2, startButtonWidth, startButtonHeight), "Continue", buttonStyle))
                 {
+                    tuts.rend.enabled = false;
                     tutorial = false;
                 }
             }
@@ -621,6 +624,7 @@ public class GameController : MonoBehaviour {
         {
             ts.rend.enabled = false;
             ws.rend.enabled = false;
+            tuts.rend.enabled = false;
 
             if (fire != null) GUI.Label(new Rect(150, 10, 100, 30), "Fire Health: " + fire.health);
             if (oil != null) GUI.Label(new Rect(270, 10, 100, 30), "Oil Health: " + oil.health);
@@ -628,16 +632,20 @@ public class GameController : MonoBehaviour {
 				GUI.Label (new Rect (390, 10, 100, 30), "Boss health: " + boss.health);
             if (escapeMenu)
             {
-                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 50, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 75, escapeButtonWidth, escapeButtonHeight), "Resume", buttonStyle))
                 {
                     escapeMenu = false;
                     Time.timeScale = 1f;
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 - 25, escapeButtonWidth, escapeButtonHeight), "Controls", buttonStyle))
+                {
+                    tutorial = true;
+                }
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 25, escapeButtonWidth, escapeButtonHeight), "Restart Level", buttonStyle))
                 {
                     changeBoard();
                 }
-                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 50, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
+                if (GUI.Button(new Rect(screenWidth / 2 - escapeButtonWidth / 2, screenHeight / 2 - escapeButtonHeight / 2 + 75, escapeButtonWidth, escapeButtonHeight), "Main Menu", buttonStyle))
                 {
                     destroyEverything();
                     escapeMenu = false;
@@ -666,6 +674,7 @@ public class GameController : MonoBehaviour {
         ts.rend.enabled = true;
         cam.transform.position = new Vector3(0, 0, -10);
         cam.transform.localScale = new Vector3(1, 1, 1);
+        cam.orthographicSize = 5;
     }
 
     public void setWinScreen()
@@ -673,13 +682,19 @@ public class GameController : MonoBehaviour {
         ws.rend.enabled = true;
         cam.transform.position = new Vector3(0, 0, -10);
         cam.transform.localScale = new Vector3(1, 1, 1);
+        cam.orthographicSize = 5;
     }
 
     public void setTutorialScreen()
     {
         tuts.rend.enabled = true;
-        cam.transform.position = new Vector3(0, 0, -10);
-        cam.transform.localScale = new Vector3(1, 1, 1);
+        tuts.transform.position = cam.transform.position - new Vector3(0, 0, -10);
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
+        tuts.model.transform.localScale = new Vector3(width, height, 1);
+        //cam.transform.position = new Vector3(0, 0, -10);
+        //cam.transform.localScale = new Vector3(1, 1, 1);
+        //cam.orthographicSize = 5;
     }
 
     private void loadLevel()
