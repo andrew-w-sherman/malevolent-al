@@ -64,7 +64,6 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-		print ("ok");
 		//DEBUG_BOSS = true;
 		if (DEBUG_BOSS) {
             loadPrototype();
