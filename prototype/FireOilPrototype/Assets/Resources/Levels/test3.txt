@@ -14,14 +14,14 @@ XX  ef  XX      XX                  XX      XXXX                                
 XX  ef  XXBBBBBBXX  ef        eo    XX      XXXX                                            XX
 XX      XX      XXef  ef      eo    XX  S1  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 XX          S7  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-XX      XXXXXXXXXXXXXXXXXX          XXefef  X5    P6^^PPPPPPPPPPPP^^PPPPPPPPPPPPPPPPPPPP    XX
-XX              eo      XX          XXefef  X5    P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6    XX
-XX              eo    t6XX          XXXXXXXXXX    P6PPPPPP^^PPPPPPPPPPPPPP^^PPPPPP^^PPP6    XX
-XX      XXXXXXXXXX      XX          BB            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        XX
-XX      XX              XX    S5    BB            XX                              XX        XX
-XX      XX              XX          BB            XX                              XX        XX
-XX      XX    XXXXXXXXXXXX          BB            XX                              XX        XX
-XX      XX              XX          BB            XX                              XX  GGGG  XX
+XX      XXXXXXXXXXXXXXXXXX          XXefefX5        P6P6P6PP^^PPPPPPPP^^PPPPPPPPPPPPPP      XX
+XX              eo      XX          XXefefX5        P6^^P6P6P6P6P6P6P6P6P6P6P6P6P6P6P6      XX
+XX              eo    t6XX          XXXXXXXX        P6^^PPPPPPPP^^PPPPPPPPPP^^PPPPPP  S6    XX
+XX      XXXXXXXXXX      XX          BB^^          XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        XX
+XX      XXt2            XX    S5    BB^^          XX                              XX        XX
+XX      XX              XX          BB^^          XX                              XX        XX
+XX      XX    XXXXXXXXXXXX          XX^^          XX                              XX        XX
+XX      XX            t6XX          XX            XX                              XX  GGGG  XX
 XX      XX              XX          XX            XX                              XXXXXXXXXXXX
 XX      XXXXXXXXXXXX    XXXXXXXOXOXOXXXFXFXXXXXXXXXX                                          
 XXef  efXX  eoeo                                  XX                                          

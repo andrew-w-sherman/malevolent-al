@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 
     public bool DEBUG_BOSS = false;
    
-	readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level 1","test4","joel1", "dan level", "test3", "bossLevel" };
+	readonly string[] LEVELS = { "test", "test2", "dan tutorial2","dan tutorial3", "dan tutorial4", "dan tutorial1", "dan level 1","mike2","joel1", "dan level", "test3", "bossLevel" };
     int levelIndex;
 
     public GameObject boardGO;
@@ -81,11 +81,7 @@ public class GameController : MonoBehaviour {
 
         cam = Camera.main;
         minCamSize = cam.orthographicSize;
-<<<<<<< HEAD
 
-		print ("ok");
-=======
->>>>>>> origin/master
 		//DEBUG_BOSS = true;
 
 		if (DEBUG_BOSS) {
