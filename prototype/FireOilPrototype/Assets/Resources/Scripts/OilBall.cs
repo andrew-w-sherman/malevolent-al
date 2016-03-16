@@ -310,10 +310,10 @@ public class OilBall : Character
                 shootButtonDown = false;
             }
 
-            if (!shootButtonDown)
-            {
+            //if (!shootButtonDown)
+            //{
                 movementCounter += (direction.normalized * Time.deltaTime).magnitude;
-            }
+            ////}
 
 
             if (movementCounter > (coll.radius * 1f / 2f) && !speeding)
