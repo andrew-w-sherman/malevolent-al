@@ -10,18 +10,13 @@ public class Spikes : Tile {
 	public BoxCollider2D boxColl;
 	public List<Collider2D> charsToDamage;
 
-	public FireBall f;
-	public OilBall o;
 	public bool damagingFire;
 	public bool damagingOil;
 
 	// Use this for initialization
 	public override void init(GameController demo)
 	{
-
 		this.demo = demo;
-		this.o = demo.oil;
-		this.f = demo.fire;
 		damagingFire = false;
 		damagingOil = false;
 		gameObject.tag = "Spikes";
@@ -71,9 +66,9 @@ public class Spikes : Tile {
 	void Update()
 	{
 		if (damagingFire){ 
-			f.damage (1); }
+			demo.fire.damage (2); }
 		if (damagingOil) {
-			o.damage (1);
+			demo.oil.damage (2);
 		}
 	}
 }
