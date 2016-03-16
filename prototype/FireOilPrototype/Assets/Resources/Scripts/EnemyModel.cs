@@ -113,15 +113,24 @@ public class EnemyModel : MonoBehaviour
             owner.health -= 10;
         }
 
-        //owner.pitHit(coll);
+
+        
     }
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        //if (!owner.falling)
+        //if (coll.gameObject.tag == "plain tile")
         //{
-        //    owner.pitHit(coll);
+        //    if (!owner.touchingTiles.Contains(coll.gameObject.GetComponent<Tile>()))
+        //    {
+        //        owner.touchingTiles.Add(coll.gameObject.GetComponent<Tile>());
+        //    }
         //}
+
+        if (!owner.falling)
+        {
+            owner.pitHit(coll);
+        }
 
         if (coll.gameObject.tag == "OilPatch")
         {
@@ -134,12 +143,23 @@ public class EnemyModel : MonoBehaviour
         }
     }
 
+    public void cleanTouchingTiles()
+    {
+        foreach( Tile tile in owner.touchingTiles.ToArray() )
+        {
+            if (!coll.bounds.Intersects(tile.coll.bounds))
+            {
+                owner.touchingTiles.Remove(tile);
+            }
+        }
+    }
+
 
     void Update()
     {
         if (owner.moves)
         {
-
+            //cleanTouchingTiles();
             if (owner.falling)
             {
                 owner.fallSequence();

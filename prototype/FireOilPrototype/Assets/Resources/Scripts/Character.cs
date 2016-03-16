@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Character : MonoBehaviour {
 
     public Vector3 startPosition;
     public float clock = 0f;
+
+    public List<Tile> touchingTiles;
 
     public bool speeding = false;
     public float speed;
@@ -27,6 +30,7 @@ public class Character : MonoBehaviour {
 
     void Start () {
         falling = false;
+        touchingTiles = new List<Tile>();
 		lastDamage = -5;
 		lastRegen = 0;
 		health = maxHealth;
